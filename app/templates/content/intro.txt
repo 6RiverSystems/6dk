@@ -1,0 +1,13 @@
+</br>
+The 6 River Systems (6RS) solution consists of 2 main components: mobile fulfillment platforms (MFPs) and a cloud-based collaborative fulfilment system (CFS).
+</br>
+Our MFPs are autonomous robots colloquially referred to as "chucks" (the Charles River of Boston's namesake) that intelligently navigate through your picking/replenishment environment while keeping your associates on task. 
+</br>
+Our CFS consists of a suite of services that: 
+</br>
+(1) manages known data for products, locations and containers that the MFPs need for picking/replenishment, 
+</br>
+(2) coordinates tasks across the fleet of MFPs, and most importantly for a WMS developer, 
+</br>
+(3) integrates with your existing warehouse management system.
+</br> 

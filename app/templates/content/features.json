@@ -1,0 +1,78 @@
+[
+	{
+		"feature": "JSON, Delimited, XML-based message format",
+		"description": "6RS API enables customer choice with respect to several data formats"
+	},
+	{
+		"feature": "HTTPS, SFTP message transport",
+		"description": "6RS API enables customer choice with respect to several methods of sending and receiving messages"
+	},
+	{
+		"feature": "Discrete Order Picking",
+		"description": "6RS API enables customer defined groups of pick tasks to be picked into a single container (product dimensions ignored)."
+	},
+	{
+		"feature": "Batch Picking",
+		"description": "6RS API enables customer defined groups of pick tasks that may be grouped into one or more containers using product dimensions and a liquid fill methodology."
+	},
+	{
+		"feature": "Batch Picking Singles",
+		"description": "6RS API enables customer defined groups of single quantity pick tasks that may be grouped into one or more containers using product dimensions and a liquid fill methodology."
+	},
+	{
+		"feature": "Mixing Grouping Strategies",
+		"description": "6RS API enables mixing Discrete Order Picking and Batch Picking within the same Pick Wave message."
+	},
+	{
+		"feature": "Containerization and Container Type Assignment",
+		"description": "6RS Batch Picking will first attempt to fit all pick tasks within a group into the best sized container, but may choose the largest container and repeat the selection process with the remainder."
+	},
+	{
+		"feature": "Printing at Induct ",
+		"description": "6RS API enables the printing of a label during Induction (e.g. shipping label) that is typically placed on a container. Labels printed during Induction typically include the Container ID as a scannable UPC barcode."
+	},
+	{
+		"feature": "Printing at Takeoff",
+		"description": "6RS API enables the printing of a label during Takeoff (e.g. manifest of what was picked, or exception report) that is typically placed inside a container."
+	},
+	{
+		"feature": "Product UPC Validation",
+		"description": "6RS API enables product UPC validation against the list of allowed UPC barcodes for that product"
+	},
+	{
+		"feature": "Product Lot Code Validation (exact match)",
+		"description": "6RS API enables product LOT UPC validation against a single allowed UPC barcode for that pick task"
+	},
+	{
+		"feature": "Product Information Display",
+		"description": "6RS API enables the display of product information including name, description, image"
+	},
+	{
+		"feature": "Unit Of Measure Display",
+		"description": "6RS API enables the display of product unit of measure data"
+	},
+	{
+		"feature": "Product Dimension Conversion",
+		"description": "6RS API handles conversion of product dimensions when receiving millimeters or inches"
+	},
+	{
+		"feature": "Expected Shipping Date Bias During Allocation",
+		"description": "6RS API enables a bias when looking to prioritize oldest work first which is balanced against (optimal) 6RS work allocation logic"
+	},
+	{
+		"feature": "Product Stubbing",
+		"description": "6RS API will allow picking of previously unknown products using product information provided"
+	},
+	{
+		"feature": "Work Allocation Rules (Prioritization)",
+		"description": "6RS API enables management of when and in what order work is completed. Work Allocation Rules may use any customer specific data."
+	},
+	{
+		"feature": "Multiple Takeoff Locations",
+		"description": "6RS API enables assignment of alternate takeoff destinations based on customer provided data (e.g. different shipping carrier)"
+	},
+	{
+		"feature": "Custom Data Northbound Message",
+		"description": "6RS API enables receipt of customer specific data in southbound messages to be passed through and returned in northbound messages"
+	}
+]

@@ -1,0 +1,32 @@
+{% extends 'bootstrap/base.html' %}
+
+{% block title %}
+    {% if title %}
+        6RS API DevTools - {{ title }}
+    {% else %}
+        6R API DevTools
+    {% endif %}
+{% endblock %}
+
+{% block navbar %}
+    <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+        <div>  
+          <a class="navbar-brand" href="{{ url_for('index') }}"><span class="glyphicon glyphicon-home" aria-hidden="true"></span></a>
+        </div>
+    </nav>
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid" >
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-info" role="alert">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+        {% block app_content %}{% endblock %}
+        <div class="footer navbar-fixed-bottom" style="background-color: #e3f2fd;"><p align="center">
+  © 2018 6 River Systems, Inc. All rights reserved.</p></div>
+    </div>
+{% endblock %}
