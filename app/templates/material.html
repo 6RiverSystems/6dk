@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/materialize.css') }}"  media="screen,projection"/>
+		<link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+		<script src="{{ url_for('static', filename='js/waypoints/lib/noframework.waypoints.min.js') }}"></script>
+		<script src="https://api.apiary.io/seeds/embed.js"></script>
+		<title>{% block title %}{% if title %}6DK - {{ title }}{% else %}6DK{% endif %}{% endblock %}</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body>
+    {% block application_content %}{% endblock %}
+	{{ moment.include_jquery() }}
+	{% block scripts %}{% endblock %}
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js'></script>  
+	<script type="text/javascript" src="{{ url_for('static', filename='js/materialize.min.js') }}"></script>
+	<script>
+		  $(document).ready(function(){
+		    $('.sidenav').sidenav();
+    		$('.fixed-action-btn').floatingActionButton();
+    		$('.collapsible').collapsible();
+    		$('.tabs').tabs();
+    		$('select').formSelect();
+    		$('.modal').modal();
+    		$('.tooltipped').tooltip();
+    		$('.datepicker').datepicker({
+            	format: 'yyyy-mm-dd'
+        	});
+			var elem = document.querySelector('.collapsible.expandable');
+			var instance = M.Collapsible.init(elem, {
+			  accordion: false
+			});
+		  });
+	</script>
+    </body>
+  </html>

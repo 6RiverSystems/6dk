@@ -1,11 +1,13 @@
 from app import app
 
+from app.plugins.translation_engine import decipher
 
 @app.route('/wms/acknowledgement', methods=['POST'])
 def receive_acknowledgement():
-	#unmask fields
-	#save to database
+	payload = request.get_json(force=True) or {}
+	unmasked_data = decipher(payload, "acknowledgement")
 	#send northbound
+	#respond to fs
 	return
 
 

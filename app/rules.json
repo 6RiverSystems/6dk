@@ -1,0 +1,373 @@
+{
+  "messages": [
+    {
+      "message_type": "pick-waves",
+      "message_format": "JSON",
+      "substitute_paths": [
+        {
+          "key_path": "picks.\\d+.groupID",
+          "field_name": "groupID"
+        },
+        {
+          "key_path": "picks.\\d+.pickID",
+          "field_name": "pickID"
+        },
+        {
+          "key_path": "picks.\\d+.product.productID",
+          "field_name": "productID"
+        },
+        {
+          "key_path": "picks.\\d+.container.containerID",
+          "field_name": "containerID"
+        }
+      ],
+      "sanitize_paths": [
+        {
+          "key_path": "picks.\\d+.container.containerType",
+          "field_name": "containerType",
+          "sanitizer": "containerType"
+        },
+        {
+          "key_path": "picks.\\d+.sourceLocation",
+          "field_name": "sourceLocation",
+          "sanitizer": "sourceLocation"
+        }
+      ]
+    },
+    {
+      "message_type": "pick-waves-response",
+      "message_format": "JSON",
+      "substitute_paths": [
+        {
+          "key_path": "picks.\\d+.groupID",
+          "field_name": "groupID"
+        },
+        {
+          "key_path": "picks.\\d+.pickID",
+          "field_name": "pickID"
+        },
+        {
+          "key_path": "picks.\\d+.product.productID",
+          "field_name": "productID"
+        },
+        {
+          "key_path": "picks.\\d+.container.containerID",
+          "field_name": "containerID"
+        }
+      ],
+      "sanitize_paths": [
+        {
+          "key_path": "picks.\\d+.container.containerType",
+          "field_name": "containerType",
+          "sanitizer": "containerType"
+        },
+        {
+          "key_path": "picks.\\d+.sourceLocation",
+          "field_name": "sourceLocation",
+          "sanitizer": "sourceLocation"
+        }
+      ]
+    },
+    {
+      "message_type": "group-updates",
+      "message_format": "JSON",
+      "substitute_paths": [
+        {
+          "key_path": "groupID",
+          "field_name": "groupID"
+        },
+        {
+          "key_path": "containerID",
+          "field_name": "containerID"
+        },
+        {
+          "key_path": "container.containerID",
+          "field_name": "containerID"
+        },
+        {
+          "key_path": "data.CurrentGroupKey",
+          "field_name": "CurrentGroupKey"
+        },
+        {
+          "key_path": "data.CurrentGroupKey",
+          "field_name": "CurrentGroupKeyToRemove"
+        },
+        {
+          "key_path": "picks.\\d+.pickID",
+          "field_name": "pickID"
+        },
+        {
+          "key_path": "picks.\\d+.product.productID",
+          "field_name": "productID"
+        }
+      ],
+      "sanitize_paths": [
+        {
+          "key_path": "picks.\\d+.container.containerType",
+          "field_name": "containerType",
+          "sanitizer": "containerType"
+        }
+      ]
+    },
+    {
+      "message_type": "group-cancels",
+      "message_format": "JSON",
+      "substitute_paths": [
+        {
+          "key_path": "groupID",
+          "field_name": "groupID"
+        },
+        {
+          "key_path": "containerID",
+          "field_name": "containerID"
+        }
+      ],
+      "sanitize_paths": []
+    },
+    {
+      "message_type": "acknowledgement",
+      "message_format": "JSON",
+      "substitute_paths": [
+        {
+          "key_path": "containerID",
+          "field_name": "containerID"
+        },
+        {
+          "key_path": "groupID",
+          "field_name": "groupID"
+        }
+      ],
+      "sanitize_paths": []
+    },
+    {
+      "message_type": "print-request",
+      "message_format": "JSON",
+      "substitute_paths": [
+        {
+          "key_path": "containers.\\d+.containerID",
+          "field_name": "containerID"
+        },
+        {
+          "key_path": "containers.\\d+.groupID",
+          "field_name": "groupID"
+        }
+      ],
+      "sanitize_paths": []
+    },
+    {
+      "message_type": "container-accepted",
+      "message_format": "JSON",
+      "substitute_paths": [
+        {
+          "key_path": "groupID",
+          "field_name": "groupID"
+        },
+        {
+          "key_path": "container.containerID",
+          "field_name": "containerID"
+        },
+        {
+          "key_path": "picks.\\d+.pickID",
+          "field_name": "pickID"
+        },
+        {
+          "key_path": "picks.\\d+.product.productID",
+          "field_name": "productID"
+        }
+      ],
+      "sanitize_paths": [
+        {
+          "key_path": "picks.\\d+.container.containerType",
+          "field_name": "containerType",
+          "sanitizer": "containerType"
+        },
+        {
+          "key_path": "picks.\\d+.sourceLocation",
+          "field_name": "sourceLocation",
+          "sanitizer": "sourceLocation"
+        }
+      ]
+    },
+    {
+      "message_type": "container-validation",
+      "message_format": "JSON",
+      "substitute_paths": [
+        {
+          "key_path": "groupID",
+          "field_name": "groupID"
+        },
+        {
+          "key_path": "containerID",
+          "field_name": "containerID"
+        }
+      ],
+      "sanitize_paths": []
+    },
+    {
+      "message_type": "container-inducted",
+      "message_format": "JSON",
+      "substitute_paths": [
+        {
+          "key_path": "groupID",
+          "field_name": "groupID"
+        },
+        {
+          "key_path": "container.containerID",
+          "field_name": "containerID"
+        },
+        {
+          "key_path": "picks.\\d+.pickID",
+          "field_name": "pickID"
+        },
+        {
+          "key_path": "picks.\\d+.product.productID",
+          "field_name": "productID"
+        }
+      ],
+      "sanitize_paths": [
+        {
+          "key_path": "picks.\\d+.container.containerType",
+          "field_name": "containerType",
+          "sanitizer": "containerType"
+        },
+        {
+          "key_path": "picks.\\d+.sourceLocation",
+          "field_name": "sourceLocation",
+          "sanitizer": "sourceLocation"
+        }
+      ]
+    },
+    {
+      "message_type": "pick-task-picked",
+      "message_format": "JSON",
+      "substitute_paths": [
+        {
+          "key_path": "groupID",
+          "field_name": "groupID"
+        },
+        {
+          "key_path": "container.containerID",
+          "field_name": "containerID"
+        },
+        {
+          "key_path": "picks.\\d+.pickID",
+          "field_name": "pickID"
+        },
+        {
+          "key_path": "picks.\\d+.product.productID",
+          "field_name": "productID"
+        }
+      ],
+      "sanitize_paths": [
+        {
+          "key_path": "picks.\\d+.container.containerType",
+          "field_name": "containerType",
+          "sanitizer": "containerType"
+        },
+        {
+          "key_path": "picks.\\d+.sourceLocation",
+          "field_name": "sourceLocation",
+          "sanitizer": "sourceLocation"
+        }
+      ]
+    },
+    {
+      "message_type": "container-picked-complete",
+      "message_format": "JSON",
+      "substitute_paths": [
+        {
+          "key_path": "groupID",
+          "field_name": "groupID"
+        },
+        {
+          "key_path": "container.containerID",
+          "field_name": "containerID"
+        },
+        {
+          "key_path": "picks.\\d+.pickID",
+          "field_name": "pickID"
+        },
+        {
+          "key_path": "picks.\\d+.product.productID",
+          "field_name": "productID"
+        }
+      ],
+      "sanitize_paths": [
+        {
+          "key_path": "picks.\\d+.container.containerType",
+          "field_name": "containerType",
+          "sanitizer": "containerType"
+        },
+        {
+          "key_path": "picks.\\d+.sourceLocation",
+          "field_name": "sourceLocation",
+          "sanitizer": "sourceLocation"
+        }
+      ]
+    },
+    {
+      "message_type": "containertaken-off",
+      "message_format": "JSON",
+      "substitute_paths": [
+        {
+          "key_path": "groupID",
+          "field_name": "groupID"
+        },
+        {
+          "key_path": "container.containerID",
+          "field_name": "containerID"
+        },
+        {
+          "key_path": "picks.\\d+.pickID",
+          "field_name": "pickID"
+        },
+        {
+          "key_path": "picks.\\d+.product.productID",
+          "field_name": "productID"
+        }
+      ],
+      "sanitize_paths": [
+        {
+          "key_path": "picks.\\d+.container.containerType",
+          "field_name": "containerType",
+          "sanitizer": "containerType"
+        },
+        {
+          "key_path": "picks.\\d+.sourceLocation",
+          "field_name": "sourceLocation",
+          "sanitizer": "sourceLocation"
+        }
+      ]
+    }
+  ],
+  "sanitizers": [
+    {
+      "name": "containerType",
+      "creation_url": "/cfs/asset-manager/v1/assetTypes",
+      "creation_body": {
+        "externalId": "*",
+        "name": "*",
+        "description": "*",
+        "barcode": "*",
+        "type": "container",
+        "length": 200,
+        "width": 200,
+        "height": 200
+      }
+    },
+    {
+      "name": "sourceLocation",
+      "creation_url": "/cfs/asset-manager/v1/storageLocations",
+      "creation_body": {
+        "type": "bin",
+        "name": "*",
+        "description": "*",
+        "address": "*",
+        "externalAisleId": "A-B",
+        "x": 100,
+        "y": 100,
+        "z": 1
+      }
+    }
+  ]
+}

@@ -1,32 +1,58 @@
-{% extends 'bootstrap/base.html' %}
+{% extends "material.html" %}
 
-{% block title %}
-    {% if title %}
-        6RS API DevTools - {{ title }}
-    {% else %}
-        6R API DevTools
-    {% endif %}
-{% endblock %}
+{% block application_content %}
+		<ul id="slide-out" class="sidenav sidenav-fixed blue darken-4 hoverable">
+			<li>
+				<a class="collapsible-header waves-effect white-text" href="#">
+					<i class="material-icons white-text">home</i>
+					HOME
+				</a>
+			</li>
+			<li>
+				<div class="divider"></div>
+			</li>
+			<li>
+				<a class="collapsible-header waves-effect white-text" href="#">
+					<i class="material-icons white-text">business</i>
+					SITES
+				</a>
+			</li>
+			<li>
+				<div class="divider"></div>
+			</li>
+			<li>
+				<a class="collapsible-header waves-effect white-text" href="#">
+					<i class="material-icons white-text">code</i>
+					RELEASES
+				</a>
+			</li>
+			<li>
+				<div class="divider"></div>
+			</li>
+			<li>
+				<a class="collapsible-header waves-effect white-text" href="#">
+					<i class="material-icons white-text">rss_feed</i>
+					FEED
+				</a>
+			</li>
+		</ul>
 
-{% block navbar %}
-    <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
-        <div>  
-          <a class="navbar-brand" href="{{ url_for('index') }}"><span class="glyphicon glyphicon-home" aria-hidden="true"></span></a>
-        </div>
-    </nav>
-{% endblock %}
-
-{% block content %}
-    <div class="container-fluid" >
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            {% for message in messages %}
-            <div class="alert alert-info" role="alert">{{ message }}</div>
-            {% endfor %}
-        {% endif %}
-        {% endwith %}
-        {% block app_content %}{% endblock %}
-        <div class="footer navbar-fixed-bottom" style="background-color: #e3f2fd;"><p align="center">
-  © 2018 6 River Systems, Inc. All rights reserved.</p></div>
+    <div class="container">
+    	<a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+    	<div class="row">
+    		<div class="col s1"></div>
+    		<div class="col s11">
+		        {% with messages = get_flashed_messages() %}
+		        {% if messages %}
+		            {% for message in messages %}
+		            <div class="card-panel hoverable blue lighten-5">
+		            	<i class="material-icons left">notifications</i>{{ message }}
+		            </div>
+		            {% endfor %}
+		        {% endif %}
+		        {% endwith %}
+    			{% block app_content %}{% endblock %}
+    		</div>
+    	</div>
     </div>
 {% endblock %}

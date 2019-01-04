@@ -1,4 +1,0 @@
-</br>This list describes additional data that is required for any integration. Typically this information can be gathered by the 6RS Solutions team from the customer.
-</br>(1) complete list of container types, including Container Type ID, name, length, width and height dimensions and units of measure used (e.g. inches, millimeters)
-</br>(2) complete list of product asset types
-</br>(3) complete list of storage locations that 6RS compiles as part of 6RS mapping

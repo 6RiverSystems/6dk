@@ -8,7 +8,7 @@ class Config(object):
         'sqlite:///' + os.path.join(basedir, 'app.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     ADMIN_TOKENS = ['09dfe030-e97d-4c59-b440-c936d212e0ab']
-    DEV_FS_BASE_URL = 'https://techops3.6river.org'
+    DEV_FS_BASE_URL = 'https://techops2.6river.org'
 
 
 class TestingConfig(Config):

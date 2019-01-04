@@ -3,7 +3,10 @@ from datetime import datetime
 from uuid import uuid4
 
 from flask import url_for
-from app import db
+from flask_login import UserMixin
+from werkzeug.security import generate_password_hash, check_password_hash
+
+from app import db, login
 
 
 class PaginatedAPIMixin(object):
@@ -30,9 +33,42 @@ class PaginatedAPIMixin(object):
         return data
 
 
+@login.user_loader
+def load_user(id):
+    return User.query.get(id)
+
+
+class User(UserMixin, db.Model):
+	id = db.Column(db.String(128), index=True, unique=True, primary_key=True)
+	email = db.Column(db.String(128), index=True, unique=True)
+	first_name = db.Column(db.String(128))
+	last_name = db.Column(db.String(128))
+	password_hash = db.Column(db.String(128))
+	created = db.Column(db.DateTime(), default=datetime.utcnow)
+	updated = db.Column(db.DateTime(), default=datetime.utcnow)
+
+	def __repr__(self):
+		return '<User {}>'.format(self.email)    
+
+	def to_dict(self):
+		data = {
+			'email': self.email,
+			'first_name': self.first_name,
+			'last_name': self.last_name,
+			'created': self.created.isoformat()+'Z',
+			'updated': self.updated.isoformat()+'Z',
+		}
+
+	def set_password(self, password):
+		self.password_hash = generate_password_hash(password)
+
+	def check_password(self, password):
+		return check_password_hash(self.password_hash, password)
+
+
 class Profile(PaginatedAPIMixin, db.Model):
 	token_id = db.Column(db.String(128), index=True, unique=True, primary_key=True)
-	email  = db.Column(db.String(128))
+	email  = db.Column(db.String(128), db.ForeignKey('user.email'))
 	data = db.Column(db.String(16777216), default="{}")
 	created = db.Column(db.DateTime(), default=datetime.utcnow)
 	updated = db.Column(db.DateTime(), default=datetime.utcnow)
@@ -60,40 +96,6 @@ class Profile(PaginatedAPIMixin, db.Model):
 			self.updated = datetime.utcnow()
 
 
-class MaskPath(PaginatedAPIMixin, db.Model):
-	id = db.Column(db.String(128), index=True, unique=True, primary_key=True)
-	message_type = db.Column(db.String(128))
-	key_path = db.Column(db.String(2048), unique=True)
-	field_name = db.Column(db.String(128))
-	message_format = db.Column(db.String(128))
-	created = db.Column(db.DateTime(), default=datetime.utcnow)
-	updated = db.Column(db.DateTime(), default=datetime.utcnow)
-
-	def __repr__(self):
-		return '<MaskPath {}>'.format(self.key_path)
-
-	def to_dict(self):
-		data = {
-            'id': self.id,
-            'message_type': self.message_type,
-            'key_path': self.key_path,
-            'field_name': self.field_name,
-            'message_format': self.message_format,
-            'created': self.created.isoformat()+'Z',
-            'updated': self.updated.isoformat()+'Z',
-        }
-		return data
-
-	def from_dict(self, data, new_mask_path=False):
-		for field in ['message_type', 'key_path', 'field_name', 'message_format']:
-			if field in data:
-				setattr(self, field, data[field])
-		if new_mask_path:
-				setattr(self, 'id', str(uuid4()))
-		else:
-			self.updated = datetime.utcnow()
-
-
 class MaskMap(PaginatedAPIMixin, db.Model):
 	value = db.Column(db.String(128), index=True, unique=True, primary_key=True)
 	token_id = db.Column(db.String(128), db.ForeignKey('profile.token_id'))
@@ -103,7 +105,7 @@ class MaskMap(PaginatedAPIMixin, db.Model):
 	updated = db.Column(db.DateTime(), default=datetime.utcnow)
 
 	def __repr__(self):
-		return '<MaskList {}>'.format(self.id)
+		return '<MaskMap {}>'.format(self.id)
 
 	def to_dict(self):
 		data = {
@@ -122,6 +124,40 @@ class MaskMap(PaginatedAPIMixin, db.Model):
 				setattr(self, field, data[field])
 		if not new_mask_map:
 			self.updated = datetime.utcnow()
+
+
+class SafeMap(PaginatedAPIMixin, db.Model):
+	#mapping to safe values
+	id = db.Column(db.String(128), index=True, unique=True, primary_key=True)
+	value = db.Column(db.String(128))
+	token_id = db.Column(db.String(128), db.ForeignKey('profile.token_id'))
+	field_name = db.Column(db.String(128))
+	external_value = db.Column(db.String(2048))
+	created = db.Column(db.DateTime(), default=datetime.utcnow)
+	updated = db.Column(db.DateTime(), default=datetime.utcnow)
+
+	def __repr__(self):
+		return '<MaskMap {}>'.format(self.id)
+
+	def to_dict(self):
+		data = {
+            'id': self.id,
+            'value': self.value,
+            'token_id': self.token_id,
+            'field_name':self.field_name,
+            'external_value': self.external_value,
+            'created': self.created.isoformat()+'Z',
+            'updated': self.updated.isoformat()+'Z',
+        }
+		return data
+
+	def from_dict(self, data, new_safe_map=False):
+		for field in ['value', 'token_id', 'field_name', 'external_value']:
+			if field in data:
+				setattr(self, field, data[field])
+		if not new_mask_map:
+			self.updated = datetime.utcnow()
+
 
 
 class Message(PaginatedAPIMixin, db.Model):

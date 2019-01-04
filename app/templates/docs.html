@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+<div class="row">
+	<div class="col s12">
+		<div id="embedHere"></div>
+	</div>
+</div>
+
+<script>
+  var embed = new Apiary.Embed({
+    subdomain: '6rs',
+    element: '#embedHere'
+  });
+</script>
+
+{% endblock %}
