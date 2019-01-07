@@ -50,6 +50,19 @@ def receive_print_request():
 		return jsonify({'message': 'accepted but origin wms not found'})
 
 
+@app.route('/wms/container-validation', methods=['POST'])
+def receive_container_validation():
+	payload = request.get_json(force=True) or {}
+	logger.debug('receiving container-validation message: {}'.format(payload))
+	token, unmasked_data = decipher(payload, "container-validation")
+	if token:
+		return
+		#send northbound
+		#respond to fs
+	else:
+		return jsonify({'message': 'accepted but origin wms not found'})
+
+
 @app.route('/wms/container-inducted', methods=['POST'])
 def receive_container_inducted():
 	payload = request.get_json(force=True) or {}
@@ -76,11 +89,11 @@ def receive_pick_task_picked():
 		return jsonify({'message': 'accepted but origin wms not found'})
 
 
-@app.route('/wms/container-pick-complete', methods=['POST'])
-def receive_container_pick_complete():
+@app.route('/wms/container-picked-complete', methods=['POST'])
+def receive_container_picked_complete():
 	payload = request.get_json(force=True) or {}
-	logger.debug('receiving container-pick-complete message: {}'.format(payload))
-	token, unmasked_data = decipher(payload, "container-pick-complete")
+	logger.debug('receiving container-picked-complete message: {}'.format(payload))
+	token, unmasked_data = decipher(payload, "container-picked-complete")
 	if token:
 		return
 		#send northbound
