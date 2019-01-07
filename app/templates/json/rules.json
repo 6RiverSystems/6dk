@@ -1,4 +1,19 @@
 {
+  "southbound_message_list": [
+    "pick-waves",
+    "group-updates",
+    "group-cancels"
+  ],
+  "northbound_message_list": [
+    "container-accepted",
+    "acknowledgement",
+    "print-request",
+    "container-validation",
+    "container-inducted",
+    "pick-task-picked",
+    "container-picked-complete",
+    "container-taken-off"
+  ],
   "messages": [
     {
       "message_type": "pick-waves",
@@ -306,7 +321,7 @@
       ]
     },
     {
-      "message_type": "containertaken-off",
+      "message_type": "container-taken-off",
       "message_format": "JSON",
       "substitute_paths": [
         {

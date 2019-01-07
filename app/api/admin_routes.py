@@ -2,10 +2,11 @@ import json
 
 from flask import request, jsonify
 
-from app import app, db, logger
+from app import app, db, logger, dk_profile
 from app.models import Profile
 from app.plugins.auth_helper import admin_token_validation
 from app.plugins.general_helper import check_for_keys
+from app.plugins.profile_helper import create_new_profile
 
 
 @app.route('/admin/profiles', methods=['POST'])
@@ -14,12 +15,8 @@ def create_profile():
 	data = request.get_json(force=True) or {}
 	all_keys_present, results = check_for_keys(['email'], data)
 	if all_keys_present:
-		logger.debug('creating new profile')
-		profile = Profile()
-		profile.from_dict(data, new_profile=True)
-		db.session.add(profile)
-		db.session.commit()
-		response = jsonify(profile.to_dict())
+		profile = create_new_profile(data)
+		response = jsonify(profile)
 		response.status_code = 201
 		return response
 	else:		

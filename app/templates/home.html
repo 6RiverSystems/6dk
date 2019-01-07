@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block app_content %}
+    <div class="row">
+        </br></br></br></br></br></br></br></br>
+        <div id="results" class="col s12 toshow" style="display:none;">
+            <h4 id="greeter" class="center-align" href="javascript:greet();"></h4>
+        </div>
+    </div>
+    <script>
+        var targetElem = document.getElementById('#greeter');
+        var waypoint = new Waypoint({
+          element: document.getElementById('greeter'),
+          handler: function(direction) {
+            greet()
+            this.destroy()
+          },
+          offset: 600
+        })
+    </script>
+    <script>
+        function greet(){
+            var today = new Date()
+            var curHr = today.getHours()
+
+            if (curHr < 12) {
+              var greeting = 'Good morning'
+            } else if (curHr < 18) {
+              var greeting = 'Good afternoon'
+            } else {
+              var greeting = 'Good evening'
+            }
+            $('#greeter').html(greeting + '.');
+            $('div.toshow').fadeIn(800);
+            $('#greeter').html(greeting + ', <strong>' + '{{ current_user.first_name }}' + '</strong>.')
+        }
+    </script>
+{% endblock %}

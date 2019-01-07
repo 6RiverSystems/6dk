@@ -1,14 +1,24 @@
 {% extends "material.html" %}
+{% import "wtf.html" as wtf %}
 
 {% block application_content %}
     <div class="container">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+            <div class="card-panel hoverable blue lighten-5">
+                <i class="material-icons left">notifications</i>{{ message }}
+            </div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
     	<div class="row">
     		<div class="col s3"></div>
-    		<div class="col s6 center-align">
+    		<div class="col s6">
     			</br></br></br></br></br>
     			<div class="card-panel grey lighten-4 hoverable">
-    				<i class="large material-icons" style="color: #0d47a1;">account_circle</i>
-    				<p>Please login to countinue</p>
+    				<p class=" center-align">Please login to countinue</p>
+                    {{ wtf.quick_form(form) }}
     			</div>
 
     		</div>

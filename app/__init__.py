@@ -4,6 +4,7 @@ import sys
 import json
 
 from flask import Flask
+from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_migrate import Migrate
@@ -11,11 +12,13 @@ from flask_material import Material
 from flask_moment import Moment
 
 from config import Config
-from app.rule_loader import Rule
+from app.plugins.loaders.rule_loader import Rule
+from app.plugins.loaders.profile_loader import DkProfile
 
 
 app = Flask(__name__, static_url_path='')
 app.config.from_object(Config)
+bootstrap = Bootstrap(app)
 db = SQLAlchemy(app)
 login = LoginManager(app)
 migrate = Migrate(app, db)
@@ -30,9 +33,22 @@ logHandler.setFormatter(formatter)
 logger.addHandler(logHandler)
 logger.setLevel(logging.DEBUG)
 
-with open('app/rules.json', 'r') as f:
-	logger.info('loading message rules')
+logger.info('loading message rules')
+with open('app/templates/json/rules.json', 'r') as f:
 	rule = Rule(json.loads(f.read()), app.config)
+
+logger.info('loading standard dk profile')
+
+with open('app/templates/json/standard_profile.json', 'r') as f:
+	standard_profile = json.loads(f.read())
+
+with open('app/templates/json/profile_name_A.txt', 'r') as f:
+	adjectives = f.read().splitlines()
+
+with open('app/templates/json/profile_name_B.txt', 'r') as f:
+	nouns = f.read().splitlines()
+
+dk_profile = DkProfile(standard_profile, adjectives, nouns)
 
 
 from app import models

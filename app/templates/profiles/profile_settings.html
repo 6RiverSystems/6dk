@@ -1,0 +1,59 @@
+<h6 class="center-align">Northbound</h6>
+</br>
+{% for message in profile.data.northbound_messages %}
+<div class="row">
+	<div class="col s2">
+		{% if message.send %}
+		<i class="material-icons">check</i>
+		{% else %}
+		<i class="material-icons">close</i>
+		{% endif %}
+	</div>
+	<div class="col s3">
+		{{ message.name }}
+	</div>
+	<div class="col s5">
+		{% if message.send %}
+		<small><i>messages are being sent to {{ message.wms_host }}:{{ message.wms_port }}/{{ message.wms_path }} with these headers: {{ ', '.join(message.wms_headers) }}</i></small>
+		{% else %}
+		<small><i>messages are not being sent to WMS</i></small>
+		{% endif %}		
+	</div>
+	<div class="col s2 right-align">
+        <a class="waves-effect waves-blue btn-floating btn-small" href="#">
+			<i class="material-icons">edit</i>
+		</a>
+	</div>
+
+</div>
+{% endfor %}
+<div class="divider"></div>
+<h6 class="center-align">Southbound</h6>
+</br>
+{% for message in profile.data.southbound_messages %}
+<div class="row">
+	<div class="col s2">
+		{% if not message.exception_pick %}
+		<i class="material-icons">check</i>
+		{% else %}
+		<i class="material-icons">warning</i>
+		{% endif %}
+	</div>
+	<div class="col s3">
+		{{ message.name }}
+	</div>
+	<div class="col s5">
+		{% if not message.exception_pick %}
+		<small><i>messages are processed as soon as possible</i></small>
+		{% else %}
+		<small><i>do not process messages immediately</i></small>
+		{% endif %}		
+	</div>
+	<div class="col s2 right-align">
+        <a class="waves-effect waves-blue btn-floating btn-small" href="#">
+			<i class="material-icons">edit</i>
+		</a>
+	</div>
+
+</div>
+{% endfor %}

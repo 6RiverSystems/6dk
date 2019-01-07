@@ -3,7 +3,7 @@
 {% block application_content %}
 		<ul id="slide-out" class="sidenav sidenav-fixed blue darken-4 hoverable">
 			<li>
-				<a class="collapsible-header waves-effect white-text" href="#">
+				<a class="collapsible-header waves-effect white-text" href="{{ url_for('index') }}">
 					<i class="material-icons white-text">home</i>
 					HOME
 				</a>
@@ -13,17 +13,26 @@
 			</li>
 			<li>
 				<a class="collapsible-header waves-effect white-text" href="#">
-					<i class="material-icons white-text">business</i>
-					SITES
+					<i class="material-icons white-text">chrome_reader_mode</i>
+					DOCS
 				</a>
 			</li>
 			<li>
 				<div class="divider"></div>
 			</li>
 			<li>
-				<a class="collapsible-header waves-effect white-text" href="#">
+				<a class="collapsible-header waves-effect white-text" href="{{ url_for('explorer_main') }}">
 					<i class="material-icons white-text">code</i>
-					RELEASES
+					EXPLORER
+				</a>
+			</li>
+			<li>
+				<div class="divider"></div>
+			</li>
+			<li>
+				<a class="collapsible-header waves-effect white-text" href="{{ url_for('profiles_main') }}">
+					<i class="material-icons white-text">settings</i>
+					PROFILES
 				</a>
 			</li>
 			<li>

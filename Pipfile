@@ -19,6 +19,9 @@ requests = "*"
 flask-material = "*"
 flask-moment = "*"
 flask-login = "*"
+flask-wtf = "*"
+flask-bootstrap = "*"
+coverage = "*"
 
 
 [requires]

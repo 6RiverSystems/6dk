@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block app_content %}
+<div class="row">
+    <div class="col s12">
+      <h5 class="center-align">{{ header }}</h5>
+      {% if user_profiles|length == 0 %}
+      <p class="center-align"><i>You have no profiles. Create one to begin.</i></p>
+      {% endif %}
+      {% for profile in user_profiles %}
+      <div class="card-panel hoverable {% if profile.data.active %}green lighten-5{% endif %}">
+        <div class="row">
+          <div class="col s12">
+            <strong>{{ profile.data.friendly_name }}</strong>
+            </br>
+            <small><i>{{ profile.token_id }}</i></small>
+          </div>
+        </div>
+        <div class="divider"></div>
+        <div class="right-align">
+          {% if not profile.data.active %}
+          <a class="waves-effect waves-blue btn-flat tooltipped" data-position="top" data-tooltip="Activate Profile" href="{{ url_for('activate_profile', token=profile.token_id)}}">
+            <i class="material-icons">check</i>
+          </a>
+          <a class="waves-effect waves-blue btn-flat tooltipped" data-position="top" data-tooltip="Delete Profile" href="{{ url_for('delete_profile', token=profile.token_id)}}">
+            <i class="material-icons">delete</i>
+          </a>
+          {% endif %}
+         <a class="waves-effect waves-blue btn-flat tooltipped" data-position="top" data-tooltip="Profile Settings" href="javascript:get_profile_settings('{{ profile.token_id }}');">
+            <i class="material-icons">settings</i>
+          </a>
+        </div>
+        <div id="profile-panel-{{ profile.token_id }}"></div>
+      </div>
+      {% endfor %}
+    </div>
+</div>
+
+<div id="profile-modal" class="modal">
+  <div class="modal-content">
+    <div id="profile-modal-content"></div>
+  </div>
+  <div class="modal-footer">
+    <a href="#!" class="modal-close waves-effect waves-blue btn-flat">Dismiss</a>
+  </div>
+</div>
+
+<div class="fixed-action-btn">
+  <a class="btn-floating btn-large {% if user_profiles|length < limit %}blue{% else %}disabled{% endif %} darken-4 waves-effect tooltipped" data-position="left" data-tooltip="Add Prodile" href="{{ url_for('add_profile') }}">
+    <i class="large material-icons">add</i>
+  </a>
+</div>
+
+<script>
+  function get_profile_settings(token) {
+      $('#profile-panel-'+token).html('<div class="progress"><div class="indeterminate blue darken-4"></div></div>');
+      $.post('/profiles/'+token+'/settings', {
+          token: token,
+      }).done(function(response) {
+          $('#profile-panel-'+token).html(response['html'])
+      }).fail(function() {
+          $('#profile-panel-'+token).html("<p>{{ (' Error: Lookup failed.') }}</p>");
+      });
+  }
+</script>
+{% endblock %}

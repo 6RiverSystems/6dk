@@ -1,0 +1,96 @@
+{
+  "friendly_name": "6dk-profile",
+  "active": false,
+  "northbound_messages": [
+    {
+      "send": false,
+      "name": "acknowledgement",
+      "wms_host": null,
+      "wms_path": null,
+      "wms_port": 443,
+      "wms_headers": []
+    },
+    {
+      "send": false,
+      "name": "container-accepted",
+      "wms_host": null,
+      "wms_path": null,
+      "wms_port": 443,
+      "wms_headers": []
+    },
+    {
+      "send": false,
+      "name": "container-validation",
+      "wms_host": null,
+      "wms_path": null,
+      "wms_port": 443,
+      "wms_headers": []
+    },
+    {
+      "send": false,
+      "name": "print-request",
+      "wms_host": null,
+      "wms_path": null,
+      "wms_port": 443,
+      "wms_headers": []
+    },
+    {
+      "send": false,
+      "name": "container-inducted",
+      "wms_host": null,
+      "wms_path": null,
+      "wms_port": 443,
+      "wms_headers": []
+    },
+    {
+      "send": false,
+      "name": "pick-task-picked",
+      "wms_host": null,
+      "wms_path": null,
+      "wms_port": 443,
+      "wms_headers": []
+    },
+    {
+      "send": false,
+      "name": "container-picked-complete",
+      "wms_host": null,
+      "wms_path": null,
+      "wms_port": 443,
+      "wms_headers": []
+    },
+    {
+      "send": false,
+      "name": "container-taken-off",
+      "wms_host": null,
+      "wms_path": null,
+      "wms_port": 443,
+      "wms_headers": []
+    }
+  ],
+  "southbound_messages": [
+    {
+      "exception_pick": false,
+      "sanitizers": {
+        "containerType": true,
+        "sourceLocation": true
+      },
+      "name": "pick-waves"
+    },
+    {
+      "exception_pick": false,
+      "sanitizers": {
+        "containerType": true,
+        "sourceLocation": true
+      },
+      "name": "group-updates"
+    },
+    {
+      "exception_pick": false,
+      "sanitizers": {
+        "containerType": true,
+        "sourceLocation": true
+      },
+      "name": "group-cancels"
+    }
+  ]
+}

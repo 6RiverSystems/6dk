@@ -4,7 +4,7 @@ from flask import Response
 from app import logger
 
 
-def mask_proxy(request, data, destination):
+def _proxy(request, data, destination):
 	logger.debug('forwarding to server: {}'.format(destination))
 	resp = requests.request(
 		method=request.method,

@@ -44,6 +44,8 @@ class User(UserMixin, db.Model):
 	first_name = db.Column(db.String(128))
 	last_name = db.Column(db.String(128))
 	password_hash = db.Column(db.String(128))
+	active_profile = db.Column(db.String(128), db.ForeignKey('profile.token_id'))
+	deleted = db.Column(db.Boolean(), default=False)
 	created = db.Column(db.DateTime(), default=datetime.utcnow)
 	updated = db.Column(db.DateTime(), default=datetime.utcnow)
 
@@ -65,11 +67,30 @@ class User(UserMixin, db.Model):
 	def check_password(self, password):
 		return check_password_hash(self.password_hash, password)
 
+	def load_user_profiles(self):
+		profiles = [profile.to_dict() 
+					for profile in
+					Profile.query.filter_by(email=self.email,
+											deleted=False).order_by().all()]
+		profiles = sorted(profiles, key=lambda x: x['data']['friendly_name'])
+		return profiles
+
+	def get_active_profile(self):
+		return Profile.query.filter_by(token_id=self.active_profile).first().to_dict()
+
+	def owns_token(self, token):
+		token = Profile.query.filter_by(token_id=token, email=self.email).first()
+		if token:
+			return True
+		else:
+			return False
+
 
 class Profile(PaginatedAPIMixin, db.Model):
 	token_id = db.Column(db.String(128), index=True, unique=True, primary_key=True)
 	email  = db.Column(db.String(128), db.ForeignKey('user.email'))
 	data = db.Column(db.String(16777216), default="{}")
+	deleted = db.Column(db.Boolean(), default=False)
 	created = db.Column(db.DateTime(), default=datetime.utcnow)
 	updated = db.Column(db.DateTime(), default=datetime.utcnow)
     
@@ -78,12 +99,15 @@ class Profile(PaginatedAPIMixin, db.Model):
 
 	def to_dict(self):
 		data = {
-            'token_id': self.token_id,
-            'email': self.email,
-            'data': json.loads(self.data),
-            'created': self.created.isoformat()+'Z',
-            'updated': self.updated.isoformat()+'Z',
-        }
+			'token_id': self.token_id,
+			'email': self.email,
+			'created': self.created.isoformat()+'Z',
+			'updated': self.updated.isoformat()+'Z',
+		}
+		try:
+			data['data'] = json.loads(self.data)
+		except:
+			data['data'] = {}
 		return data
 
 	def from_dict(self, data, new_profile=False):
@@ -109,39 +133,6 @@ class MaskMap(PaginatedAPIMixin, db.Model):
 
 	def to_dict(self):
 		data = {
-            'id': self.value,
-            'token_id': self.token_id,
-            'field_name':self.field_name,
-            'external_value': self.external_value,
-            'created': self.created.isoformat()+'Z',
-            'updated': self.updated.isoformat()+'Z',
-        }
-		return data
-
-	def from_dict(self, data, new_mask_map=False):
-		for field in ['value', 'token_id', 'field_name', 'external_value']:
-			if field in data:
-				setattr(self, field, data[field])
-		if not new_mask_map:
-			self.updated = datetime.utcnow()
-
-
-class SafeMap(PaginatedAPIMixin, db.Model):
-	#mapping to safe values
-	id = db.Column(db.String(128), index=True, unique=True, primary_key=True)
-	value = db.Column(db.String(128))
-	token_id = db.Column(db.String(128), db.ForeignKey('profile.token_id'))
-	field_name = db.Column(db.String(128))
-	external_value = db.Column(db.String(2048))
-	created = db.Column(db.DateTime(), default=datetime.utcnow)
-	updated = db.Column(db.DateTime(), default=datetime.utcnow)
-
-	def __repr__(self):
-		return '<MaskMap {}>'.format(self.id)
-
-	def to_dict(self):
-		data = {
-            'id': self.id,
             'value': self.value,
             'token_id': self.token_id,
             'field_name':self.field_name,
@@ -151,7 +142,7 @@ class SafeMap(PaginatedAPIMixin, db.Model):
         }
 		return data
 
-	def from_dict(self, data, new_safe_map=False):
+	def from_dict(self, data, new_mask_map=False):
 		for field in ['value', 'token_id', 'field_name', 'external_value']:
 			if field in data:
 				setattr(self, field, data[field])

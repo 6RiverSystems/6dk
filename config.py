@@ -9,6 +9,7 @@ class Config(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     ADMIN_TOKENS = ['09dfe030-e97d-4c59-b440-c936d212e0ab']
     DEV_FS_BASE_URL = 'https://techops2.6river.org'
+    MAX_PROFILE_COUNT = 5
 
 
 class TestingConfig(Config):
