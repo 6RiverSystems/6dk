@@ -1,115 +1,22 @@
-from flask import jsonify
+from flask import jsonify, request
 
-from app import app
-from app.models import Message, Profile
+from app import app, logger, rule
 from app.plugins.decipher_engine import decipher
+from app.plugins.proxy_engine import wms_forwarder
 
 
-@app.route('/wms/acknowledgement', methods=['POST'])
-def receive_acknowledgement():
-	payload = request.get_json(force=True) or {}
-	logger.debug('receiving pick-waves message: {}'.format(payload))
-	token, unmasked_data = decipher(payload, "acknowledgement")
-	if token:
-		profile = Profile.query.filter_by(token_id=token).first()
-		if profile:
-			profile = profile.to_dict()
-			if profile['data']['northbound_messages']['acknowledgmement']['send']:
-				a = 1
-				#send northbound
-		return
-		
-		#respond to fs
+@app.route('/wms/<message_type>', methods=['POST'])
+def receive_wms_request(message_type):
+	valid_messages = rule.get_northbound_messages()
+	if message_type in valid_messages:
+		payload = request.get_json(force=True) or {}
+		logger.debug('receiving {0} message: {1}'.format(message_type, payload))
+		token, unmasked_data = decipher(payload, message_type)
+		if token:
+			return wms_forwarder(unmasked_data, payload, message_type, 
+						'/wms/{}'.format(message_type), token, 
+						request)
+		else:
+			return jsonify({'message': 'accepted but origin wms not found'})	
 	else:
-		return jsonify({'message': 'accepted but origin wms not found'})
-
-
-@app.route('/wms/container-accepted', methods=['POST'])
-def receive_container_accepted():
-	payload = request.get_json(force=True) or {}
-	logger.debug('receiving container-accepted message: {}'.format(payload))
-	token, unmasked_data = decipher(payload, "container-accepted")
-	if token:
-		return
-		#send northbound
-		#respond to fs
-	else:
-		return jsonify({'message': 'accepted but origin wms not found'})
-
-
-@app.route('/wms/print-request', methods=['POST'])
-def receive_print_request():
-	payload = request.get_json(force=True) or {}
-	logger.debug('receiving print-request message: {}'.format(payload))
-	token, unmasked_data = decipher(payload, "print-request")
-	if token:
-		return
-		#send northbound
-		#respond to fs
-	else:
-		return jsonify({'message': 'accepted but origin wms not found'})
-
-
-@app.route('/wms/container-validation', methods=['POST'])
-def receive_container_validation():
-	payload = request.get_json(force=True) or {}
-	logger.debug('receiving container-validation message: {}'.format(payload))
-	token, unmasked_data = decipher(payload, "container-validation")
-	if token:
-		return
-		#send northbound
-		#respond to fs
-	else:
-		return jsonify({'message': 'accepted but origin wms not found'})
-
-
-@app.route('/wms/container-inducted', methods=['POST'])
-def receive_container_inducted():
-	payload = request.get_json(force=True) or {}
-	logger.debug('receiving container-inducted message: {}'.format(payload))
-	token, unmasked_data = decipher(payload, "container-inducted")
-	if token:
-		return
-		#send northbound
-		#respond to fs
-	else:
-		return jsonify({'message': 'accepted but origin wms not found'})
-
-
-@app.route('/wms/pick-task-picked', methods=['POST'])
-def receive_pick_task_picked():
-	payload = request.get_json(force=True) or {}
-	logger.debug('receiving pick-task-picked message: {}'.format(payload))
-	token, unmasked_data = decipher(payload, "pick-task-picked")
-	if token:
-		return
-		#send northbound
-		#respond to fs
-	else:
-		return jsonify({'message': 'accepted but origin wms not found'})
-
-
-@app.route('/wms/container-picked-complete', methods=['POST'])
-def receive_container_picked_complete():
-	payload = request.get_json(force=True) or {}
-	logger.debug('receiving container-picked-complete message: {}'.format(payload))
-	token, unmasked_data = decipher(payload, "container-picked-complete")
-	if token:
-		return
-		#send northbound
-		#respond to fs
-	else:
-		return jsonify({'message': 'accepted but origin wms not found'})
-
-
-@app.route('/wms/container-taken-off', methods=['POST'])
-def receive_container_taken_off():
-	payload = request.get_json(force=True) or {}
-	logger.debug('receiving container-taken-off message: {}'.format(payload))
-	token, unmasked_data = decipher(payload, "container-taken-off")
-	if token:
-		return
-		#send northbound
-		#respond to fs
-	else:
-		return jsonify({'message': 'accepted but origin wms not found'})
+		return jsonify({'message': 'unknown message type'}), 404

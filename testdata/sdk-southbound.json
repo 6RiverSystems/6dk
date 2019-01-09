@@ -1,0 +1,21 @@
+{
+   "messageType":"pickWave",
+   "picks":[
+      {
+         "groupID":"6RSTEST10001",
+         "groupType":"orderPick",
+         "container":{
+            "containerType":"default",
+            "containerID":"6RSTEST10001"
+         },
+         "eachQuantity":6,
+         "sourceLocation":"M2C38A09",
+         "product":{
+            "productID":"590210-1",
+            "identifiers":[
+               "590210-1"
+            ]
+         }
+      }
+   ]
+}

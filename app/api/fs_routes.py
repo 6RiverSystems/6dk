@@ -1,9 +1,6 @@
-import json
+from flask import request
 
-from flask import request, jsonify
-
-from app import app, db, logger
-from app.models import Message
+from app import app, logger
 from app.plugins.auth_helper import user_token_validation
 from app.plugins.translation_engine import translate
 from app.plugins.proxy_engine import serve_proxy
@@ -20,9 +17,9 @@ def receive_pickwaves(version):
 	response = serve_proxy(payload, masked_data, 'pick-waves', 
 						'/dev/wis-southbound/{}/pick-waves'.format(version),
 						token, app.config['DEV_FS_BASE_URL'] + \
-						'/cfs/wis-southbound/2.3/pick-waves'.format(version))
+						'/cfs/wis-southbound/2.3/pick-waves'.format(version),
+						request)
 	return response
-
 
 
 @app.route('/exp/wis-southbound/<version>/pick-waves', methods=['POST'])

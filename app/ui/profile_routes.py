@@ -1,65 +1,10 @@
-from flask import render_template, redirect, url_for, flash, request, jsonify
-from flask_login import current_user, login_user, logout_user, login_required
-from werkzeug.urls import url_parse
+from flask import render_template, redirect, url_for, flash, jsonify
+from flask_login import current_user, login_required
 
-from app import app, db, rule
-from app.models import User, Profile
-from app.ui.forms import LoginForm
+from app import app
+from app.models import Profile
 from app.plugins.profile_helper import (create_new_profile, make_profile_active,
                                         remove_profile)
-
-#-----------------------------------ERRORS-------------------------------------#
-
-
-@app.errorhandler(404)
-def not_found_error(error):
-    return render_template('errors/404.html'), 404
-
-
-@app.errorhandler(500)
-def internal_error(error):
-    db.session.rollback()
-    return render_template('errors/500.html'), 500
-
-
-#---------------------------------AUTHENTICATION-------------------------------#
-
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if current_user.is_authenticated:
-        return redirect(url_for('index'))
-    form = LoginForm()
-    if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data, deleted=False).first()
-        if user is None or not user.check_password(form.password.data):
-            flash('Invalid email or password')
-            return redirect(url_for('login'))
-        login_user(user, remember=form.remember_me.data)
-        next_page = request.args.get('next')
-        if not next_page or url_parse(next_page).netloc != '':
-            next_page = url_for('index')
-        return redirect(next_page)
-    return render_template('login.html', title='Log In', form=form)
-
-
-@app.route('/logout')
-def logout():
-    logout_user()
-    return redirect(url_for('index'))
-
-
-#---------------------------------APPLICATION----------------------------------#
-
-
-@app.route('/', methods=['GET'])
-@login_required
-def index():
-    return render_template('home.html')
-
-
-
-#----------------------------------PROFILES------------------------------------#
 
 
 @app.route('/profiles', methods=['GET'])
@@ -120,24 +65,3 @@ def retrieve_settings(token):
                                                 profile=profile),
                         'data': profile['data']
                         })
-
-#----------------------------------EXPLORER------------------------------------#
-
-
-@app.route('/explorer', methods=['GET'])
-@login_required
-def explorer_main():
-    profile = current_user.get_active_profile()
-    messages = rule.get_southbound_messages()
-    return render_template('explorer/explorer_main.html', 
-                            messages=messages,
-                            profile=profile,
-                            header='Explorer',
-                            )
-
-
-@app.route('/docs', methods=['GET'])
-@login_required
-def docs():
-	return render_template('docs.html')
-

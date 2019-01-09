@@ -43,6 +43,7 @@ class User(UserMixin, db.Model):
 	email = db.Column(db.String(128), index=True, unique=True)
 	first_name = db.Column(db.String(128))
 	last_name = db.Column(db.String(128))
+	data = db.Column(db.String(16777216), default="{}")
 	password_hash = db.Column(db.String(128))
 	active_profile = db.Column(db.String(128), db.ForeignKey('profile.token_id'))
 	deleted = db.Column(db.Boolean(), default=False)
@@ -60,6 +61,20 @@ class User(UserMixin, db.Model):
 			'created': self.created.isoformat()+'Z',
 			'updated': self.updated.isoformat()+'Z',
 		}
+		try:
+			data['data'] = json.loads(self.data)
+		except:
+			data['data'] = {}
+		return data
+
+	def from_dict(self, data, new_user=False):
+		for field in ['email', 'first_name', 'last_name']:
+			if field in data:
+				setattr(self, field, data[field])
+		if new_user:
+				setattr(self, 'id', str(uuid4()))
+		else:
+				self.updated = datetime.utcnow()
 
 	def set_password(self, password):
 		self.password_hash = generate_password_hash(password)
@@ -119,6 +134,14 @@ class Profile(PaginatedAPIMixin, db.Model):
 		else:
 			self.updated = datetime.utcnow()
 
+	def load_messages(token_ids, order="desc"):
+		messages = Message.query.filter(Message.token_id.in_(token_ids))
+		if order=='desc':
+			messages = messages.order_by(Message.updated.desc())
+		elif order=='asc':
+			messages = messages.order_by(Message.updated.asc())
+		return [message.to_dict() for message in messages.all()]
+
 
 class MaskMap(PaginatedAPIMixin, db.Model):
 	value = db.Column(db.String(128), index=True, unique=True, primary_key=True)
@@ -129,7 +152,7 @@ class MaskMap(PaginatedAPIMixin, db.Model):
 	updated = db.Column(db.DateTime(), default=datetime.utcnow)
 
 	def __repr__(self):
-		return '<MaskMap {}>'.format(self.id)
+		return '<MaskMap {}>'.format(self.value)
 
 	def to_dict(self):
 		data = {
@@ -148,7 +171,6 @@ class MaskMap(PaginatedAPIMixin, db.Model):
 				setattr(self, field, data[field])
 		if not new_mask_map:
 			self.updated = datetime.utcnow()
-
 
 
 class Message(PaginatedAPIMixin, db.Model):

@@ -1,4 +1,3 @@
-import json
 from uuid import uuid4
 
 import requests
@@ -74,7 +73,7 @@ class Rule():
 		to_replace = [key for key in payload.keys() if payload[key]=='*']
 		for key in to_replace:
 			payload[key] = new_id
-		r = requests.post(
+		requests.post(
 							self.app_config['DEV_FS_BASE_URL']+sanitizer['creation_url'],
 							json=payload, 
 							timeout=2

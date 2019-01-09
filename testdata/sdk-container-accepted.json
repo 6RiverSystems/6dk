@@ -1,0 +1,24 @@
+{
+   "messageType":"containerAccepted",
+   "timestamp":"2019-01-08T21:08:07.416Z",
+   "groupType":"orderPick",
+   "groupID":"2ed2f711-48dc-4bcb-a386-3b905e4f0982",
+   "container":{
+      "containerID":"f1080223-d84d-48a4-991f-78ce0c7e39b1",
+      "containerType":"3da55d66-c4a4-447f-bae8-d5fd2522c90f"
+   },
+   "picks":[
+      {
+         "pickID":"f99384cf-5423-470f-bdb3-d56ddac0bd60",
+         "eachQuantity":6,
+         "sourceLocation":"c8090a97-edf3-4d52-8496-7a5fffcc3885",
+         "product":{
+            "productID":"7a0c34e2-52f5-401a-b2f2-8bab0a5b772a",
+            "unitOfMeasureQuantity":1
+         },
+         "data":{
+
+         }
+      }
+   ]
+}

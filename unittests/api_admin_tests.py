@@ -4,6 +4,26 @@ from unittests.base import sixDKTests
 class ApiAdminTests(sixDKTests):
 
 	
+	def testCreateUserSuccessResponse(self):
+		return
+
+
+	def testCreateUserSuccessDatabase(self):
+		return
+
+
+	def testCreateUserMissingToken(self):
+		return
+
+
+	def testCreateUserWrongToken(self):
+		return
+
+
+	def testCreateUserMissingEmail(self):
+		return
+
+
 	def testCreateProfileSuccessResponse(self):
 		return
 

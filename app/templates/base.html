@@ -12,7 +12,7 @@
 				<div class="divider"></div>
 			</li>
 			<li>
-				<a class="collapsible-header waves-effect white-text" href="#">
+				<a class="collapsible-header waves-effect white-text" href="{{ url_for('docs_main') }}">
 					<i class="material-icons white-text">chrome_reader_mode</i>
 					DOCS
 				</a>
@@ -39,9 +39,27 @@
 				<div class="divider"></div>
 			</li>
 			<li>
-				<a class="collapsible-header waves-effect white-text" href="#">
+				<a class="collapsible-header waves-effect white-text" href="{{ url_for('feed_main') }}">
 					<i class="material-icons white-text">rss_feed</i>
 					FEED
+				</a>
+			</li>
+			<li>
+				<div class="divider"></div>
+			</li>
+			<li>
+				<a class="collapsible-header waves-effect white-text" href="{{ url_for('account_main') }}">
+					<i class="material-icons white-text">account_circle</i>
+					ACCOUNT
+				</a>
+			</li>
+			<li>
+				<div class="divider"></div>
+			</li>
+			<li>
+				<a class="collapsible-header waves-effect white-text" href="{{ url_for('logout') }}">
+					<i class="material-icons white-text">logout</i>
+					LOGOUT
 				</a>
 			</li>
 		</ul>
