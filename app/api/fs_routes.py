@@ -16,7 +16,6 @@ def receive_pickwaves(version):
 	token = request.headers['6Dk-Token']
 	#mask data
 	masked_data = translate(payload, 'pick-waves', token, 'mask')
-	print('\n\npayload after translate', payload)
 	response = serve_proxy(original_payload, masked_data, 'pick-waves', 
 						'/dev/wis-southbound/{}/pick-waves'.format(version),
 						token, app.config['DEV_FS_BASE_URL'] + \

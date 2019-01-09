@@ -134,13 +134,15 @@ class Profile(PaginatedAPIMixin, db.Model):
 		else:
 			self.updated = datetime.utcnow()
 
-	def load_messages(token_ids, order="desc"):
+	def load_messages(token_ids, parse_timestamps=False, order="desc"):
 		messages = Message.query.filter(Message.token_id.in_(token_ids))
 		if order=='desc':
 			messages = messages.order_by(Message.updated.desc())
 		elif order=='asc':
 			messages = messages.order_by(Message.updated.asc())
-		return [message.to_dict() for message in messages.all()]
+		return [message.to_dict(include_profile=True, 
+								parse_timestamps=parse_timestamps) 
+				for message in messages.all()]
 
 
 class MaskMap(PaginatedAPIMixin, db.Model):
@@ -156,13 +158,13 @@ class MaskMap(PaginatedAPIMixin, db.Model):
 
 	def to_dict(self):
 		data = {
-            'value': self.value,
-            'token_id': self.token_id,
-            'field_name':self.field_name,
-            'external_value': self.external_value,
-            'created': self.created.isoformat()+'Z',
-            'updated': self.updated.isoformat()+'Z',
-        }
+			'value': self.value,
+			'token_id': self.token_id,
+			'field_name':self.field_name,
+			'external_value': self.external_value,
+			'created': self.created.isoformat()+'Z',
+			'updated': self.updated.isoformat()+'Z',
+		}
 		return data
 
 	def from_dict(self, data, new_mask_map=False):
@@ -187,18 +189,25 @@ class Message(PaginatedAPIMixin, db.Model):
 	def __repr__(self):
 		return '<Message {}>'.format(self.id)
 
-	def to_dict(self):
+	def to_dict(self, include_profile=False, parse_timestamps=False):
 		data = {
-            'id': self.id,
-            'token_id': self.token_id,
-            'message_type': self.message_type,
-            'message_format': self.message_format,
-            'incoming_endpoint': self.incoming_endpoint,
-            'unmasked_data': self.unmasked_data,
-            'masked_data': self.masked_data,
-            'created': self.created.isoformat()+'Z',
-            'updated': self.updated.isoformat()+'Z',
-        }
+		'id': self.id,
+			'token_id': self.token_id,
+			'message_type': self.message_type,
+			'message_format': self.message_format,
+			'incoming_endpoint': self.incoming_endpoint,
+			'unmasked_data': self.unmasked_data,
+			'masked_data': self.masked_data,
+		}
+		if include_profile:
+			data['profile'] = Profile.query.filter_by(token_id=self.token_id
+        											).first().to_dict()
+		if parse_timestamps:
+			data['created'] = self.created
+			data['updated'] = self.updated
+		else:
+			data['created'] = self.created.isoformat()+'Z'
+			data['updated'] = self.updated.isoformat()+'Z'
 		return data
 
 	def from_dict(self, data, new_message=False):
