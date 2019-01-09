@@ -1,3 +1,4 @@
+import copy
 from flask import request
 
 from app import app, logger
@@ -9,12 +10,14 @@ from app.plugins.proxy_engine import serve_proxy
 @app.route('/dev/wis-southbound/<version>/pick-waves', methods=['POST'])
 @user_token_validation
 def receive_pickwaves(version):
-	payload = request.get_json(force=True) or {}
+	original_payload = request.get_json(force=True) or {}
+	payload = copy.deepcopy(original_payload)
 	logger.debug('receiving pick-waves message: {}'.format(payload))
 	token = request.headers['6Dk-Token']
 	#mask data
 	masked_data = translate(payload, 'pick-waves', token, 'mask')
-	response = serve_proxy(payload, masked_data, 'pick-waves', 
+	print('\n\npayload after translate', payload)
+	response = serve_proxy(original_payload, masked_data, 'pick-waves', 
 						'/dev/wis-southbound/{}/pick-waves'.format(version),
 						token, app.config['DEV_FS_BASE_URL'] + \
 						'/cfs/wis-southbound/2.3/pick-waves'.format(version),

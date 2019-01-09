@@ -3,6 +3,8 @@ import json
 from flask import jsonify
 
 from app import db, logger
+import copy
+
 from app.models import Message, Profile
 from app.plugins.proxy.proxy_helper import _proxy
 from app.plugins.translation_engine import translate
@@ -36,11 +38,13 @@ def serve_proxy(data, masked_data, message_type, incoming_endpoint, token,
 	response_message_type = message_type + '-response'
 	logger.debug('unmasking synchronous {} from server'.format(
 														response_message_type))
-	unmasked_response = json.dumps(translate(response.get_json(), 
-										response_message_type, token, "unmask"))
-	save_message(unmasked_response, response.get_json(), response_message_type,
+	original_response = response.get_json(force=True) or {}
+	copied_response = copy.deepcopy(original_response)
+	unmasked_response = translate(copied_response, response_message_type, token, 
+									"unmask")
+	save_message(unmasked_response, original_response, response_message_type,
 				incoming_endpoint, token)
-	response.data = unmasked_response
+	response.data = json.dumps(unmasked_response)
 	return response
 
 
