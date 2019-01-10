@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: f3cd58481307
+Revision ID: dfd29b993e0b
 Revises: 
-Create Date: 2019-01-10 01:46:24.773524
+Create Date: 2019-01-10 17:45:10.786361
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'f3cd58481307'
+revision = 'dfd29b993e0b'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -54,12 +54,12 @@ def upgrade():
     op.create_index(op.f('ix_message_transmission_id'), 'message_transmission', ['id'], unique=True)
     op.create_table('profile',
     sa.Column('token_id', sa.String(length=128), nullable=False),
-    sa.Column('email', sa.String(length=128), nullable=True),
+    sa.Column('user', sa.String(length=128), nullable=True),
     sa.Column('data', sa.String(length=16777216), nullable=True),
     sa.Column('deleted', sa.Boolean(), nullable=True),
     sa.Column('created', sa.DateTime(), nullable=True),
     sa.Column('updated', sa.DateTime(), nullable=True),
-    sa.ForeignKeyConstraint(['email'], ['user.email'], ),
+    sa.ForeignKeyConstraint(['user'], ['user.id'], ),
     sa.PrimaryKeyConstraint('token_id')
     )
     op.create_index(op.f('ix_profile_token_id'), 'profile', ['token_id'], unique=True)

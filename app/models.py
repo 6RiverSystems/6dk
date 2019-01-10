@@ -55,6 +55,7 @@ class User(UserMixin, db.Model):
 
 	def to_dict(self):
 		data = {
+			'id': self.id,
 			'email': self.email,
 			'first_name': self.first_name,
 			'last_name': self.last_name,
@@ -85,7 +86,7 @@ class User(UserMixin, db.Model):
 	def load_user_profiles(self):
 		profiles = [profile.to_dict() 
 					for profile in
-					Profile.query.filter_by(email=self.email,
+					Profile.query.filter_by(user=self.id,
 											deleted=False).order_by().all()]
 		profiles = sorted(profiles, key=lambda x: x['data']['friendly_name'])
 		return profiles
@@ -98,7 +99,7 @@ class User(UserMixin, db.Model):
 			return None
 
 	def owns_token(self, token):
-		token = Profile.query.filter_by(token_id=token, email=self.email).first()
+		token = Profile.query.filter_by(token_id=token, user=self.id).first()
 		if token:
 			return True
 		else:
@@ -107,7 +108,7 @@ class User(UserMixin, db.Model):
 
 class Profile(PaginatedAPIMixin, db.Model):
 	token_id = db.Column(db.String(128), index=True, unique=True, primary_key=True)
-	email  = db.Column(db.String(128), db.ForeignKey('user.email'))
+	user  = db.Column(db.String(128), db.ForeignKey('user.id'))
 	data = db.Column(db.String(16777216), default="{}")
 	deleted = db.Column(db.Boolean(), default=False)
 	created = db.Column(db.DateTime(), default=datetime.utcnow)
@@ -119,7 +120,7 @@ class Profile(PaginatedAPIMixin, db.Model):
 	def to_dict(self):
 		data = {
 			'token_id': self.token_id,
-			'email': self.email,
+			'user': self.user,
 			'created': self.created.isoformat()+'Z',
 			'updated': self.updated.isoformat()+'Z',
 		}
@@ -130,7 +131,7 @@ class Profile(PaginatedAPIMixin, db.Model):
 		return data
 
 	def from_dict(self, data, new_profile=False):
-		for field in ['email', 'data']:
+		for field in ['user', 'data']:
 			if field in data:
 				setattr(self, field, data[field])
 		if new_profile:

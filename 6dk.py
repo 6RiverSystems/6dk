@@ -9,4 +9,5 @@ def make_shell_context():
     		'Profile': Profile,
     		'MaskMap': MaskMap,
     		'Message': Message,
-    		'MessageTransmission': MessageTransmission}
+    		'MessageTransmission': MessageTransmission
+    		}

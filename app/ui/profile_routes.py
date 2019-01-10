@@ -29,7 +29,7 @@ def profiles_main():
 def add_profile():
     user_profiles = current_user.load_user_profiles()
     if len(user_profiles) < app.config['MAX_PROFILE_COUNT']:
-        profile = create_new_profile({'email': current_user.email})
+        profile = create_new_profile({'user': current_user.id})
         flash('Created new profile: {}'.format(profile['data']['friendly_name']))
     else:
         flash('Maximum number of profiles created')
