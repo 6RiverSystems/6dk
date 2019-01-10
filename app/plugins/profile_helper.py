@@ -15,13 +15,13 @@ def create_new_profile(data):
 	profile.from_dict(data, new_profile=True)
 	db.session.add(profile)
 	db.session.commit()
-	logger.debug('created new profile for {0}: {1}'.format(data['email'], 
+	logger.debug('created new profile for {0}: {1}'.format(data['user'], 
 													profile_data['friendly_name']))
 	return profile.to_dict()
 
 
 def make_profile_active(token, current_user):
-	profile_list = Profile.query.filter_by(email=current_user.email).all()
+	profile_list = Profile.query.filter_by(user=current_user.id).all()
 	for profile in profile_list:
 		data = json.loads(profile.data)
 		if profile.token_id == token:

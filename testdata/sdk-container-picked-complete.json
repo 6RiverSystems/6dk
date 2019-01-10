@@ -2,19 +2,19 @@
    "messageType":"containerPickComplete",
    "timestamp":"2019-01-09T18:38:19.487Z",
    "groupType":"orderPick",
-   "groupID":"06b1ac7c-aa41-4f04-89a8-d273ea6107ee",
+   "groupID":"a65fe34b-3f7a-4088-94ae-b5683f7929a0",
    "container":{
-      "containerID":"69bb8e1c-ec9e-41fa-8685-7979a8cfb534",
-      "containerType":"5874f8d8-0e1c-4db9-b02f-9d3f9a0e4ae0"
+      "containerID":"7bc9ae87-c88c-4224-b4f7-4396ed803835",
+      "containerType":"3166b1fe-dca6-4cb9-bb07-848d01641fd9"
    },
-   "containerID":"69bb8e1c-ec9e-41fa-8685-7979a8cfb534",
+   "containerID":"7bc9ae87-c88c-4224-b4f7-4396ed803835",
    "picks":[
       {
          "pickID":"4395fc01-1def-49de-acc4-40b9221ed54e",
          "eachQuantity":6,
-         "sourceLocation":"817514ad-6283-461a-bbae-c9ee81ae09e6",
+         "sourceLocation":"990ff650-6c71-4779-90aa-1f9120127f57",
          "product":{
-            "productID":"9748da74-7d27-4b5d-bba0-08e2383ac148",
+            "productID":"d13ed74f-b0be-4a32-a22f-ac12ae464c11",
             "unitOfMeasureQuantity":1
          },
          "data":{

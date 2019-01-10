@@ -1,7 +1,14 @@
 {% extends "base.html" %}
 
 {% block app_content %}
-
-{{ account }}
-
+<div class="row center-align">
+	<i class="material-icons large">account_circle</i>
+	<h6>
+		{{ account.first_name }} {{ account.last_name }}
+	</h6>
+	<h6>{{ account.email }}</h6>
+    <a class="waves-effect waves-blue btn-flat btn-small" href="#">
+		<i class="material-icons small">edit</i>
+	</a>
+</div>
 {% endblock %}
