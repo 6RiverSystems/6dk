@@ -2,6 +2,7 @@ from flask import render_template, redirect, url_for, flash
 from flask_login import current_user, login_required
 
 from app import app, rule
+from app.ui._forms import ExplorerMessage
 
 
 @app.route('/explorer', methods=['GET'])
@@ -9,7 +10,15 @@ from app import app, rule
 def explorer_main():
 	profile = current_user.get_active_profile()
 	if profile:
-		messages = rule.get_southbound_messages()
+		messages = [{
+					'name': message,
+					'form': render_template('embedded_form.html',
+                            form=ExplorerMessage(),
+                            formname='{}'.format(message),
+                            action='#',
+                            id='post-{}'.format(message))
+						}
+					for message in rule.get_southbound_messages()]
 		return render_template('explorer/explorer_main.html', 
 								messages=messages,
 								profile=profile,

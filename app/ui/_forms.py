@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import (StringField, PasswordField, BooleanField, SubmitField, 
 					IntegerField, TextAreaField)
-from wtforms.validators import DataRequired
+from wtforms.validators import DataRequired, ValidationError
 
 
 class LoginForm(FlaskForm):
@@ -9,6 +9,11 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     remember_me = BooleanField('Remember Me')
     submit = SubmitField('Login')
+
+
+class ExplorerMessage(FlaskForm):
+	wms_headers = TextAreaField('Payload', validators=[DataRequired()])
+	submit = SubmitField('Post')
 
 
 class NorthboundMessageSettings(FlaskForm):

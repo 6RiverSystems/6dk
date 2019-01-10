@@ -224,6 +224,14 @@ class Message(PaginatedAPIMixin, db.Model):
 		else:
 			self.updated = datetime.utcnow()
 
+	def get_replays(message_id):
+		transmissions = MessageTransmission.query.filter_by(message_id=message_id
+								).order_by(MessageTransmission.updated.asc()).all()
+		data = {'count': len(transmissions)}
+		data['transmissions'] = [transmission.to_dict(parse_timestamps=True) 
+								for transmission in transmissions]
+		return data
+
 
 class MessageTransmission(PaginatedAPIMixin, db.Model):
 	id = db.Column(db.String(128), index=True, unique=True, primary_key=True)

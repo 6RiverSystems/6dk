@@ -23,7 +23,7 @@
 	</tr>
 	<tr>
 		<th>Send Confirmations</th>
-		<td><i class="material-icons">{% if message_settings.send %}check{% else %}close{% endif %}</i></td>
+		<td><i class="material-icons">{% if message_settings.send==True %}check{% else %}close{% endif %}</i></td>
 	<tr>
 		<td colspan="2">
 			<code><small>curl -v -d@{{ message_settings.name }}.json {% for header in message_settings.wms_headers %}-H "{{ header }}" {% endfor %} {{ message_settings.wms_host }}:{{ message_settings.wms_port}}/{{ message_settings.wms_path }}</small></code>

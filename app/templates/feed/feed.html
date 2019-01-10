@@ -92,7 +92,8 @@
       $.post('/wms/replay/'+message_id+'/'+token_id, {
           message_id: message_id,
       }).done(function(response) {
-          $('#message-terminal-'+message_id).html(response['html'])
+          $('#message-terminal-'+message_id).html(response['html']);
+          $('#transmission-info-'+message_id).html(response['replay_text']);
       }).fail(function() {
           $('#message-terminal-'+message_id).html("<p>{{ (' Error: Replay failed.') }}</p>");
       });

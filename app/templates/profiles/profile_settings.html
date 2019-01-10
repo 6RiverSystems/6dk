@@ -13,7 +13,7 @@
 		{{ message.name }}
 	</div>
 	<div class="col s7 right-align">
-		{% if message.send %}
+		{% if message.send==True %}
 		<small><i>messages are being sent to {{ message.wms_host }}:{{ message.wms_port }}/{{ message.wms_path }}</i></small>
 		{% else %}
 		<small><i>messages are not being sent to WMS</i></small>
@@ -49,9 +49,11 @@
 		{% else %}
 		<small><i>do not process messages immediately</i></small>
 		{% endif %}		
+        <!--
         <a class="waves-effect waves-blue btn-flat btn-small" href="#">
 			<i class="material-icons">edit</i>
 		</a>
+		-->
 	</div>
 
 </div>

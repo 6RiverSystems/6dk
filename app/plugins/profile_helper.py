@@ -48,11 +48,9 @@ def serve_northbound_settings_form(token, message_settings):
     form.wms_host.data = message_settings['wms_host']
     form.wms_port.data = message_settings['wms_port']
     form.wms_path.data = message_settings['wms_path']
+    form.send = message_settings['send']
     if len(message_settings['wms_headers'])>0:
-        form.wms_headers.data = message_settings['wms_headers']
-    else:
         form.wms_headers.data = '\n'.join(message_settings['wms_headers'])
-    form.send_confirmations = message_settings['send']
     action = "javascript:apply_profile_settings('{0}', '{1}', '{2}');".format(
     												token, 
 													'northbound', 
@@ -73,7 +71,6 @@ def serve_southbound_settings_form(token, message_settings):
 
 
 def update_northbound_settings(token, message_settings, new_settings):
-	print(new_settings)
 	profile_obj = Profile.query.filter_by(token_id=token).first()
 	profile = profile_obj.to_dict()
 	msg_index = profile['data']['northbound_messages'].index(next(message 
@@ -83,7 +80,10 @@ def update_northbound_settings(token, message_settings, new_settings):
 	profile_settings['wms_host'] = new_settings['wms_host'][0]
 	profile_settings['wms_port'] = int(new_settings['wms_port'][0])
 	profile_settings['wms_path'] = new_settings['wms_path'][0]
-	profile_settings['send'] = convert_confirmations(new_settings['send_confirmations'][0])
+	if 'send_confirmations' in new_settings.keys():
+		profile_settings['send'] = convert_confirmations(new_settings['send_confirmations'][0])
+	else:
+		profile_settings['send'] = False
 	profile_settings['wms_headers'] =  new_settings['wms_headers'][0].splitlines()
 	profile_obj.data = json.dumps(profile['data'])
 	db.session.commit()

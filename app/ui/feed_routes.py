@@ -32,11 +32,13 @@ def feed_message(message_id, task):
     message_data = json.dumps(json.loads(message['unmasked_data']), indent=4, 
                                                                 sort_keys=True)
     size = sys.getsizeof(json.dumps(json.loads(message['unmasked_data'])))
+    replays = Message.get_replays(message_id)
     return jsonify({
                     'html': render_template('feed/feed_message.html',
                     message=message,
                     message_data=message_data,
                     size=size,
-                    task=task),
+                    task=task,
+                    replays=replays),
                     'data': message
                     })

@@ -4,10 +4,10 @@ import subprocess
 from flask import jsonify, request
 
 from app import app, logger, rule
-from app.models import MessageTransmission
+from app.models import Message, MessageTransmission
 from app.plugins.decipher_engine import decipher
 from app.plugins.proxy_engine import wms_forwarder
-
+from app.plugins.proxy_engine import wms_repeater
 
 @app.route('/wms/<message_type>', methods=['POST'])
 def receive_wms_request(message_type):
@@ -31,5 +31,11 @@ def receive_wms_request(message_type):
 def resend_to_wms(message_id, token_id):
 	proc = subprocess.Popen(["curl", "--head", "-m", "2.0", "www.google.com"], stdout=subprocess.PIPE)
 	(out, err) = proc.communicate()
-	#save new message transmission
-	return jsonify({'html': '<pre><small>{}</small></pre>'.format(out.decode('utf-8'))})
+	wms_repeater(message_id)
+	replays = Message.get_replays(message_id)
+	replay_text = '{} transmission'.format(replays['count'])
+	if replays['count'] != 1:
+		replay_text += 's'
+	return jsonify({'html': '<pre><small>{}</small></pre>'.format(out.decode('utf-8')),
+					'replays': replays,
+					'replay_text': replay_text})
