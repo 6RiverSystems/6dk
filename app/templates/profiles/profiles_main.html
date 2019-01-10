@@ -46,7 +46,7 @@
 </div>
 
 <div class="fixed-action-btn">
-  <a class="btn-floating btn-large {% if user_profiles|length < limit %}blue{% else %}disabled{% endif %} darken-4 waves-effect tooltipped" data-position="left" data-tooltip="Add Prodile" href="{{ url_for('add_profile') }}">
+  <a class="btn-floating btn-large {% if user_profiles|length < limit %}blue{% else %}disabled{% endif %} darken-4 waves-effect tooltipped" data-position="left" data-tooltip="Add Profile" href="{{ url_for('add_profile') }}">
     <i class="large material-icons">add</i>
   </a>
 </div>
@@ -63,4 +63,63 @@
       });
   }
 </script>
+
+<script>
+  function edit_profile_settings(token, message_direction, message_type) {
+      $('#profile-panel-'+token).html('<div class="progress"><div class="indeterminate blue darken-4"></div></div>');
+      $.post('/profiles/'+token+'/'+message_direction+'/'+message_type+'/settings/retrieve', {
+          token: token,
+          message_type: message_type,
+      }).done(function(response) {
+          $('#profile-panel-'+token).html(response['html'])
+      }).fail(function() {
+          $('#profile-panel-'+token).html("<p>{{ (' Error: Cannot edit.') }}</p>");
+      });
+  }
+</script>
+
+<script>
+  function edit_profile_settings(token, message_direction, message_type) {
+      $('#profile-panel-'+token).html('<div class="progress"><div class="indeterminate blue darken-4"></div></div>');
+      $.post('/profiles/'+token+'/'+message_direction+'/'+message_type+'/settings/retrieve', {
+          token: token,
+          message_type: message_type,
+      }).done(function(response) {
+          $('#profile-panel-'+token).html(response['html'])
+      }).fail(function() {
+          $('#profile-panel-'+token).html("<p>{{ (' Error: Cannot edit.') }}</p>");
+      });
+  }
+</script>
+
+<script>
+  function apply_profile_settings(token, message_direction, message_type) {
+      var form = document.getElementById('edit-'+token+'-'+message_type)
+      $('#profile-panel-'+token).html('<div class="progress"><div class="indeterminate blue darken-4"></div></div>');
+      $.post('/profiles/'+token+'/'+message_direction+'/'+message_type+'/settings/apply', {
+          token: token,
+          message_type: message_type,
+          formdata: $(form).serialize()
+      }).done(function(response) {
+          $('#profile-panel-'+token).html(response['html'])
+      }).fail(function() {
+          $('#profile-panel-'+token).html("<p>{{ (' Error: Apply failed.') }}</p>");
+      });
+  }
+</script>
+
+<script>
+  function view_profile_settings(token, message_direction, message_type) {
+      $('#profile-panel-'+token).html('<div class="progress"><div class="indeterminate blue darken-4"></div></div>');
+      $.post('/profiles/'+token+'/'+message_direction+'/'+message_type+'/settings/view', {
+          token: token,
+          message_type: message_type,
+      }).done(function(response) {
+          $('#profile-panel-'+token).html(response['html'])
+      }).fail(function() {
+          $('#profile-panel-'+token).html("<p>{{ (' Error: Cannot view.') }}</p>");
+      });
+  }
+</script>
+
 {% endblock %}

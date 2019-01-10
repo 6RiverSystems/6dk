@@ -91,7 +91,11 @@ class User(UserMixin, db.Model):
 		return profiles
 
 	def get_active_profile(self):
-		return Profile.query.filter_by(token_id=self.active_profile).first().to_dict()
+		profile = Profile.query.filter_by(token_id=self.active_profile).first()
+		if profile:
+			return profile.to_dict()
+		else:
+			return None
 
 	def owns_token(self, token):
 		token = Profile.query.filter_by(token_id=token, email=self.email).first()
@@ -191,7 +195,7 @@ class Message(PaginatedAPIMixin, db.Model):
 
 	def to_dict(self, include_profile=False, parse_timestamps=False):
 		data = {
-		'id': self.id,
+			'id': self.id,
 			'token_id': self.token_id,
 			'message_type': self.message_type,
 			'message_format': self.message_format,
@@ -216,6 +220,42 @@ class Message(PaginatedAPIMixin, db.Model):
 			if field in data:
 				setattr(self, field, data[field])
 		if new_message:
+				setattr(self, 'id', str(uuid4()))
+		else:
+			self.updated = datetime.utcnow()
+
+
+class MessageTransmission(PaginatedAPIMixin, db.Model):
+	id = db.Column(db.String(128), index=True, unique=True, primary_key=True)
+	message_id = db.Column(db.String(128), db.ForeignKey('message.id'))
+	created = db.Column(db.DateTime(), default=datetime.utcnow)
+	updated = db.Column(db.DateTime(), default=datetime.utcnow)
+
+	def __repr__(self):
+		return '<MessageTransmission {}>'.format(self.id)
+
+	def to_dict(self, include_profile=False, parse_timestamps=False):
+		data = {
+			'id': self.id,
+			'message_id': self.message_id
+		}
+		if include_profile:
+			data['profile'] = Profile.query.filter_by(token_id=self.token_id
+        											).first().to_dict()
+		if parse_timestamps:
+			data['created'] = self.created
+			data['updated'] = self.updated
+		else:
+			data['created'] = self.created.isoformat()+'Z'
+			data['updated'] = self.updated.isoformat()+'Z'
+		return data
+
+
+	def from_dict(self, data, new_transmission=False):
+		for field in ['message_id']:
+			if field in data:
+				setattr(self, field, data[field])
+		if new_transmission:
 				setattr(self, 'id', str(uuid4()))
 		else:
 			self.updated = datetime.utcnow()

@@ -31,14 +31,15 @@
 	<div class="divider"></div>
 	<div class="right-align">
         {% if message.message_type in valid_northbound %}
-        <a class="waves-effect waves-blue btn-flat tooltipped" data-position="top" data-tooltip="Replay Message" href="#">
+        <a class="waves-effect waves-blue btn-flat tooltipped" data-position="top" data-tooltip="Replay Message" href="javascript:get_message('{{ message.id }}', 'replay');">
             <i class="material-icons">replay</i>
         </a>
         {% endif %}
-        <a class="waves-effect waves-blue btn-flat tooltipped" data-position="top" data-tooltip="View Data" href="#">
+        <a class="waves-effect waves-blue btn-flat tooltipped" data-position="top" data-tooltip="View Data" href="javascript:get_message('{{ message.id }}', 'data');">
             <i class="material-icons">code</i>
         </a>
     </div>
+    <div id="message-panel-{{ message.id }}"></div>
 </div>
 {% endfor %}
 
@@ -71,4 +72,40 @@
 
 {{ moment.include_jquery() }}
 {{ moment.include_moment() }}
+
+<script>
+  function get_message(message_id, task) {
+      $('#message-panel-'+message_id).html('<div class="progress"><div class="indeterminate blue darken-4"></div></div>');
+      $.post('/feed/message/'+message_id+'/'+task, {
+          message_id: message_id,
+      }).done(function(response) {
+          $('#message-panel-'+message_id).html(response['html'])
+      }).fail(function() {
+          $('#message-panel-'+message_id).html("<p>{{ (' Error: Lookup failed.') }}</p>");
+      });
+  }
+</script>
+
+<script>
+  function replay_message(message_id, token_id) {
+      $('#message-terminal-'+message_id).html('<small>6dk replay</small></br><div class="progress"><div class="indeterminate blue darken-4"></div></div>');
+      $.post('/wms/replay/'+message_id+'/'+token_id, {
+          message_id: message_id,
+      }).done(function(response) {
+          $('#message-terminal-'+message_id).html(response['html'])
+      }).fail(function() {
+          $('#message-terminal-'+message_id).html("<p>{{ (' Error: Replay failed.') }}</p>");
+      });
+  }
+</script>
+
+<script>
+  function copy_text(element) {
+    var $temp = $("<input>");
+    $("body").append($temp);
+    $temp.val($(element).text()).select();
+    document.execCommand("copy");
+    $temp.remove();
+  }
+</script>
 {% endblock %}
