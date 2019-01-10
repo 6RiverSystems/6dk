@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: ead1cd0c6758
+Revision ID: f3cd58481307
 Revises: 
-Create Date: 2019-01-08 22:39:25.328057
+Create Date: 2019-01-10 01:46:24.773524
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'ead1cd0c6758'
+revision = 'f3cd58481307'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -43,6 +43,15 @@ def upgrade():
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_message_id'), 'message', ['id'], unique=True)
+    op.create_table('message_transmission',
+    sa.Column('id', sa.String(length=128), nullable=False),
+    sa.Column('message_id', sa.String(length=128), nullable=True),
+    sa.Column('created', sa.DateTime(), nullable=True),
+    sa.Column('updated', sa.DateTime(), nullable=True),
+    sa.ForeignKeyConstraint(['message_id'], ['message.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_index(op.f('ix_message_transmission_id'), 'message_transmission', ['id'], unique=True)
     op.create_table('profile',
     sa.Column('token_id', sa.String(length=128), nullable=False),
     sa.Column('email', sa.String(length=128), nullable=True),
@@ -80,6 +89,8 @@ def downgrade():
     op.drop_table('user')
     op.drop_index(op.f('ix_profile_token_id'), table_name='profile')
     op.drop_table('profile')
+    op.drop_index(op.f('ix_message_transmission_id'), table_name='message_transmission')
+    op.drop_table('message_transmission')
     op.drop_index(op.f('ix_message_id'), table_name='message')
     op.drop_table('message')
     op.drop_index(op.f('ix_mask_map_value'), table_name='mask_map')

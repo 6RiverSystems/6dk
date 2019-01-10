@@ -1,10 +1,16 @@
-from flask import render_template, redirect, url_for, flash, jsonify
+from flask import render_template, redirect, url_for, flash, jsonify, request
 from flask_login import current_user, login_required
+from urllib.parse import parse_qs
 
 from app import app
 from app.models import Profile
 from app.plugins.profile_helper import (create_new_profile, make_profile_active,
-                                        remove_profile)
+                                        remove_profile, 
+                                        serve_northbound_settings_form, 
+                                        serve_southbound_settings_form,
+                                        update_northbound_settings,
+                                        update_southbound_settings,
+                                        display_message_settings)
 
 
 @app.route('/profiles', methods=['GET'])
@@ -65,3 +71,37 @@ def retrieve_settings(token):
                                                 profile=profile),
                         'data': profile['data']
                         })
+
+
+@app.route('/profiles/<token>/<message_direction>/<message_type>/settings/<action>', 
+            methods=['GET', 'POST'])
+def message_settings(token, message_direction, message_type, action):
+    if not current_user.owns_token(token):
+        return jsonify({'html':'You do not own token: {}'.format(token)})
+    else:
+        profile = Profile.query.filter_by(token_id=token).first().to_dict()
+        if message_direction == 'northbound':
+            message_settings = next(message 
+                                    for message in profile['data']['northbound_messages']
+                                    if message['name']==message_type)
+            if action=='retrieve':
+                return serve_northbound_settings_form(token, message_settings)
+            elif action=='apply':
+                new_settings = parse_qs(request.form.to_dict()['formdata'])
+                return update_northbound_settings(token, message_settings, 
+                                                new_settings)
+            elif action=='view':
+                return display_message_settings(token, message_settings, 
+                                                'northbound')                
+        elif message_direction == 'southbound':
+            message_settings = next(message 
+                                    for message in profile['data']['southbound_messages']
+                                    if message['name']==message_type)
+            if action=='retrieve':
+                return serve_southbound_settings_form(token, message_settings)
+            elif action=='apply':
+                new_settings = parse_qs(request.form.to_dict()['formdata'])
+                return display_message_settings(token, message_settings, 
+                                                'southbound')  
+            elif action=='view':
+                return display_southbound_settings(token, message_settings)    

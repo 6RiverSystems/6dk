@@ -1,11 +1,11 @@
 import json
-
+from datetime import datetime
 from flask import jsonify
 
 from app import db, logger
 import copy
 
-from app.models import Message, Profile
+from app.models import Message, MessageTransmission, Profile
 from app.plugins.proxy.proxy_helper import _proxy
 from app.plugins.translation_engine import translate
 
@@ -28,6 +28,15 @@ def save_message(data, masked_data, message_type, incoming_endpoint, token,
 						new_message=True
 					)
 	db.session.add(message)
+	transmission = MessageTransmission()
+	transmission.from_dict(
+						data=dict(
+								message_id=message.id
+							)
+						,
+						new_transmission=True
+					)
+	db.session.add(transmission)
 	db.session.commit()
 
 
@@ -82,3 +91,19 @@ def wms_forwarder(data, masked_data, message_type, incoming_endpoint, token,
 			return jsonify({'msg': 'accepted but {} message settings not found'.format(message_type)})
 	else:
 		return jsonify({'msg': 'accepted but profile not found'})
+
+
+
+def wms_repeater(message_id):
+	transmission = MessageTransmission()
+	transmission.from_dict(
+						data=dict(
+								message_id=message_id
+							)
+						,
+						new_transmission=True
+					)
+	message = Message.query.filter_by(id=message_id).first()
+	message.updated = datetime.utcnow()
+	db.session.add(transmission)
+	db.session.commit()

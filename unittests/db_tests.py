@@ -42,3 +42,7 @@ class DbTests(sixDKTests):
 
 	def testDbMessageDict(self):
 		return
+
+
+	def testDBMessageTransmissionDict(self):
+		return

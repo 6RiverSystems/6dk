@@ -3,6 +3,9 @@
 
 {% block app_content %}
 <h5 class="center-align">{{ formname }}</h5>
+{% if form_description %}
+<p class="center-align"><i>{{ form_description }}</i></p>
+{% endfor %}
 <div class="row">
     <div class="col s12">
     	{{ wtf.quick_form(form) }}

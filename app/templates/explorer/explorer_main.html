@@ -8,7 +8,7 @@
       <div class="divider"></div>
       {% for message in messages %}
       <div class="card-panel hoverable">
-        <strong>{{ message }}</strong>
+        {{ message.form|safe }}
       </div>
       {% endfor %}
     </div>

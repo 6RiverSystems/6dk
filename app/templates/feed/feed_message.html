@@ -1,0 +1,68 @@
+<div class="row">
+	<div class="col s6 grey darken-3 white-text" id="message-terminal-{{ message.id }}">
+		<small>
+			<pre id="message-{{ message.id }}">{{ message_data|safe }}</pre>
+		</small>
+        <a class="waves-effect waves-blue btn-flat" onclick="copy_text('#message-{{ message.id }}')">
+            <i class="material-icons white-text">content_copy</i>
+        </a>
+	</div>
+	<div class="col s6">	
+        {% if task=='data' %}	
+		<table>
+			<tbody>
+				<tr>
+					<th>Incoming Endpoint</th>
+					<td>{{ message.incoming_endpoint }}</td>
+				</tr>
+				<tr>
+					<th>Size</th>
+					<td>{{ size }} bytes</td>
+				</tr>
+			</tbody>
+		</table>
+		{% elif task=='replay' %}
+		<table>
+			<tbody>
+				<tr>
+					<th>Profile</th>
+					<td>{{ message.profile.data.friendly_name }}</td>
+				</tr>
+				{% for message_type in message.profile.data.northbound_messages %}
+					{% if message_type.name == message.message_type %}
+						<tr>
+							<th>WMS Host</th>
+							<td>{{ message_type.wms_host }}</td>
+						</tr>
+						<tr>
+							<th>WMS Port</th>
+							<td>{{ message_type.wms_port }}</td>
+						</tr>
+						<tr>
+							<th>WMS Path</th>
+							<td>{{ message_type.wms_path }}</td>
+						</tr>
+						<tr>
+							<th>WMS Headers</th>
+							<td>
+								{% for header in message_type.wms_headers %}
+									{{ header }}</br>
+								{% endfor %}
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<p class="center-align" id="transmission-info-{{ message.id }}">{{ replays.count }} transmission{% if replays.count != 1%}s{% endif %}</p>
+								<code><small>curl -v -d@{{ message.message_type }}.json {% for header in message_type.wms_headers %}-H "{{ header }}" {% endfor %} {{ message_type.wms_host }}:{{ message_type.wms_port}}/{{ message_type.wms_path }}</small></code>
+						        <a class="waves-effect waves-blue btn-flat" href="javascript:replay_message('{{ message.id }}', '{{ message.profile.token_id }}');">
+						            <i class="material-icons">send</i>
+						        </a>
+							</td>
+						</tr>
+					{% endif %}
+				{% endfor %}
+			</tbody>
+		</table>
+		{% endif %}
+	</div>	
+</div>
