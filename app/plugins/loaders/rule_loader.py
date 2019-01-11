@@ -18,7 +18,10 @@ class Rule():
 
 
 	def get_all_messages(self):
-		return self.get_northbound_messages() + self.get_southbound_messages()
+		messages = self.get_northbound_messages() + self.get_southbound_messages()
+		messages = [msg+'-response' for msg in messages] + messages
+		messages.sort()
+		return messages
 
 	def substitutes(self, message_type, message_format='JSON'):
 		message = next((rule for rule in self.rules_dictionary['messages']

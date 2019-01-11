@@ -1,0 +1,26 @@
+{% for message in messages %}
+<div class="card-panel hoverable">
+	<div class="row">
+		<div class="col s6">
+			<div class="chip center-align">
+				{{ message.message_type }}
+			</div>
+		</div>
+		<div class="col s6 right-align">
+			<small class="tooltipped" data-position="top" data-tooltip="{{ message.updated.isoformat() }}Z">{{ moment( message.updated ).format('lll') }}</small><small class="tooltipped" data-position="top" data-tooltip="{{ message.token_id }}"> via {{ message.profile.data.friendly_name }}</small>
+		</div>
+	</div>
+	<div class="divider"></div>
+	<div class="right-align">
+        {% if message.message_type in valid_northbound %}
+        <a class="waves-effect waves-blue btn-flat tooltipped" data-position="top" data-tooltip="Replay Message" href="javascript:get_message('{{ message.id }}', 'replay');">
+            <i class="material-icons">replay</i>
+        </a>
+        {% endif %}
+        <a class="waves-effect waves-blue btn-flat tooltipped" data-position="top" data-tooltip="View Data" href="javascript:get_message('{{ message.id }}', 'data');">
+            <i class="material-icons">code</i>
+        </a>
+    </div>
+    <div id="message-panel-{{ message.id }}"></div>
+</div>
+{% endfor %}

@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import (StringField, PasswordField, BooleanField, SubmitField, 
-					IntegerField, TextAreaField)
+					IntegerField, TextAreaField, SelectMultipleField)
 from wtforms.validators import DataRequired, ValidationError
 
 
@@ -14,6 +14,16 @@ class LoginForm(FlaskForm):
 class ProfileForm(FlaskForm):
 	name = StringField('Profile Name', validators=[DataRequired()])
 	submit = SubmitField('Submit')
+
+
+class FeedForm(FlaskForm):
+	message_type = SelectMultipleField('Message Type')
+	profile = SelectMultipleField('Profile')
+	sent_after = StringField('Sent After')
+	sent_before = StringField('Sent Before')
+	q = StringField('Search Term')
+	submit = SubmitField('Search')
+
 
 class ExplorerMessage(FlaskForm):
 	wms_headers = TextAreaField('Payload', validators=[DataRequired()])

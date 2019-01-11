@@ -2,77 +2,61 @@
 
 {% block app_content %}
 <div class="center-align">
-	<div class="chip center-align">{{ messages|length }}</div> messages found across
-	<div class="chip center-align">all profiles</div> between
-	<div class="chip center-align">the start of time</div> and
-	<div class="chip center-align">the end of time</div>
+	<div class="chip center-align">{{ filters.count }}</div> 
+  {% for m in filters.message_type %}
+  <div class="chip center-align">{{ m }}</div>
+  {% endfor %}
+  message{% if filters.count!=1%}s{% endif %} found across
+  {% for name in filters.profile_names %}
+	<div class="chip center-align">{{ name }}</div>
+  {% endfor %}
+   between
+  {% if filters.sent_after %}
+   <div class="chip center-align">{{ filters.sent_after }}</div>
+  {% else %}
+	<div class="chip center-align">the start of time</div>
+  {% endif %}
+   and
+  {% if filters.sent_before %}
+   <div class="chip center-align">{{ filters.sent_before }}</div>
+  {% else %}
+  <div class="chip center-align">the end of time</div>
+  {% endif %}
+  {% if filters.q %}
+  containing <div class="chip center-align">{{ filters.q }}</div>
+  {% endif %}
 	<a class="btn-floating blue darken-4 waves-effect modal-trigger tooltipped" data-position="bottom" data-tooltip="Search Messages" href="#filterModal" >
 	    <i class="material-icons">search</i>
 	</a>
+  {% if filters.filtered %}
+  <!--
   <a class="btn-floating blue darken-4 waves-effect modal-trigger tooltipped" data-position="bottom" data-tooltip="E-Mail Results" href="#" >
       <i class="material-icons">email</i>
   </a>
-	<a class="btn-floating blue darken-4 waves-effect modal-trigger tooltipped" data-position="bottom" data-tooltip="Clear Filters" href="#" >
+  -->
+	<a class="btn-floating blue darken-4 waves-effect modal-trigger tooltipped" data-position="bottom" data-tooltip="Clear Filters" href="{{ url_for('feed_main') }}" >
 	    <i class="material-icons">clear</i>
 	</a>
+  {% endif %}
 </div>
 </br>
 <div class="divider"></div>
 </br>
-{% for message in messages %}
-<div class="card-panel hoverable">
-	<div class="row">
-		<div class="col s6">
-			<div class="chip center-align">
-				{{ message.message_type }}
-			</div>
-		</div>
-		<div class="col s6 right-align">
-			<small class="tooltipped" data-position="top" data-tooltip="{{ message.updated.isoformat() }}Z">{{ moment( message.updated ).format('lll') }}</small><small class="tooltipped" data-position="top" data-tooltip="{{ message.token_id }}"> via {{ message.profile.data.friendly_name }}</small>
-		</div>
-	</div>
-	<div class="divider"></div>
-	<div class="right-align">
-        {% if message.message_type in valid_northbound %}
-        <a class="waves-effect waves-blue btn-flat tooltipped" data-position="top" data-tooltip="Replay Message" href="javascript:get_message('{{ message.id }}', 'replay');">
-            <i class="material-icons">replay</i>
-        </a>
-        {% endif %}
-        <a class="waves-effect waves-blue btn-flat tooltipped" data-position="top" data-tooltip="View Data" href="javascript:get_message('{{ message.id }}', 'data');">
-            <i class="material-icons">code</i>
-        </a>
-    </div>
-    <div id="message-panel-{{ message.id }}"></div>
+<div id="results-list">
+  {{ message_block|safe }}
 </div>
-{% endfor %}
-
+{% if filters.has_next %}
+<div id="scroll-block">
+  <div id="scroll-trigger">
+  </div>
+</div>
+{% else %}
+{% endif %}
 <div id="filterModal" class="modal top-sheet">
   <div class="modal-content">
     <h5 class="center-align">Search Message Feed</h5>
   <div class="row">
-    <form class="col s12" id="filterForm" name="filterForm" action="#" method="get">
-      <div class="row">
-        <div class="col s6">message type</div>
-         <div class="col s6">profile</div>
-      </div>
-      <div class="row">
-        <div class="col s6">transmitted after</div>
-         <div class="col s6">transmitted before</div>
-      </div>
-      <div class="row">
-        <div class="col s12">query string</div>
-      </div>
-      <div class="row">
-        <div class="input-field col s12">
-          <p class="center-align">
-            <button class="waves-effect waves-light btn-floating blue darken-4 z-depth-3" type="submit" name="action">
-              <i class="material-icons right">search</i>
-            </button>
-          </p>
-        </div>
-      </div>
-
-    </form>
+    {{ form_render|safe  }}
   </div>
   </div>
   <div class="modal-footer">
@@ -132,6 +116,35 @@ function download_text(ref, filename) {
     document.body.removeChild(element);
   }
 
+</script>
+
+  <script>
+    var targetElem = document.getElementById('#scroll-trigger');
+    var waypoint = new Waypoint({
+      element: document.getElementById('scroll-trigger'),
+      handler: function(direction) {
+        get_more()
+      },
+      offset: 600
+    })
+  </script>
+<script>
+    function get_more() {
+        $("#scroll-block").html('<div class="progress"><div class="indeterminate blue darken-4"></div></div>');
+        $.post('/feed', {
+          message_type: {{ filters.message_type }},
+          profile: {{ filters.profile }},
+          sent_after: "{{ filters.sent_after }}",
+          sent_before: "{{filters.sent_before }}",
+          q: "{{ filters.q }}",
+          page: {{ filters.next_page }},
+        }).done(function(response) {
+          if (response['has_next'])
+            $("#scroll-block").html(response['html'])
+        }).fail(function() {
+            $("#scroll-block").html("<p>{{ (' Error: Lookup failed.') }}</p>");
+        });
+    }
 </script>
 
 {% endblock %}

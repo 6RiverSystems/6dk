@@ -146,16 +146,6 @@ class Profile(PaginatedAPIMixin, db.Model):
 		else:
 			self.updated = datetime.utcnow()
 
-	def load_messages(token_ids, parse_timestamps=False, order="desc"):
-		messages = Message.query.filter(Message.token_id.in_(token_ids))
-		if order=='desc':
-			messages = messages.order_by(Message.updated.desc())
-		elif order=='asc':
-			messages = messages.order_by(Message.updated.asc())
-		return [message.to_dict(include_profile=True, 
-								parse_timestamps=parse_timestamps) 
-				for message in messages.all()]
-
 
 class MaskMap(PaginatedAPIMixin, db.Model):
 	value = db.Column(db.String(128), index=True, unique=True, primary_key=True)
