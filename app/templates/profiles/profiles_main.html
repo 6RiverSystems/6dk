@@ -26,6 +26,14 @@
             <i class="material-icons">delete</i>
           </a>
           {% endif %}
+          <a class="waves-effect waves-blue btn-flat tooltipped" data-position="top" data-tooltip="Edit Profile" href="javascript:edit_profile_info('{{ profile.token_id }}');">
+            <i class="material-icons">edit</i>
+          </a>
+          {% if user_profiles|length < limit %}
+          <a class="waves-effect waves-blue btn-flat tooltipped" data-position="top" data-tooltip="Copy Profile" href="{{ url_for('copy_profile', token=profile.token_id)}}">
+            <i class="material-icons">content_copy</i>
+          </a>
+          {% endif %}
          <a class="waves-effect waves-blue btn-flat tooltipped" data-position="top" data-tooltip="Profile Settings" href="javascript:get_profile_settings('{{ profile.token_id }}');">
             <i class="material-icons">settings</i>
           </a>
@@ -36,9 +44,27 @@
     </div>
 </div>
 
-<div id="profile-modal" class="modal">
+<div id="profileModal" class="modal top-sheet">
   <div class="modal-content">
-    <div id="profile-modal-content"></div>
+    <h5 class="center-align">Restore Profile</h5>
+  <div class="row">
+      <div class="row">
+        <div class="col s12">
+        {% for profile in deleted_profiles %}
+          <div class="card-panel hoverable">
+            <div class="row">
+              <div class="col s6">{{ profile.data.friendly_name }} | {{ profile.token_id }}</div>
+              <div class="col s6 right-align">
+                <a href="{{ url_for('undelete_profile', token=profile.token_id) }}" class="btn-floating blue darken-4 waves-effect">
+                  <i class="material-icons">restore</i>
+                </a>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+        </div>
+      </div>
+  </div>
   </div>
   <div class="modal-footer">
     <a href="#!" class="modal-close waves-effect waves-blue btn-flat">Dismiss</a>
@@ -49,7 +75,17 @@
   <a class="btn-floating btn-large {% if user_profiles|length < limit %}blue{% else %}disabled{% endif %} darken-4 waves-effect tooltipped" data-position="left" data-tooltip="Add Profile" href="{{ url_for('add_profile') }}">
     <i class="large material-icons">add</i>
   </a>
+{% if user_profiles|length < limit and deleted_profiles|length > 0%}
+  <ul>
+    <li>
+      <a class="btn-floating btn-large blue darken-4 modal-trigger tooltipped" data-position="left" data-tooltip="Restore Profile" href="#profileModal">
+        <i class="material-icons">restore</i>
+      </a>
+    </li>
+  </ul>
+{% endif %}
 </div>
+
 
 <script>
   function get_profile_settings(token) {
@@ -60,6 +96,19 @@
           $('#profile-panel-'+token).html(response['html'])
       }).fail(function() {
           $('#profile-panel-'+token).html("<p>{{ (' Error: Lookup failed.') }}</p>");
+      });
+  }
+</script>
+
+<script>
+  function edit_profile_info(token) {
+      $('#profile-panel-'+token).html('<div class="progress"><div class="indeterminate blue darken-4"></div></div>');
+      $.get('/profiles/'+token+'/edit', {
+          token: token,
+      }).done(function(response) {
+          $('#profile-panel-'+token).html(response['html'])
+      }).fail(function() {
+          $('#profile-panel-'+token).html("<p>{{ (' Error: Cannot edit.') }}</p>");
       });
   }
 </script>

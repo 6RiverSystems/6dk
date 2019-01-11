@@ -9,6 +9,9 @@
 	<a class="btn-floating blue darken-4 waves-effect modal-trigger tooltipped" data-position="bottom" data-tooltip="Search Messages" href="#filterModal" >
 	    <i class="material-icons">search</i>
 	</a>
+  <a class="btn-floating blue darken-4 waves-effect modal-trigger tooltipped" data-position="bottom" data-tooltip="E-Mail Results" href="#" >
+      <i class="material-icons">email</i>
+  </a>
 	<a class="btn-floating blue darken-4 waves-effect modal-trigger tooltipped" data-position="bottom" data-tooltip="Clear Filters" href="#" >
 	    <i class="material-icons">clear</i>
 	</a>
@@ -49,9 +52,16 @@
   <div class="row">
     <form class="col s12" id="filterForm" name="filterForm" action="#" method="get">
       <div class="row">
-
+        <div class="col s6">message type</div>
+         <div class="col s6">profile</div>
       </div>
-
+      <div class="row">
+        <div class="col s6">transmitted after</div>
+         <div class="col s6">transmitted before</div>
+      </div>
+      <div class="row">
+        <div class="col s12">query string</div>
+      </div>
       <div class="row">
         <div class="input-field col s12">
           <p class="center-align">
@@ -88,14 +98,14 @@
 
 <script>
   function replay_message(message_id, token_id) {
-      $('#message-terminal-'+message_id).html('<small>6dk replay</small></br><div class="progress"><div class="indeterminate blue darken-4"></div></div>');
+      $('#message-'+message_id).html('<small>6dk replay</small></br><div class="progress"><div class="indeterminate blue darken-4"></div></div>');
       $.post('/wms/replay/'+message_id+'/'+token_id, {
           message_id: message_id,
       }).done(function(response) {
-          $('#message-terminal-'+message_id).html(response['html']);
+          $('#message-'+message_id).text(response['html']);
           $('#transmission-info-'+message_id).html(response['replay_text']);
       }).fail(function() {
-          $('#message-terminal-'+message_id).html("<p>{{ (' Error: Replay failed.') }}</p>");
+          $('#message-'+message_id).html("<p>{{ (' Error: Replay failed.') }}</p>");
       });
   }
 </script>
@@ -109,4 +119,19 @@
     $temp.remove();
   }
 </script>
+
+<script>
+function download_text(ref, filename) {
+    var text = $(ref).text()
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    element.setAttribute('download', filename);
+    element.style.display = 'none';
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+  }
+
+</script>
+
 {% endblock %}

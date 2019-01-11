@@ -11,6 +11,10 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Login')
 
 
+class ProfileForm(FlaskForm):
+	name = StringField('Profile Name', validators=[DataRequired()])
+	submit = SubmitField('Submit')
+
 class ExplorerMessage(FlaskForm):
 	wms_headers = TextAreaField('Payload', validators=[DataRequired()])
 	submit = SubmitField('Post')
@@ -26,4 +30,4 @@ class NorthboundMessageSettings(FlaskForm):
 	wms_headers = TextAreaField('WMS Headers', validators=[DataRequired()],
 						render_kw={"placeholder": "Content-Type: application/json\nAccept: application/json"})
 	send_confirmations = BooleanField('Send Confirmations')
-	submit = SubmitField('Save')
+	submit = SubmitField('Submit')

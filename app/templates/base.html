@@ -26,6 +26,7 @@
 					DOCS
 				</a>
 			</li>
+			<!--
 			<li>
 				<div class="divider"></div>
 			</li>
@@ -35,6 +36,7 @@
 					EXPLORER
 				</a>
 			</li>
+			-->
 			<li>
 				<div class="divider"></div>
 			</li>
@@ -42,6 +44,9 @@
 				<a class="collapsible-header waves-effect white-text" href="{{ url_for('feed_main') }}">
 					<i class="material-icons white-text">rss_feed</i>
 					FEED
+					{% set new_messages = current_user.new_messages() %}
+					<span id="message_count" class="new badge" style="visibility: {% if new_messages %}visible
+                                                     {% else %}hidden {% endif %};">{{ new_messages }}</span>
 				</a>
 			</li>
 			<li>
@@ -82,4 +87,43 @@
     		</div>
     	</div>
     </div>
+{% endblock %}
+
+{% block scripts %}
+
+    <script>
+        function set_message_count(n, change) {
+            $('#message_count').text(n);
+            $('#message_count').css('visibility', n ? 'visible' : 'hidden');
+            if (change != 0) {
+            	var toastHTML = '<span>' + change + ' new message' 
+            	if (change != 1) {
+            		toastHTML = toastHTML + 's'
+            	}
+            	toastHTML = toastHTML + '</span><button class="btn-flat toast-action"><a href="{{ url_for('feed_main') }}">View</a></button>';
+            	M.toast({html: toastHTML, classes: 'rounded'});
+            }
+        }
+    </script>
+
+    <script>
+        {% if current_user.is_authenticated %}
+        $(function() {
+        	var current_count = {{ current_user.new_messages() }};
+            setInterval(function() {
+                $.ajax('{{ url_for('new_messages') }}'
+                	).done(
+                    function(news) {
+                    	var change = 0;
+                    	if (news.count > current_count) {
+                    		change = news.count - current_count
+                    		current_count = news.count;
+                    	}
+                        set_message_count(news.count, change);
+                    }
+                );
+            }, 10000);
+        });
+        {% endif %}
+    </script>
 {% endblock %}

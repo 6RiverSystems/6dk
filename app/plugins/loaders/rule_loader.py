@@ -17,6 +17,9 @@ class Rule():
 		return self.rules_dictionary['southbound_message_list']
 
 
+	def get_all_messages(self):
+		return self.get_northbound_messages() + self.get_southbound_messages()
+
 	def substitutes(self, message_type, message_format='JSON'):
 		message = next((rule for rule in self.rules_dictionary['messages']
 						if rule['message_type']==message_type

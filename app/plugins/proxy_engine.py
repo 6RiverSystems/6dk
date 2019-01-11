@@ -73,15 +73,17 @@ def wms_forwarder(data, masked_data, message_type, incoming_endpoint, token,
 				destination = message_settings['wms_host'] \
 							+ ':' + str(message_settings['wms_port']) \
 							+ '/' + message_settings['wms_path']
-				for header in message_settings:
-					request.headers.append({
-											header.split(':')[0]: header.split(':')[-1]
-											})
-				response = _proxy(request, json.dumps(masked_data), destination)
+				additional_headers = {header.split(':')[0].strip(): header.split(':')[-1].strip()
+										for header in message_settings['wms_headers']}
+				response = _proxy(request, json.dumps(masked_data), destination, 
+										additional_headers=additional_headers)
 				response_message_type = message_type + '-response'
 				try:
-					save_message(response.get_json(), response.get_json(), 
-								response_message_type, incoming_endpoint, token)
+					data = response.get_json()
+					if not data:
+						data = response.get_data().decode('utf-8')
+					save_message(data, data, response_message_type,
+								incoming_endpoint, token)
 				except:
 					logger.debug('could not save {}'.format(response_message_type))
 				return response

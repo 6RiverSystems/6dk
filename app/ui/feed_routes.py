@@ -1,10 +1,11 @@
 import json
 import sys
+from datetime import datetime
 
 from flask import render_template, jsonify
 from flask_login import current_user, login_required
 
-from app import app, rule
+from app import app, db, rule
 from app.models import Profile, Message
 
 
@@ -12,6 +13,8 @@ from app.models import Profile, Message
 @login_required
 def feed_main():
     user_profiles = current_user.load_user_profiles()
+    current_user.last_feed_load_time = datetime.utcnow()
+    db.session.commit()
     token_ids = [
                     profile['token_id'] 
                     for profile in user_profiles
@@ -19,8 +22,12 @@ def feed_main():
     messages = Profile.load_messages(token_ids, 
     								parse_timestamps=True)
     valid_northbound = rule.get_northbound_messages()
+    message_types = rule.get_all_messages()
+    message_types = message_types + [msg+'-response' for msg in message_types]
     return render_template('feed/feed.html', messages=messages, 
-    						valid_northbound=valid_northbound)
+    						valid_northbound=valid_northbound,
+                            user_profiles=user_profiles,
+                            message_types=message_types)
 
 
 @app.route('/feed/message/<message_id>/<task>', methods=['POST'])
@@ -42,3 +49,9 @@ def feed_message(message_id, task):
                     replays=replays),
                     'data': message
                     })
+
+
+@app.route('/feed/new-messages', methods=['GET', 'POST'])
+@login_required
+def new_messages():
+    return jsonify({'count': current_user.new_messages()})

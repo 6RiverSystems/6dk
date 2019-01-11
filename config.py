@@ -10,6 +10,9 @@ class Config(object):
     ADMIN_TOKENS = ['09dfe030-e97d-4c59-b440-c936d212e0ab']
     DEV_FS_BASE_URL = 'https://techops.6river.org'
     MAX_PROFILE_COUNT = 5
+    ELEMENTS_PER_PAGE = 100
+    OUTBOUND_EMAIL = 'rivs@6river.com'
+    OUTBOUND_EMAIL_PASSWORD = "6riverrivs"
 
 
 class TestingConfig(Config):

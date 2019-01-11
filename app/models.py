@@ -47,6 +47,7 @@ class User(UserMixin, db.Model):
 	password_hash = db.Column(db.String(128))
 	active_profile = db.Column(db.String(128), db.ForeignKey('profile.token_id'))
 	deleted = db.Column(db.Boolean(), default=False)
+	last_feed_load_time = db.Column(db.DateTime())
 	created = db.Column(db.DateTime(), default=datetime.utcnow)
 	updated = db.Column(db.DateTime(), default=datetime.utcnow)
 
@@ -83,11 +84,11 @@ class User(UserMixin, db.Model):
 	def check_password(self, password):
 		return check_password_hash(self.password_hash, password)
 
-	def load_user_profiles(self):
+	def load_user_profiles(self, deleted=False):
 		profiles = [profile.to_dict() 
 					for profile in
 					Profile.query.filter_by(user=self.id,
-											deleted=False).order_by().all()]
+											deleted=deleted).all()]
 		profiles = sorted(profiles, key=lambda x: x['data']['friendly_name'])
 		return profiles
 
@@ -104,6 +105,12 @@ class User(UserMixin, db.Model):
 			return True
 		else:
 			return False
+
+	def new_messages(self):
+		last_load_time = self.last_feed_load_time or datetime(2000,1,1)
+		token_ids = [profile['token_id'] for profile in self.load_user_profiles()]
+		return Message.query.filter(Message.token_id.in_(token_ids), 
+					Message.created > last_load_time).count()
 
 
 class Profile(PaginatedAPIMixin, db.Model):

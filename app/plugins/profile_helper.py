@@ -2,12 +2,12 @@ import json
 
 from flask import render_template, jsonify, redirect, url_for
 from app import db, logger, dk_profile
-from app.ui._forms import NorthboundMessageSettings
+from app.ui._forms import NorthboundMessageSettings, ProfileForm
 from app.models import Profile
 from datetime import datetime
 
 
-def create_new_profile(data):
+def create_new_profile(data, as_obj=False):
 	profile_data = dk_profile.make_profile()
 	data['data'] = json.dumps(profile_data)
 	logger.debug('creating new profile')
@@ -17,7 +17,10 @@ def create_new_profile(data):
 	db.session.commit()
 	logger.debug('created new profile for {0}: {1}'.format(data['user'], 
 													profile_data['friendly_name']))
-	return profile.to_dict()
+	if as_obj:
+		return profile
+	else:
+		return profile.to_dict()
 
 
 def make_profile_active(token, current_user):
@@ -41,6 +44,41 @@ def remove_profile(token):
 	profile.deleted = True
 	profile.updated = datetime.utcnow()
 	db.session.commit()
+	return profile.to_dict()
+
+
+def restore_profile(token):
+	profile = Profile.query.filter_by(token_id=token).first()
+	profile.deleted = False
+	profile.updated = datetime.utcnow()
+	db.session.commit()
+	return profile.to_dict()
+
+
+def make_profile_copy(token, user):
+	profile = Profile.query.filter_by(token_id=token).first().to_dict()
+	new_profile = create_new_profile({'user': user}, as_obj=True)
+	new_profile_name = json.loads(new_profile.data)['friendly_name']
+	old_name = profile['data']['friendly_name']
+	profile['data']['friendly_name'] = new_profile_name
+	profile['data']['active'] = False
+	new_profile.data = json.dumps(profile['data'])
+	db.session.commit()
+	return new_profile.to_dict(), old_name
+
+
+def serve_edit_profile_form(token):
+	profile = Profile.query.filter_by(token_id=token).first().to_dict()
+	form = ProfileForm()
+	form.name.data = profile['data']['friendly_name']
+	action = url_for('edit_profile', token=token)
+	return jsonify({
+				'html': render_template('embedded_form.html',
+						form=form,
+						formname='Edit {}'.format(token),
+						action=action,
+						id='edit-{0}'.format(token))
+				})
 
 
 def serve_northbound_settings_form(token, message_settings):
@@ -48,7 +86,7 @@ def serve_northbound_settings_form(token, message_settings):
     form.wms_host.data = message_settings['wms_host']
     form.wms_port.data = message_settings['wms_port']
     form.wms_path.data = message_settings['wms_path']
-    form.send = message_settings['send']
+    form.send_confirmations.data = message_settings['send']
     if len(message_settings['wms_headers'])>0:
         form.wms_headers.data = '\n'.join(message_settings['wms_headers'])
     action = "javascript:apply_profile_settings('{0}', '{1}', '{2}');".format(

@@ -1,10 +1,11 @@
 import copy
 import subprocess
+import os
 
 from flask import jsonify, request
 
 from app import app, logger, rule
-from app.models import Message, MessageTransmission
+from app.models import Message, MessageTransmission, Profile
 from app.plugins.decipher_engine import decipher
 from app.plugins.proxy_engine import wms_forwarder
 from app.plugins.proxy_engine import wms_repeater
@@ -29,13 +30,31 @@ def receive_wms_request(message_type):
 
 @app.route('/wms/replay/<message_id>/<token_id>', methods=['POST'])
 def resend_to_wms(message_id, token_id):
-	proc = subprocess.Popen(["curl", "--head", "-m", "2.0", "www.google.com"], stdout=subprocess.PIPE)
+	message = Message.query.filter_by(id=message_id).first().to_dict()
+	profile = Profile.query.filter_by(token_id=token_id).first().to_dict()
+	message_settings = next(msg 
+							for msg in profile['data']['northbound_messages']
+							if msg['name']==message['message_type'])
+	with open('{}.txt'.format(message['id']), 'w') as f:
+		f.write(message['unmasked_data'])
+	args = ["curl", "-vvv"]
+	for header in message_settings['wms_headers']:
+		args += ["-H", header]
+
+	args += ["-d@{}.txt".format(message['id']), "-m", "2.0"]
+	args += ["{0}:{1}/{2}".format(
+									message_settings['wms_host'],
+									message_settings['wms_port'],
+									message_settings['wms_path'],
+									)]
+	proc = subprocess.Popen(args, stdout=subprocess.PIPE)
 	(out, err) = proc.communicate()
+	os.remove('{}.txt'.format(message['id']))
 	wms_repeater(message_id)
 	replays = Message.get_replays(message_id)
 	replay_text = '{} transmission'.format(replays['count'])
 	if replays['count'] != 1:
 		replay_text += 's'
-	return jsonify({'html': '<pre><small>{}</small></pre>'.format(out.decode('utf-8')),
+	return jsonify({'html': '{}'.format(out.decode('utf-8')),
 					'replays': replays,
 					'replay_text': replay_text})

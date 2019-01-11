@@ -4,12 +4,15 @@ from flask import Response
 from app import logger
 
 
-def _proxy(request, data, destination):
+def _proxy(request, data, destination, additional_headers=None):
 	logger.debug('forwarding to server: {}'.format(destination))
+	headers = {key: value for (key, value) in request.headers if key != 'Host'}
+	if additional_headers:
+		headers = {**headers, **additional_headers}
 	resp = requests.request(
 		method=request.method,
 		url=destination,
-		headers={key: value for (key, value) in request.headers if key != 'Host'},
+		headers=headers,
 		data=data,
 		cookies=request.cookies,
 		allow_redirects=False)
