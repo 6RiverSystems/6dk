@@ -23,6 +23,7 @@ flask-wtf = "*"
 flask-bootstrap = "*"
 coverage = "*"
 dateparser = "*"
+gunicorn = "*"
 
 
 [requires]
