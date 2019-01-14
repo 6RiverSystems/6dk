@@ -26,9 +26,3 @@ dateparser = "*"
 gunicorn = "*"
 flask-mail = "*"
 pyjwt = "*"
-jsonschema = "*"
-
-
-[requires]
-
-python_version = "3.5"
