@@ -67,6 +67,7 @@ def edit_profile_data(token_id, data, profile):
 		else:
 			logger.debug('updating data')
 			profile.from_dict({'data': json.dumps(data['data'])})
+			db.session.commit()
 			return jsonify(profile.to_dict())
 	else:
 		return jsonify({'message': 'missing {}'.format(', '.join(results)) }), 400
@@ -74,7 +75,7 @@ def edit_profile_data(token_id, data, profile):
 
 def delete_profile(token_id, data, profile):
 	logger.debug('deleting profile: {}'.format(profile.token_id))
-	db.session.delete(profile)
+	profile.deleted = True
 	db.session.commit()
 	response = jsonify({'message': 'profile deleted'})
 	response.status_code = 202

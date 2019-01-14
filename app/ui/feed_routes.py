@@ -7,10 +7,8 @@ from flask_login import current_user, login_required
 
 from app import app, db, rule
 from app.ui._forms import FeedForm
-from app.models import Profile, Message
+from app.models import Message
 from app.plugins.feed_helper import filter_feed
-from app.plugins.mail_helper import send_feed_results
-from app.api.wms_routes import wms_bulk_replay
 
 
 @app.route('/feed', methods=['GET', 'POST'])
@@ -91,23 +89,3 @@ def count_transmissions():
     user_profiles = current_user.load_user_profiles()
     data, filters = filter_feed(filters, user_profiles, return_data=True, order="asc")
     return jsonify({'count': filters['transmissions']})
-
-
-@app.route('/feed/bulk-operations', methods=['POST'])
-@login_required
-def feed_bulk_operations():
-    filters = {
-                'action': request.form.get('action'),
-                'message_type': request.form.getlist('message_type[]'),
-                'profile': request.form.getlist('profile[]'),
-                'sent_after': request.form.get('sent_after'),
-                'sent_before': request.form.get('sent_before'),
-                'q': request.form.get('q')
-                }
-    user_profiles = current_user.load_user_profiles()
-    data, filters = filter_feed(filters, user_profiles, return_data=True, order="asc")
-    if filters['action'] == 'email':
-        send_feed_results(current_user, data)
-    elif filters['action'] == 'replay':
-        wms_bulk_replay(data)
-    return jsonify({'html': '{}ing messages'.format(filters['action'])})

@@ -122,17 +122,17 @@ function download_text(ref, filename) {
   }
 
 </script>
-<!--
-  <script>
-    var targetElem = document.getElementById('#scroll-trigger');
-    var waypoint = new Waypoint({
-      element: document.getElementById('scroll-trigger'),
-      handler: function(direction) {
-        get_more()
-      },
-      offset: 600
-    })
-  </script>
+
+<script>
+  var targetElem = document.getElementById('#scroll-trigger');
+  var waypoint = new Waypoint({
+    element: document.getElementById('scroll-trigger'),
+    handler: function(direction) {
+      get_more()
+    },
+    offset: 600
+  })
+</script>
 
 <script>
     function get_more() {
@@ -153,42 +153,6 @@ function download_text(ref, filename) {
         });
     }
 </script>
--->
-<script>
-  function bulk_operations(action) {
-         $("#bulk-operations").html('<div class="progress"><div class="indeterminate blue darken-4"></div></div>');
-         $.post('/feed/bulk-operations', {
-          action: action,
-          message_type: [{% for msg in filters.message_type %}"{{ msg }}",{% endfor %}],
-          profile: [{% for prof in filters.profile %}"{{ prof }}",{% endfor %}],
-          sent_after: "{{ filters.sent_after }}",
-          sent_before: "{{ filters.sent_before }}",
-          q: "{{ filters.q }}",
-         }).done(function(response) {
-          $("#bulk-operations").html(response['html']);
-          if (action==='replay') {
-          $("#bulk-operations").append('</br><div class="chip center-align" id="transmission_count">{{ filters.transmissions }}</div> transmissions');
-          $(function() {
-            var current_transmission_count = {{ filters.transmissions }};
-              setInterval(function() {
-                  $.post('{{ url_for('count_transmissions') }}', {
-                    message_type: [{% for msg in filters.message_type %}"{{ msg }}",{% endfor %}],
-                    profile: [{% for prof in filters.profile %}"{{ prof }}",{% endfor %}],
-                    sent_after: "{{ filters.sent_after }}",
-                    sent_before: "{{ filters.sent_before }}",
-                    q: "{{ filters.q }}",
-                    }).done(
-                      function(news) {
-                          $('#transmission_count').text(news.count);
-                      }
-                  );
-              }, 5000);
-          });
-        }      
-        }).fail(function() {
-            $("#bulk-operations").html("<p>{{ (' Error: Bulk operation failed.') }}</p>");
-        });
-  }
-</script>
+
 
 {% endblock %}
