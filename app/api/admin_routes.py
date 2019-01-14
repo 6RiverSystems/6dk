@@ -3,7 +3,7 @@ import json
 from flask import request, jsonify
 
 from app import app, db, logger
-from app.models import Profile
+from app.models import Profile, User
 from app.plugins.auth_helper import admin_token_validation
 from app.plugins.general_helper import check_for_keys
 from app.plugins.profile_helper import create_new_profile
@@ -23,7 +23,8 @@ def create_user():
 		else:
 			response.status_code = 400
 		return response
-	else:		
+	else:
+		logger.debug('missing {}'.format(', '.join(results)))	
 		return jsonify({'message': 'missing {}'.format(', '.join(results)) }), 400
 
 
@@ -33,10 +34,14 @@ def create_profile():
 	data = request.get_json(force=True) or {}
 	all_keys_present, results = check_for_keys(['email'], data)
 	if all_keys_present:
-		profile = create_new_profile(data)
-		response = jsonify(profile)
-		response.status_code = 201
-		return response
+		user = User.query.filter_by(email=data['email']).first()
+		if user:
+			data['user'] = user.id
+			profile = create_new_profile(data)
+			response = jsonify(profile)
+			response.status_code = 201
+			return response
+		return jsonify({'message': 'user not found for email: {}'.format(data['email'])}), 400
 	else:		
 		return jsonify({'message': 'missing {}'.format(', '.join(results)) }), 400
 

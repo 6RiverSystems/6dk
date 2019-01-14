@@ -10,12 +10,9 @@ def create_new_user(data):
 	if not exist:
 		user = User()
 		user.from_dict(data, new_user=True)
-		print(user)
 		user.set_password(data['password'])
-		print(user)
 		db.session.add(user)
 		db.session.commit()
-		print(user, user.to_dict())
 		logger.debug('created new user for: {}'.format(data['email']))
 		return jsonify(user.to_dict()), True
 	else:

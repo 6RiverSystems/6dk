@@ -1,6 +1,7 @@
 import copy
 import subprocess
 import os
+from threading import Thread 
 
 from flask import jsonify, request
 
@@ -58,3 +59,16 @@ def resend_to_wms(message_id, token_id):
 	return jsonify({'html': '{}'.format(out.decode('utf-8')),
 					'replays': replays,
 					'replay_text': replay_text})
+
+
+def send_async_replays(app, valid_replays):
+	with app.app_context():
+	    for message in valid_replays:
+	    	resend_to_wms(message['id'], message['token_id'])
+
+
+def wms_bulk_replay(data):
+	valid_northbound = rule.get_northbound_messages()
+	valid_replays = [message for message in data 
+					if message['message_type'] in valid_northbound]
+	Thread(target=send_async_replays, args=(app, valid_replays)).start()

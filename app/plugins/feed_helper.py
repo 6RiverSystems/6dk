@@ -4,7 +4,7 @@ from app import app
 from app.models import Message, Profile 
 
 
-def filter_feed(filters, user_profiles):
+def filter_feed(filters, user_profiles, return_data=False, order="desc"):
 	messages = Message.query
 	filtered = False
 	if len(filters['message_type'])>0:
@@ -29,14 +29,14 @@ def filter_feed(filters, user_profiles):
 		filters['profile_names'] = ['all profiles']
 
 	try:
-		start = dateparser.parse(filter['sent_after'])
+		start = dateparser.parse(filters['sent_after'])
 		messages = messages.filter(Message.updated>=start)
 		filtered = True
 	except:
 		pass
 
 	try:
-		end = dateparser.parse(filter['sent_before'])
+		end = dateparser.parse(filters['sent_before'])
 		messages = messages.filter(Message.updated<=end)
 		filtered = True
 	except:
@@ -49,19 +49,33 @@ def filter_feed(filters, user_profiles):
 												'%{}%'.format(filters['q'])))
 			filtered = True
 	filters['count'] = messages.count()
-	messages = messages.order_by(
-							Message.updated.desc()
-							).paginate(
-										filters['page'], 
-										app.config['ELEMENTS_PER_PAGE'], 
-										False)
+	
+	if order=='desc':
+		messages = messages.order_by(
+								Message.updated.desc()
+								)
+	elif order=='asc':
+		messages = messages.order_by(
+								Message.updated.asc()
+								)
+	
+	data = [m.to_dict(include_profile=True, parse_timestamps=True,
+							include_transmissions=True) 
+				for m in messages.all()]
+	filters['transmissions'] = sum([m['transmissions_info']['count'] for m in data])
+	if return_data:
+		return data, filters
+	messages = messages.paginate(
+								filters['page'], 
+								app.config['ELEMENTS_PER_PAGE'], 
+								False)
 	filters['has_next'] = messages.has_next
 	if messages.has_next:
 		filters['next_page'] = messages.next_num
 	else:
 		filters['next_page'] = None
-	messages = [m.to_dict(include_profile=True, parse_timestamps=True) 
+	messages = [m.to_dict(include_profile=True, parse_timestamps=True, 
+							include_transmissions=True) 
 				for m in messages.items]
 	filters['filtered'] = filtered
 	return messages, filters
-

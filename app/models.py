@@ -1,12 +1,14 @@
 import json
 from datetime import datetime
 from uuid import uuid4
+from time import time
 
+import jwt
 from flask import url_for
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from app import db, login
+from app import app, db, login
 
 
 class PaginatedAPIMixin(object):
@@ -80,6 +82,7 @@ class User(UserMixin, db.Model):
 
 	def set_password(self, password):
 		self.password_hash = generate_password_hash(password)
+		self.updated = datetime.utcnow()
 
 	def check_password(self, password):
 		return check_password_hash(self.password_hash, password)
@@ -111,6 +114,43 @@ class User(UserMixin, db.Model):
 		token_ids = [profile['token_id'] for profile in self.load_user_profiles()]
 		return Message.query.filter(Message.token_id.in_(token_ids), 
 					Message.created > last_load_time).count()
+
+
+	def get_reset_password_token(self, expires_in=600):
+		return jwt.encode(
+					{'reset_password': self.id, 'exp': time() + expires_in},
+					app.config['SECRET_KEY'], algorithm='HS256').decode('utf-8')
+
+	@staticmethod
+	def verify_reset_password_token(token):
+		try:
+			id = jwt.decode(token, app.config['SECRET_KEY'],
+			algorithms=['HS256'])['reset_password']
+		except:
+			return
+		return User.query.get(id)
+
+	def get_forward_profile_token(self, destination, profile_token, expires_in=600):
+		return jwt.encode(
+							{
+							'source': self.id,
+							'destination': destination.id,
+							'profile': profile_token,
+							'exp': time() + expires_in
+							},
+						app.config['SECRET_KEY'], algorithm='HS256').decode('utf-8')
+
+	def receive_forward_profile_token(self, jwt_token):
+		try:
+			token_data = jwt.decode(jwt_token, app.config['SECRET_KEY'],
+			algorithms=['HS256'])
+			if token_data['destination'] == self.id \
+					and User.query.get(token_data['source']).owns_token(token_data['profile']) \
+					and Profile.is_active(token_data['profile']) \
+					and not self.owns_token(token_data['profile']):
+				return token_data
+		except:
+			return
 
 
 class Profile(PaginatedAPIMixin, db.Model):
@@ -145,6 +185,16 @@ class Profile(PaginatedAPIMixin, db.Model):
 				setattr(self, 'token_id', str(uuid4()))
 		else:
 			self.updated = datetime.utcnow()
+
+	def is_active(token):
+		profile = Profile.query.filter_by(token_id=token).first()
+		if profile:
+			if profile.deleted:
+				return False
+			else:
+				return True
+		else:
+			return False
 
 
 class MaskMap(PaginatedAPIMixin, db.Model):
@@ -191,7 +241,8 @@ class Message(PaginatedAPIMixin, db.Model):
 	def __repr__(self):
 		return '<Message {}>'.format(self.id)
 
-	def to_dict(self, include_profile=False, parse_timestamps=False):
+	def to_dict(self, include_profile=False, parse_timestamps=False,
+				include_transmissions=False):
 		data = {
 			'id': self.id,
 			'token_id': self.token_id,
@@ -210,6 +261,9 @@ class Message(PaginatedAPIMixin, db.Model):
 		else:
 			data['created'] = self.created.isoformat()+'Z'
 			data['updated'] = self.updated.isoformat()+'Z'
+
+		if include_transmissions:
+			data['transmissions_info'] = Message.get_replays(self.id)
 		return data
 
 	def from_dict(self, data, new_message=False):

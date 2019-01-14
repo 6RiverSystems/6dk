@@ -24,6 +24,9 @@ flask-bootstrap = "*"
 coverage = "*"
 dateparser = "*"
 gunicorn = "*"
+flask-mail = "*"
+pyjwt = "*"
+jsonschema = "*"
 
 
 [requires]

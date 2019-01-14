@@ -1,0 +1,377 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "friendly_name": {
+      "type": "string"
+    },
+    "active": {
+      "type": "boolean"
+    },
+    "northbound_messages": {
+      "type": "array",
+      "items": [
+        {
+          "type": "object",
+          "properties": {
+            "send": {
+              "type": "boolean"
+            },
+            "name": {
+              "type": "string"
+            },
+            "wms_host": {
+              "type": "string"
+            },
+            "wms_path": {
+              "type": "string"
+            },
+            "wms_port": {
+              "type": "integer"
+            },
+            "wms_headers": {
+              "type": "array",
+              "items": {}
+            }
+          },
+          "required": [
+            "send",
+            "name",
+            "wms_host",
+            "wms_path",
+            "wms_port",
+            "wms_headers"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "send": {
+              "type": "boolean"
+            },
+            "name": {
+              "type": "string"
+            },
+            "wms_host": {
+              "type": "string"
+            },
+            "wms_path": {
+              "type": "string"
+            },
+            "wms_port": {
+              "type": "integer"
+            },
+            "wms_headers": {
+              "type": "array",
+              "items": {}
+            }
+          },
+          "required": [
+            "send",
+            "name",
+            "wms_host",
+            "wms_path",
+            "wms_port",
+            "wms_headers"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "send": {
+              "type": "boolean"
+            },
+            "name": {
+              "type": "string"
+            },
+            "wms_host": {
+              "type": "string"
+            },
+            "wms_path": {
+              "type": "string"
+            },
+            "wms_port": {
+              "type": "integer"
+            },
+            "wms_headers": {
+              "type": "array",
+              "items": {}
+            }
+          },
+          "required": [
+            "send",
+            "name",
+            "wms_host",
+            "wms_path",
+            "wms_port",
+            "wms_headers"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "send": {
+              "type": "boolean"
+            },
+            "name": {
+              "type": "string"
+            },
+            "wms_host": {
+              "type": "string"
+            },
+            "wms_path": {
+              "type": "string"
+            },
+            "wms_port": {
+              "type": "integer"
+            },
+            "wms_headers": {
+              "type": "array",
+              "items": {}
+            }
+          },
+          "required": [
+            "send",
+            "name",
+            "wms_host",
+            "wms_path",
+            "wms_port",
+            "wms_headers"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "send": {
+              "type": "boolean"
+            },
+            "name": {
+              "type": "string"
+            },
+            "wms_host": {
+              "type": "string"
+            },
+            "wms_path": {
+              "type": "string"
+            },
+            "wms_port": {
+              "type": "integer"
+            },
+            "wms_headers": {
+              "type": "array",
+              "items": {}
+            }
+          },
+          "required": [
+            "send",
+            "name",
+            "wms_host",
+            "wms_path",
+            "wms_port",
+            "wms_headers"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "send": {
+              "type": "boolean"
+            },
+            "name": {
+              "type": "string"
+            },
+            "wms_host": {
+              "type": "string"
+            },
+            "wms_path": {
+              "type": "string"
+            },
+            "wms_port": {
+              "type": "integer"
+            },
+            "wms_headers": {
+              "type": "array",
+              "items": {}
+            }
+          },
+          "required": [
+            "send",
+            "name",
+            "wms_host",
+            "wms_path",
+            "wms_port",
+            "wms_headers"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "send": {
+              "type": "boolean"
+            },
+            "name": {
+              "type": "string"
+            },
+            "wms_host": {
+              "type": "string"
+            },
+            "wms_path": {
+              "type": "string"
+            },
+            "wms_port": {
+              "type": "integer"
+            },
+            "wms_headers": {
+              "type": "array",
+              "items": {}
+            }
+          },
+          "required": [
+            "send",
+            "name",
+            "wms_host",
+            "wms_path",
+            "wms_port",
+            "wms_headers"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "send": {
+              "type": "boolean"
+            },
+            "name": {
+              "type": "string"
+            },
+            "wms_host": {
+              "type": "string"
+            },
+            "wms_path": {
+              "type": "string"
+            },
+            "wms_port": {
+              "type": "integer"
+            },
+            "wms_headers": {
+              "type": "array",
+              "items": {}
+            }
+          },
+          "required": [
+            "send",
+            "name",
+            "wms_host",
+            "wms_path",
+            "wms_port",
+            "wms_headers"
+          ]
+        }
+      ]
+    },
+    "southbound_messages": {
+      "type": "array",
+      "items": [
+        {
+          "type": "object",
+          "properties": {
+            "exception_pick": {
+              "type": "boolean"
+            },
+            "sanitizers": {
+              "type": "object",
+              "properties": {
+                "containerType": {
+                  "type": "boolean"
+                },
+                "sourceLocation": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "containerType",
+                "sourceLocation"
+              ]
+            },
+            "name": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "exception_pick",
+            "sanitizers",
+            "name"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "exception_pick": {
+              "type": "boolean"
+            },
+            "sanitizers": {
+              "type": "object",
+              "properties": {
+                "containerType": {
+                  "type": "boolean"
+                },
+                "sourceLocation": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "containerType",
+                "sourceLocation"
+              ]
+            },
+            "name": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "exception_pick",
+            "sanitizers",
+            "name"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "exception_pick": {
+              "type": "boolean"
+            },
+            "sanitizers": {
+              "type": "object",
+              "properties": {
+                "containerType": {
+                  "type": "boolean"
+                },
+                "sourceLocation": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "containerType",
+                "sourceLocation"
+              ]
+            },
+            "name": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "exception_pick",
+            "sanitizers",
+            "name"
+          ]
+        }
+      ]
+    }
+  },
+  "required": [
+    "friendly_name",
+    "active",
+    "northbound_messages",
+    "southbound_messages"
+  ]
+}
