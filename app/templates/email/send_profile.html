@@ -1,0 +1,20 @@
+<p>Dear {{ user.first_name }},</p>
+
+<p>
+{{ sender.first_name }} {{ sender.last_name }} has forwarded the following profile to you:
+</p>
+<p>
+{{ profile.data.friendly_name }}
+</p>
+<p>
+To add this profile to your account 
+    <a href="{{ url_for('receive_profile', token=jwt_token, _external=True) }}">
+       click here (expires in 10 minutes)
+    </a>.
+</p>
+
+<p>Alternatively, you can paste the following link in your browser's address bar:</p>
+<p>{{ url_for('receive_profile', token=token, _external=True) }}</p>
+<p>If you do not want to add this profile to your account simply ignore this message.</p>
+<p>Sincerely,</p>
+<p>6 River Systems</p>

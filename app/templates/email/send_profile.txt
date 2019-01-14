@@ -1,0 +1,15 @@
+Dear {{ user.first_name }},
+
+{{ sender.first_name }} {{ sender.last_name }} has forwarded the following profile to you:
+
+{{ profile.data.friendly_name }}
+
+To add this profile to your account click on the following link (expires in 10 minutes):
+
+{{ url_for('receive_profile', token=jwt_token, _external=True) }}
+
+If you do not want to add this profile to your account simply ignore this message.
+
+Sincerely,
+
+6 River Systems

@@ -2,7 +2,7 @@ import json
 
 from flask import render_template, jsonify, redirect, url_for
 from app import db, logger, dk_profile
-from app.ui._forms import NorthboundMessageSettings, ProfileForm
+from app.ui._forms import (NorthboundMessageSettings, ProfileForm)
 from app.models import Profile
 from datetime import datetime
 
@@ -15,7 +15,7 @@ def create_new_profile(data, as_obj=False):
 	profile.from_dict(data, new_profile=True)
 	db.session.add(profile)
 	db.session.commit()
-	logger.debug('created new profile for {0}: {1}'.format(data['user'], 
+	logger.debug('created new profile for {0}: {1}'.format(data['email'], 
 													profile_data['friendly_name']))
 	if as_obj:
 		return profile
@@ -55,10 +55,13 @@ def restore_profile(token):
 	return profile.to_dict()
 
 
-def make_profile_copy(token, user):
+def make_profile_copy(token, user, same_name=False):
 	profile = Profile.query.filter_by(token_id=token).first().to_dict()
 	new_profile = create_new_profile({'user': user}, as_obj=True)
-	new_profile_name = json.loads(new_profile.data)['friendly_name']
+	if same_name:
+		new_profile_name = profile['data']['friendly_name']
+	else:
+		new_profile_name = json.loads(new_profile.data)['friendly_name']
 	old_name = profile['data']['friendly_name']
 	profile['data']['friendly_name'] = new_profile_name
 	profile['data']['active'] = False
@@ -80,6 +83,16 @@ def serve_edit_profile_form(token):
 						id='edit-{0}'.format(token))
 				})
 
+def serve_forward_profile_form(token, form):
+	profile = Profile.query.filter_by(token_id=token).first().to_dict()
+	action = url_for('forward_profile', token=token)
+	return jsonify({
+				'html': render_template('embedded_form.html',
+						form=form,
+						formname='Forward {}'.format(profile['data']['friendly_name']),
+						action=action,
+						id='forward-{0}'.format(token))
+				})
 
 def serve_northbound_settings_form(token, message_settings):
     form = NorthboundMessageSettings()

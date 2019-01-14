@@ -3,21 +3,42 @@
 {% block app_content %}
 <div class="row center-align">
 	<i class="material-icons large">account_circle</i>
-	<div id="account-info">
+	<div id="edit-account">
 	<h6>
 		{{ account.first_name }} {{ account.last_name }}
 	</h6>
 	<h6>{{ account.email }}</h6>
-	<!--
-    <a class="waves-effect waves-blue btn-flat btn-small" href="#">
+    <a class="waves-effect waves-blue btn-flat btn-small" href="javascript:edit_account()">
 		<i class="material-icons small">edit</i>
 	</a>
 	</div>
-	<div id="account-password">
-	<a class="waves-effect waves-blue btn-flat btn-small" href="#">
+	<div id="change-password">
+	<a class="waves-effect waves-blue btn-flat btn-small" href="javascript:change_account_password()">
 		<i class="material-icons small left">security</i> change password
 	</a>
-	-->
 	</div>
 </div>
+
+<script>
+ function edit_account() {
+      $('#edit-account').html('<div class="progress"><div class="indeterminate blue darken-4"></div></div>');
+      $.get('/account/edit', {
+      }).done(function(response) {
+          $('#edit-account').html(response['html'])
+      }).fail(function() {
+          $('#edit-account').html("<p>{{ (' Error: Cannot edit.') }}</p>");
+      }); 	
+ }
+</script>
+<script>
+ function change_account_password() {
+      $('#change-password').html('<div class="progress"><div class="indeterminate blue darken-4"></div></div>');
+      $.get('/account/change-password', {
+      }).done(function(response) {
+          $('#change-password').html(response['html'])
+      }).fail(function() {
+          $('#change-password').html("<p>{{ (' Error: Cannot edit.') }}</p>");
+      }); 	
+ }
+</script>
 {% endblock %}

@@ -29,6 +29,9 @@
           <a class="waves-effect waves-blue btn-flat tooltipped" data-position="top" data-tooltip="Edit Profile" href="javascript:edit_profile_info('{{ profile.token_id }}');">
             <i class="material-icons">edit</i>
           </a>
+          <a class="waves-effect waves-blue btn-flat tooltipped" data-position="top" data-tooltip="Forward Profile" href="javascript:forward_profile('{{ profile.token_id }}');">
+            <i class="material-icons">send</i>
+          </a>
           {% if user_profiles|length < limit %}
           <a class="waves-effect waves-blue btn-flat tooltipped" data-position="top" data-tooltip="Copy Profile" href="{{ url_for('copy_profile', token=profile.token_id)}}">
             <i class="material-icons">content_copy</i>
@@ -109,6 +112,19 @@
           $('#profile-panel-'+token).html(response['html'])
       }).fail(function() {
           $('#profile-panel-'+token).html("<p>{{ (' Error: Cannot edit.') }}</p>");
+      });
+  }
+</script>
+
+<script>
+  function forward_profile(token) {
+      $('#profile-panel-'+token).html('<div class="progress"><div class="indeterminate blue darken-4"></div></div>');
+      $.get('/profiles/'+token+'/forward', {
+          token: token,
+      }).done(function(response) {
+          $('#profile-panel-'+token).html(response['html'])
+      }).fail(function() {
+          $('#profile-panel-'+token).html("<p>{{ (' Error: Cannot forward.') }}</p>");
       });
   }
 </script>

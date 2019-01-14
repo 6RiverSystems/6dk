@@ -22,8 +22,7 @@ flask-login = "*"
 flask-wtf = "*"
 flask-bootstrap = "*"
 coverage = "*"
-
-
-[requires]
-
-python_version = "3.5"
+dateparser = "*"
+gunicorn = "*"
+flask-mail = "*"
+pyjwt = "*"

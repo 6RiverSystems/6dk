@@ -17,8 +17,14 @@
     		<div class="col s6">
     			</br></br></br></br></br>
     			<div class="card-panel grey lighten-4 hoverable">
+                    {% if mode=='login' %}
     				<p class=" center-align">Please login to countinue</p>
                     {{ wtf.quick_form(form) }}
+                    <small><a href="{{ url_for('reset_password_request') }}">Forgot password</a></small>
+                    {% elif mode in ['reset-request', 'reset'] %}
+                    {{ wtf.quick_form(form) }}
+                    <small><a href="{{ url_for('login') }}">Back to Login</a></small>
+                    {% endif %}
     			</div>
 
     		</div>

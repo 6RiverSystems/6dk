@@ -1,0 +1,9 @@
+Dear {{ source.first_name }},
+
+{{ recipient.first_name }} {{ recipient.last_name }} has accepted a copy of the following profile from you:
+
+{{ profile.data.friendly_name }}
+
+Sincerely,
+
+6 River Systems
