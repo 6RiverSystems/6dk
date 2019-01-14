@@ -24,6 +24,24 @@ def receive_pickwaves(version):
 	return response
 
 
+@app.route('/dev/wis-order-update/<version>/group-updates', methods=['POST'])
+@user_token_validation
+def receive_group_updates(version):
+	#check auth
+	#mask fields
+	#save to database
+	return
+
+
+@app.route('/dev/wis-order-update/<version>/group-cancels', methods=['POST'])
+@user_token_validation
+def receive_group_cancels(version):
+	#check auth
+	#mask fields
+	#save to database
+	return
+
+
 @app.route('/exp/wis-southbound/<version>/pick-waves', methods=['POST'])
 @user_token_validation
 def receive_exception_pickwaves(version):
@@ -33,19 +51,3 @@ def receive_exception_pickwaves(version):
 	return "foo bar bazz"
 
 
-@app.route('/exp/wis-order-update/<version>/group-updates', methods=['POST'])
-@user_token_validation
-def receive_group_updates(version):
-	#check auth
-	#mask fields
-	#save to database
-	return
-
-
-@app.route('/exp/wis-order-update/<version>/group-cancels', methods=['POST'])
-@user_token_validation
-def receive_group_cancels(version):
-	#check auth
-	#mask fields
-	#save to database
-	return

@@ -50,7 +50,7 @@ class Rule():
 
 
 	def sanitize_value(self, message_type, field_name, 
-						message_format='JSON'):
+						message_format='JSON', exception=False):
 		message = next((rule for rule in self.rules_dictionary['messages']
 						if rule['message_type']==message_type
 						and rule['message_format']==message_format), None)
@@ -68,20 +68,24 @@ class Rule():
 			sanitizer = None
 
 		if sanitizer:
-			return self.stub_element(sanitizer)
+			return self.stub_element(sanitizer, exception)
 		else:
 			return None
 
 
-	def stub_element(self, sanitizer):
+	def stub_element(self, sanitizer, exception):
 		new_id = str(uuid4())
-		payload = dict(sanitizer['creation_body'])
+		if not exception:
+			payload = dict(sanitizer['creation_body'])
+		else:
+			payload = dict(sanitizer['exception_body'])
 		to_replace = [key for key in payload.keys() if payload[key]=='*']
 		for key in to_replace:
 			payload[key] = new_id
 		requests.post(
 							self.app_config['DEV_FS_BASE_URL']+sanitizer['creation_url'],
-							json=payload, 
+							json=payload,
+							headers={'Authorization': 'Basic '+ self.app_config['FS_AUTH']},
 							timeout=2
 							)
 		return new_id
