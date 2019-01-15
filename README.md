@@ -11,7 +11,7 @@ pipenv install --three <br />
 
 ### Enter Environment
 pipenv shell <br/>
-export FLASK_APP=6rweb.py <br />
+export FLASK_APP=6dk.py <br />
 
 
 ### Initialize Database
