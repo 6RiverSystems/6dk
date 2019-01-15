@@ -6,11 +6,11 @@ https://6river.atlassian.net/wiki/spaces/6RS/pages/828735489/6+River+Systems+Dev
 ## Server Setup
 
 ### Install Dependencies
-pipenv install --three<br />
+pipenv install --three <br />
 
 
 ### Enter Environment
-pipenv shell
+pipenv shell <br/>
 export FLASK_APP=6rweb.py <br />
 
 
