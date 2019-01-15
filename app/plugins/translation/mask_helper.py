@@ -5,21 +5,23 @@ from app.models import MaskMap
 from app.plugins.translation.payload_manipulator import get_by_path, set_by_path
 
 
-def mask(address, payload, token_id, func_name, message_type):
+def mask(address, payload, token_id, func_name, message_type, exception):
 	#replace external values
 	external_value = get_by_path(payload, address)
 	field_name = address[-1]
 	exist = MaskMap.query.filter_by(
 									token_id=token_id,
 									field_name=field_name,
-									external_value=external_value
+									external_value=external_value,
+									exception=exception
 									).first()
 
 	if exist==None:
 		if func_name=='substitute':
 			value = str(uuid4())
 		elif func_name=='sanitize':
-			value = rule.sanitize_value(message_type, field_name) 	
+			value = rule.sanitize_value(message_type, field_name, 
+										exception=exception) 	
 		set_by_path(payload, address, value)
 		mask_map = MaskMap()
 		mask_map.from_dict(
@@ -27,7 +29,8 @@ def mask(address, payload, token_id, func_name, message_type):
 								value=value,
 								token_id=token_id,
 								field_name=field_name,
-								external_value=external_value
+								external_value=external_value,
+								exception=exception
 								)
 							)
 		db.session.add(mask_map)
