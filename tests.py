@@ -1,8 +1,8 @@
 import unittest
 
 from unittests.api_admin_tests import ApiAdminTests
-"""
 from unittests.api_fs_tests import ApiFsTests
+"""
 from unittests.api_wms_tests import ApiWmsTests
 
 from unittests.db_tests import DbTests

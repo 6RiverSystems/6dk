@@ -71,7 +71,3 @@ def send_accept_profile_email(source_id, recipient, token):
                html_body=render_template('email/accept_profile.html',
                                          source=source, recipient=recipient,
                                          profile=profile))
-
-
-def send_feed_results(current_user, data):
-  return

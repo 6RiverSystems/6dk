@@ -7,10 +7,8 @@ from flask_login import current_user, login_required
 
 from app import app, db, rule
 from app.ui._forms import FeedForm
-from app.models import Profile, Message
-from app.plugins.feed_helper import filter_feed
-from app.plugins.mail_helper import send_feed_results
-from app.api.wms_routes import wms_bulk_replay
+from app.models import Message
+from app.plugins.feed_helper import filter_feed, get_filters
 
 
 @app.route('/feed', methods=['GET', 'POST'])
@@ -19,14 +17,7 @@ def feed_main():
     user_profiles = current_user.load_user_profiles()
     current_user.last_feed_load_time = datetime.utcnow()
     db.session.commit()
-    filters = {
-                'message_type': request.form.getlist('message_type'),
-                'profile': request.form.getlist('profile'),
-                'sent_after': request.form.get('sent_after'),
-                'sent_before': request.form.get('sent_before'),
-                'q': request.form.get('q'),
-                'page': request.form.get('page', 1, type=int)
-                }
+    filters = get_filters(request)
     messages, filters = filter_feed(filters, user_profiles)
     valid_northbound = rule.get_northbound_messages()
     form = FeedForm()
@@ -47,7 +38,9 @@ def feed_main():
                                 form_render=form_render,
                                 filters=filters)
     else:
-        return jsonify({'html': message_block})
+        return jsonify({'html': message_block, 'has_next': filters['has_next'],
+                        'pull_btn': '<a href="javascript:get_more('+ "'{}'".format(filters['next_page']) +')"><i>more</i></a>',
+                        'end_btn': "<i>That's all folks!</i>"})
 
 
 @app.route('/feed/message/<message_id>/<task>', methods=['POST'])
@@ -80,34 +73,7 @@ def new_messages():
 @app.route('/feed/count-transmissions', methods=['POST'])
 @login_required
 def count_transmissions():
-    filters = {
-                'action': request.form.get('action'),
-                'message_type': request.form.getlist('message_type[]'),
-                'profile': request.form.getlist('profile[]'),
-                'sent_after': request.form.get('sent_after'),
-                'sent_before': request.form.get('sent_before'),
-                'q': request.form.get('q')
-                }
+    filters = get_filters(request)
     user_profiles = current_user.load_user_profiles()
     data, filters = filter_feed(filters, user_profiles, return_data=True, order="asc")
     return jsonify({'count': filters['transmissions']})
-
-
-@app.route('/feed/bulk-operations', methods=['POST'])
-@login_required
-def feed_bulk_operations():
-    filters = {
-                'action': request.form.get('action'),
-                'message_type': request.form.getlist('message_type[]'),
-                'profile': request.form.getlist('profile[]'),
-                'sent_after': request.form.get('sent_after'),
-                'sent_before': request.form.get('sent_before'),
-                'q': request.form.get('q')
-                }
-    user_profiles = current_user.load_user_profiles()
-    data, filters = filter_feed(filters, user_profiles, return_data=True, order="asc")
-    if filters['action'] == 'email':
-        send_feed_results(current_user, data)
-    elif filters['action'] == 'replay':
-        wms_bulk_replay(data)
-    return jsonify({'html': '{}ing messages'.format(filters['action'])})

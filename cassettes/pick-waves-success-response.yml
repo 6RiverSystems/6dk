@@ -1,0 +1,78 @@
+interactions:
+- request:
+    body: '{"barcode": "e1961a4b-b196-425e-a7c1-8809550f34a3", "externalId": "e1961a4b-b196-425e-a7c1-8809550f34a3",
+      "width": 200, "name": "e1961a4b-b196-425e-a7c1-8809550f34a3", "length": 200,
+      "height": 200, "description": "e1961a4b-b196-425e-a7c1-8809550f34a3", "type":
+      "container"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Basic REVWS0lUOnNyYVdUQWRuaFdFcQ==]
+      Connection: [keep-alive]
+      Content-Length: ['273']
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.21.0]
+    method: POST
+    uri: https://devkit.6river.org/cfs/asset-manager/v1/assetTypes
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA5SQvW7DMAyE30VzFJCS/CNvRZGhQIpkyJSNluhYQCobsoKmKPLuVYC2a9PtSH53
+        B/BTBC864cFp4hoktholIltpcSCphl43DSF49GIl+Jo5RTq/3D2MtkYyveyLkEZVLKlxKNsWbFXB
+        oA3p4on0xo/TnheXwpzDFB839ZTc5P/Rkj/mO+2mmClETmV15njKo+gUwEq8B/+rRw6nMf8cvoci
+        l0z5spSU593rfrs5bEqIS0yZ/VMhhAK0EsozzQFtp3QHZl2b+liwy+z/wJqjuH0BAAD//wMAVuLF
+        /JsBAAA=
+    headers:
+      Access-Control-Allow-Credentials: ['true']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Mon, 14 Jan 2019 19:23:04 GMT']
+      ETag: [W/"19b-Fn/7LNIVI30nbr0eT2dVvbIAGkk"]
+      Server: [nginx/1.13.12]
+      Strict-Transport-Security: [max-age=15724800; includeSubDomains]
+      Transfer-Encoding: [chunked]
+      Vary: [Accept-Encoding, 'Origin, Accept-Encoding']
+      X-Content-Type-Options: [nosniff]
+      X-Download-Options: [noopen]
+      X-Frame-Options: [SAMEORIGIN]
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: '{"externalAisleId": "A-B", "address": "bf810a1a-67a9-4888-bc11-2ce893b6f99a",
+      "description": "bf810a1a-67a9-4888-bc11-2ce893b6f99a", "name": "bf810a1a-67a9-4888-bc11-2ce893b6f99a",
+      "z": 1, "y": 100, "type": "bin", "x": 100}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Authorization: [Basic REVWS0lUOnNyYVdUQWRuaFdFcQ==]
+      Connection: [keep-alive]
+      Content-Length: ['223']
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.21.0]
+    method: POST
+    uri: https://devkit.6river.org/cfs/asset-manager/v1/storageLocations
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA4yPywrCQAxF/2XWjSRTtZPu6s69K3eZJoUBraUdwQf+uyP4AV1dcjkHbt4uqWud
+        Eu3QRwQKNQGRMTANAn6IddMIoZK6yuXnZIWOaSyH2tLPacrpNv66IRAKCewbYdiGECD2ROB7C1zH
+        /cAsRRLV2ZZlvWCPbPMoly4tFzv+tnZwKP3DtYRYuec/XyUr188m2bTLhfNIDFi+2Z6IW1+3uNtQ
+        w+ci3yddg41ytbVLP18AAAD//wMASVpYBkoBAAA=
+    headers:
+      Access-Control-Allow-Credentials: ['true']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Mon, 14 Jan 2019 19:23:05 GMT']
+      ETag: [W/"14a-5qmIBwU5Kt9H7RVvdFcJq+zx9eI"]
+      Server: [nginx/1.13.12]
+      Strict-Transport-Security: [max-age=15724800; includeSubDomains]
+      Transfer-Encoding: [chunked]
+      Vary: [Accept-Encoding, 'Origin, Accept-Encoding']
+      X-Content-Type-Options: [nosniff]
+      X-Download-Options: [noopen]
+      X-Frame-Options: [SAMEORIGIN]
+      X-XSS-Protection: [1; mode=block]
+    status: {code: 200, message: OK}
+version: 1

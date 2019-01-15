@@ -1,8 +1,8 @@
 import json
 import unittest
 
-from app import app, db
-from app.models import User
+from app import app, db, dk_profile
+from app.models import User, Profile
 from app.plugins.general_helper import check_for_keys
 
 
@@ -37,7 +37,7 @@ class sixDKTests(unittest.TestCase):
 
 
 	def create_user(self, email=None, first_name=None, last_name=None, 
-					password=None):
+					password=None, include_profile=False):
 		data = self.get_payload('sdk-user.json', load_json=True)
 		if email:
 			data['email'] = email
@@ -52,4 +52,15 @@ class sixDKTests(unittest.TestCase):
 		user.set_password(data['password'])
 		db.session.add(user)
 		db.session.commit()
-		return user.to_dict()
+		user = user.to_dict()
+		if include_profile:
+			data = {'user': user['id']}
+			profile_data = dk_profile.make_profile()
+			data['data'] = json.dumps(profile_data)
+			profile = Profile()
+			profile.from_dict(data, new_profile=True)
+			db.session.add(profile)
+			db.session.commit()
+			return user, profile.to_dict()
+		else:
+			return user

@@ -1,12 +1,14 @@
 import requests
 from flask import Response
 
-from app import logger
+from app import app, logger
 
 
-def _proxy(request, data, destination, additional_headers=None):
+def _proxy(request, data, destination, additional_headers=None, to_fs=False):
 	logger.debug('forwarding to server: {}'.format(destination))
 	headers = {key: value for (key, value) in request.headers if key != 'Host'}
+	if to_fs:
+		additional_headers = {'Authorization': 'Basic '+app.config['FS_AUTH']}
 	if additional_headers:
 		headers = {**headers, **additional_headers}
 	resp = requests.request(

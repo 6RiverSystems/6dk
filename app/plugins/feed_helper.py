@@ -4,6 +4,23 @@ from app import app
 from app.models import Message, Profile 
 
 
+def get_filters(request):
+    filters = {
+                'message_type': request.form.getlist('message_type'),
+                'profile': request.form.getlist('profile'),
+                'sent_after': request.form.get('sent_after'),
+                'sent_before': request.form.get('sent_before'),
+                'q': request.form.get('q'),
+                'page': request.form.get('page', 1, type=int)
+                }
+    if len(filters['message_type']) == 0:
+    	filters['message_type'] = request.form.getlist('message_type[]')
+    if len(filters['profile']) == 0:
+    	filters['profile'] = request.form.getlist('profile[]')
+    return filters
+
+
+
 def filter_feed(filters, user_profiles, return_data=False, order="desc"):
 	messages = Message.query
 	filtered = False

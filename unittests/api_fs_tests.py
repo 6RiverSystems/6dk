@@ -1,13 +1,27 @@
+import vcr
+
 from unittests.base import sixDKTests
 
 
 class ApiFsTests(sixDKTests):
 
-	
+	"""
+	@vcr.use_cassette('cassettes/pick-waves-success-response.yml')
 	def testPickWavesSuccessResponse(self):
+		""test FS API success response for receiving a pick-wave
+
+		API should return 200 OK response
+		""
+		user, profile = self.create_user(include_profile=True)
+		response = self.app.post('/dev/wis-southbound/2.3/pick-waves',
+								data=self.get_payload('sdk-pick-wave.json'),
+								headers={'6Dk-Token': profile['token_id']})
+		self.assertEqual(response.status_code, 200)		
 		return
+	"""
 
 
+	@vcr.use_cassette('cassettes/pick-waves-success-database.yml')
 	def testPickWavesSuccessDatabase(self):
 		return
 

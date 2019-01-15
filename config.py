@@ -16,6 +16,7 @@ class Config(object):
     MAIL_USE_TLS = True
     MAIL_USERNAME = 'rivs@6river.com'
     MAIL_PASSWORD = '6riverrivs'
+    FS_AUTH = 'REVWS0lUOnNyYVdUQWRuaFdFcQ=='
 
 
 class TestingConfig(Config):

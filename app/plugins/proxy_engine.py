@@ -43,7 +43,7 @@ def save_message(data, masked_data, message_type, incoming_endpoint, token,
 def serve_proxy(data, masked_data, message_type, incoming_endpoint, token, 
 				destination, request):
 	save_message(data, masked_data, message_type, incoming_endpoint, token)
-	response = _proxy(request, json.dumps(masked_data), destination)
+	response = _proxy(request, json.dumps(masked_data), destination, to_fs=True)
 	response_message_type = message_type + '-response'
 	logger.debug('unmasking synchronous {} from server'.format(
 														response_message_type))

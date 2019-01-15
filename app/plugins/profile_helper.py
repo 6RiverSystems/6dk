@@ -15,7 +15,7 @@ def create_new_profile(data, as_obj=False):
 	profile.from_dict(data, new_profile=True)
 	db.session.add(profile)
 	db.session.commit()
-	logger.debug('created new profile for {0}: {1}'.format(data['email'], 
+	logger.debug('created new profile for {0}: {1}'.format(data['user'], 
 													profile_data['friendly_name']))
 	if as_obj:
 		return profile

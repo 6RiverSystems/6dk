@@ -58,7 +58,7 @@
             <div class="row">
               <div class="col s6">{{ profile.data.friendly_name }} | {{ profile.token_id }}</div>
               <div class="col s6 right-align">
-                <a href="{{ url_for('undelete_profile', token=profile.token_id) }}" class="btn-floating blue darken-4 waves-effect">
+                <a href="{{ url_for('undelete_profile', token=profile.token_id) }}" class="btn-floating blue darken-4 waves-effect tooltipped" data-position="left" data-tooltip="Restore {{ profile.data.friendly_name }}">
                   <i class="material-icons">restore</i>
                 </a>
               </div>

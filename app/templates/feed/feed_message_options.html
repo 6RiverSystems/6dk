@@ -4,10 +4,10 @@
 			<pre id="message-{{ message.id }}">{{ message_data|safe }}</pre>
 		</small>
 		<div class="divider"></div>
-        <a class="waves-effect waves-blue btn-flat" onclick="copy_text('#message-{{ message.id }}')">
+        <a class="waves-effect waves-blue btn-flat tooltipped" data-position="bottom" data-tooltip="Copy" onclick="copy_text('#message-{{ message.id }}')">
             <i class="material-icons white-text">content_copy</i>
         </a>
-        <a class="waves-effect waves-blue btn-flat" onclick="download_text('#message-{{ message.id }}', '{{ message.message_type }}-{{ message.updated.isoformat() }}.txt')">
+        <a class="waves-effect waves-blue btn-flat tooltipped" data-position="bottom" data-tooltip="Download" onclick="download_text('#message-{{ message.id }}', '{{ message.message_type }}-{{ message.updated.isoformat() }}.txt')">
             <i class="material-icons white-text">file_download</i>
         </a>
 	</div>

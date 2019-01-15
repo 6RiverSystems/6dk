@@ -15,7 +15,6 @@ from app.plugins.profile_helper import (create_new_profile, make_profile_active,
                                         serve_southbound_settings_form,
                                         serve_forward_profile_form,
                                         update_northbound_settings,
-                                        update_southbound_settings,
                                         display_message_settings)
 from app.plugins.mail_helper import (send_forward_profile_email, 
                                         send_accept_profile_email)
@@ -130,6 +129,7 @@ def copy_profile(token):
 @app.route('/profiles/<token>/delete', methods=['GET', 'POST'])
 @login_required
 def delete_profile(token):
+    profile = Profile.query.filter_by(token_id=token).first().to_dict()
     if token == current_user.active_profile:
         flash('Cannot delete active profile: {}'.format(profile['data']['friendly_name']))
     elif not current_user.owns_token(token):
@@ -207,6 +207,4 @@ def message_settings(token, message_direction, message_type, action):
             elif action=='apply':
                 new_settings = parse_qs(request.form.to_dict()['formdata'])
                 return display_message_settings(token, message_settings, 
-                                                'southbound')  
-            elif action=='view':
-                return display_southbound_settings(token, message_settings)    
+                                                'southbound')    

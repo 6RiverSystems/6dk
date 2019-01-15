@@ -368,12 +368,32 @@
         "length": 200,
         "width": 200,
         "height": 200
+      },
+      "exception_body": {
+        "externalId": "*",
+        "name": "*",
+        "description": "*",
+        "barcode": "*",
+        "type": "container",
+        "length": 800,
+        "width": 800,
+        "height": 800
       }
     },
     {
       "name": "sourceLocation",
       "creation_url": "/cfs/asset-manager/v1/storageLocations",
       "creation_body": {
+        "type": "bin",
+        "name": "*",
+        "description": "*",
+        "address": "*",
+        "externalAisleId": "A-B",
+        "x": 100,
+        "y": 100,
+        "z": 1
+      },
+      "exception_body": {
         "type": "bin",
         "name": "*",
         "description": "*",

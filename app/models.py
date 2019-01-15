@@ -202,6 +202,7 @@ class MaskMap(PaginatedAPIMixin, db.Model):
 	token_id = db.Column(db.String(128), db.ForeignKey('profile.token_id'))
 	field_name = db.Column(db.String(128))
 	external_value = db.Column(db.String(2048))
+	exception = db.Column(db.Boolean(), default=False)
 	created = db.Column(db.DateTime(), default=datetime.utcnow)
 	updated = db.Column(db.DateTime(), default=datetime.utcnow)
 
@@ -214,6 +215,7 @@ class MaskMap(PaginatedAPIMixin, db.Model):
 			'token_id': self.token_id,
 			'field_name':self.field_name,
 			'external_value': self.external_value,
+			'exception': self.exception,
 			'created': self.created.isoformat()+'Z',
 			'updated': self.updated.isoformat()+'Z',
 		}
