@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: dfd29b993e0b
+Revision ID: 7b761d7ca453
 Revises: 
-Create Date: 2019-01-10 17:45:10.786361
+Create Date: 2019-01-14 23:24:55.411994
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'dfd29b993e0b'
+revision = '7b761d7ca453'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -23,6 +23,7 @@ def upgrade():
     sa.Column('token_id', sa.String(length=128), nullable=True),
     sa.Column('field_name', sa.String(length=128), nullable=True),
     sa.Column('external_value', sa.String(length=2048), nullable=True),
+    sa.Column('exception', sa.Boolean(), nullable=True),
     sa.Column('created', sa.DateTime(), nullable=True),
     sa.Column('updated', sa.DateTime(), nullable=True),
     sa.ForeignKeyConstraint(['token_id'], ['profile.token_id'], ),
@@ -72,6 +73,7 @@ def upgrade():
     sa.Column('password_hash', sa.String(length=128), nullable=True),
     sa.Column('active_profile', sa.String(length=128), nullable=True),
     sa.Column('deleted', sa.Boolean(), nullable=True),
+    sa.Column('last_feed_load_time', sa.DateTime(), nullable=True),
     sa.Column('created', sa.DateTime(), nullable=True),
     sa.Column('updated', sa.DateTime(), nullable=True),
     sa.ForeignKeyConstraint(['active_profile'], ['profile.token_id'], ),

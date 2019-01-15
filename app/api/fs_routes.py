@@ -23,9 +23,9 @@ def receive_pickwaves(mode, version):
 	else:
 		return jsonify({'message': 'bad request'}), 400
 	response = serve_proxy(original_payload, masked_data, 'pick-waves', 
-						'/dev/wis-southbound/{}/pick-waves'.format(version),
+						'/{0}/wis-southbound/{1}/pick-waves'.format(mode,version),
 						token, app.config['DEV_FS_BASE_URL'] + \
-						'/cfs/wis-southbound/2.3/pick-waves'.format(version),
+						'/cfs/wis-southbound/{}/pick-waves'.format(version),
 						request)
 	return response
 
@@ -42,9 +42,15 @@ def receive_group_updates(version):
 @app.route('/dev/wis-order-update/<version>/group-cancels', methods=['POST'])
 @user_token_validation
 def receive_group_cancels(version):
-	#check auth
-	#mask fields
-	#save to database
-	return
-
+	original_payload = request.get_json(force=True) or {}
+	payload = copy.deepcopy(original_payload)
+	logger.debug('receiving group-cancels message: {}'.format(payload))
+	token = request.headers['6Dk-Token']
+	masked_data = translate(payload, 'group-cancels', token, 'mask', exception=True)
+	response = serve_proxy(original_payload, masked_data, 'group-cancels', 
+						'/dev/wis-order-update/{}/ContainerCancels'.format(version),
+						token, app.config['DEV_FS_BASE_URL'] + \
+						'/cfs/wis-order-update/v1/ContainerCancels'.format(version),
+						request)
+	return response
 

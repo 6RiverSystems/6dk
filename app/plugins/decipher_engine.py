@@ -24,7 +24,7 @@ def decipher(payload, message_type):
 		mask_paths = rule.substitutes(message_type) + rule.sanitizers(message_type)
 		for path in mask_paths:
 			payload = substitute(payload, path, token, 'unmask', address_book, 
-									stringified_address_book, message_type)
+									stringified_address_book, message_type, False)
 	else:
 		logger.debug('could not find token for {} message'.format(message_type))
 	return token, payload
