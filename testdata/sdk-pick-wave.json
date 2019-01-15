@@ -2,11 +2,11 @@
    "messageType":"pickWave",
    "picks":[
       {
-         "groupID":"6RSTEST10002",
+         "groupID":"6RSTEST10003",
          "groupType":"orderPick",
          "container":{
             "containerType":"default",
-            "containerID":"6RSTEST10002"
+            "containerID":"6RSTEST10003"
          },
          "eachQuantity":6,
          "sourceLocation":"M2C38A09",

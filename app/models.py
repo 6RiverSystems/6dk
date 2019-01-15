@@ -222,7 +222,7 @@ class MaskMap(PaginatedAPIMixin, db.Model):
 		return data
 
 	def from_dict(self, data, new_mask_map=False):
-		for field in ['value', 'token_id', 'field_name', 'external_value']:
+		for field in ['value', 'token_id', 'field_name', 'external_value', 'exception']:
 			if field in data:
 				setattr(self, field, data[field])
 		if not new_mask_map:

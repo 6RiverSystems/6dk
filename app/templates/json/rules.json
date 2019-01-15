@@ -125,7 +125,63 @@
       ]
     },
     {
+      "message_type": "group-updates-response",
+      "message_format": "JSON",
+      "substitute_paths": [
+        {
+          "key_path": "groupID",
+          "field_name": "groupID"
+        },
+        {
+          "key_path": "containerID",
+          "field_name": "containerID"
+        },
+        {
+          "key_path": "container.containerID",
+          "field_name": "containerID"
+        },
+        {
+          "key_path": "data.CurrentGroupKey",
+          "field_name": "CurrentGroupKey"
+        },
+        {
+          "key_path": "data.CurrentGroupKey",
+          "field_name": "CurrentGroupKeyToRemove"
+        },
+        {
+          "key_path": "picks.\\d+.pickID",
+          "field_name": "pickID"
+        },
+        {
+          "key_path": "picks.\\d+.product.productID",
+          "field_name": "productID"
+        }
+      ],
+      "sanitize_paths": [
+        {
+          "key_path": "picks.\\d+.container.containerType",
+          "field_name": "containerType",
+          "sanitizer": "containerType"
+        }
+      ]
+    },
+    {
       "message_type": "group-cancels",
+      "message_format": "JSON",
+      "substitute_paths": [
+        {
+          "key_path": "groupID",
+          "field_name": "groupID"
+        },
+        {
+          "key_path": "containerID",
+          "field_name": "containerID"
+        }
+      ],
+      "sanitize_paths": []
+    },
+    {
+      "message_type": "group-cancels-response",
       "message_format": "JSON",
       "substitute_paths": [
         {
