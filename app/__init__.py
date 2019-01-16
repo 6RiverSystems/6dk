@@ -15,6 +15,7 @@ from flask_moment import Moment
 from config import Config
 from app.plugins.loaders.rule_loader import Rule
 from app.plugins.loaders.profile_loader import DkProfile
+from app.plugins.loaders.user_loader import DkUser
 
 
 app = Flask(__name__, static_url_path='')
@@ -39,8 +40,13 @@ logger.info('loading message rules')
 with open('app/templates/json/rules.json', 'r') as f:
 	rule = Rule(json.loads(f.read()), app.config)
 
-logger.info('loading standard dk profile')
 
+logger.info('loading standard dk user')
+with open('app/templates/json/standard_user.json', 'r') as f:
+	standard_user = json.loads(f.read())
+	dk_user = DkUser(standard_user)
+
+logger.info('loading standard dk profile')
 with open('app/templates/json/standard_profile.json', 'r') as f:
 	standard_profile = json.loads(f.read())
 

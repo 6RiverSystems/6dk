@@ -1,6 +1,13 @@
 {% extends "base.html" %}
 
 {% block app_content %}
+<div class="row right-align">
+  {% if not onboarding.incomplete %}
+  <a href="{{ url_for('account_onboarding_reset', user_id=current_user.id)}}" class="btn btn-flat btn-small tooltipped" data-position="bottom" data-tooltip="Reset Onboarding">
+    <i class="material-icons small">restore</i>
+  </a>
+  {% endif %}
+</div>
 <div class="row center-align">
 	<i class="material-icons large">account_circle</i>
 	<div id="edit-account">
@@ -17,8 +24,6 @@
 		<i class="material-icons small left">security</i> change password
 	</a>
 	</div>
-</div>
-
 <script>
  function edit_account() {
       $('#edit-account').html('<div class="progress"><div class="indeterminate blue darken-4"></div></div>');

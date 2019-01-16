@@ -18,11 +18,13 @@ from app.plugins.profile_helper import (create_new_profile, make_profile_active,
                                         display_message_settings)
 from app.plugins.mail_helper import (send_forward_profile_email, 
                                         send_accept_profile_email)
+from app.plugins.general_helper import first_time_check
 
 
 @app.route('/profiles', methods=['GET'])
 @login_required
 def profiles_main():
+    first_time_check('create_profile', current_user, edit_entry=False)
     user_profiles = current_user.load_user_profiles()
     deleted_profiles = current_user.load_user_profiles(deleted=True)
     limit = app.config['MAX_PROFILE_COUNT']
@@ -40,6 +42,7 @@ def add_profile():
     if len(user_profiles) < app.config['MAX_PROFILE_COUNT']:
         profile = create_new_profile({'user': current_user.id})
         flash('Created new profile: {}'.format(profile['data']['friendly_name']))
+        first_time_check('create_profile', current_user, flash_desc=False)
     else:
         flash('Maximum number of profiles reached')
     return redirect(url_for('profiles_main'))

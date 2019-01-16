@@ -7,12 +7,25 @@ from app import app, db
 from app.models import User
 from app.ui._forms import EditAccount, ChangePassword
 from app.plugins.mail_helper import send_password_reset_done_email
+from app.plugins.general_helper import first_time_check, reset_onboarding
+from app.ui.application_routes import check_welcome
 
 
 @app.route('/account', methods=['GET'])
 @login_required
 def account_main():
-    return render_template('account.html', account=current_user.to_dict())
+	first_time_check('set_pwd', current_user, edit_entry=False)
+	onboarding = check_welcome(jsonified=False)
+	return render_template('account.html', account=current_user.to_dict(), 
+							onboarding=onboarding)
+
+
+@app.route('/account/<user_id>/reset-onboarding', methods=['GET'])
+@login_required
+def account_onboarding_reset(user_id):
+	if current_user.id==user_id and not check_welcome(jsonified=False)['incomplete']:
+		reset_onboarding(current_user)
+	return redirect(url_for('index'))
 
 
 @app.route('/account/edit', methods=['GET','POST'])
@@ -63,6 +76,7 @@ def account_change_password():
 			current_user.set_password(form.new_password.data)
 			db.session.commit()
 			flash('Successfully changed password')
+			first_time_check('set_pwd', current_user, flash_desc=False)
 			send_password_reset_done_email(current_user)
 	elif request.method == 'GET':
 		return jsonify({
