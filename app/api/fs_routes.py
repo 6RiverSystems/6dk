@@ -5,6 +5,7 @@ from app import app, logger
 from app.plugins.auth_helper import user_token_validation
 from app.plugins.translation_engine import translate
 from app.plugins.proxy_engine import serve_proxy
+from app.plugins.general_helper import verify_first_pick_wave
 
 
 @app.route('/<mode>/wis-southbound/<version>/pick-waves', methods=['POST'])
@@ -14,6 +15,7 @@ def receive_pickwaves(mode, version):
 	payload = copy.deepcopy(original_payload)
 	logger.debug('receiving pick-waves message: {}'.format(payload))
 	token = request.headers['6Dk-Token']
+	verify_first_pick_wave(token)
 	#mask data
 	if mode=='dev':
 		masked_data = translate(payload, 'pick-waves', token, 'mask')

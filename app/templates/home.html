@@ -5,6 +5,12 @@
         </br></br></br></br></br></br></br></br>
         <div id="results" class="col s12 toshow" style="display:none;">
             <h4 id="greeter" class="center-align" href="javascript:greet();"></h4>
+            </br>
+            <div class="col s2"></div>
+            <div class="col s8">
+              <div id="welcome"></div>
+            </div>
+            <div class="col s2"></div>
         </div>
     </div>
     <script>
@@ -33,6 +39,13 @@
             $('#greeter').html(greeting + '.');
             $('div.toshow').fadeIn(800);
             $('#greeter').html(greeting + ', <strong>' + '{{ current_user.first_name }}' + '</strong>.')
+            $.post('/check-welcome', {
+              today: today,
+            }).done(function(response) {
+              if (response['incomplete']) {
+                $('#welcome').html(response['html'])
+              }
+            });
         }
     </script>
 {% endblock %}

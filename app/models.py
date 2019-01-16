@@ -196,6 +196,13 @@ class Profile(PaginatedAPIMixin, db.Model):
 		else:
 			return False
 
+	def find_owner(token):
+		profile = Profile.query.get(token)
+		if profile:
+			return User.query.get(profile.user)
+		else:
+			return
+
 
 class MaskMap(PaginatedAPIMixin, db.Model):
 	value = db.Column(db.String(128), index=True, unique=True, primary_key=True)

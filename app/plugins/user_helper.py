@@ -1,6 +1,8 @@
+import json
+
 from flask import jsonify
 
-from app import db, logger
+from app import db, logger, dk_user
 from app.models import User
 
 
@@ -11,6 +13,7 @@ def create_new_user(data):
 		user = User()
 		user.from_dict(data, new_user=True)
 		user.set_password(data['password'])
+		user.data = json.dumps(dk_user.make_user())
 		db.session.add(user)
 		db.session.commit()
 		logger.debug('created new user for: {}'.format(data['email']))
