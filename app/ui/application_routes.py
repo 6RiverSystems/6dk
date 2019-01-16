@@ -8,3 +8,4 @@ from app import app
 @login_required
 def index():
     return render_template('home.html')
+    
