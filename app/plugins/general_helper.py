@@ -36,6 +36,7 @@ def first_time_check(key, current_user, flash_desc=True, edit_entry=True):
 def reset_onboarding(current_user):
 	try:
 		data = current_user.to_dict()['data']
+		data['accepted_onboarding'] = False
 		for step in data['startup_steps']:
 			if step['change_on_reset']:
 				step['open'] = True
@@ -54,7 +55,7 @@ def user_accept_onboarding(current_user):
 	except:
 		pass
 
-		
+
 def verify_first_pick_wave(token):
 	current_user = Profile.find_owner(token)
 	if current_user:
