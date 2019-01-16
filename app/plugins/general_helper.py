@@ -45,6 +45,16 @@ def reset_onboarding(current_user):
 		pass
 
 
+def user_accept_onboarding(current_user):
+	try:
+		data = current_user.to_dict()['data']
+		data['accepted_onboarding'] = True
+		current_user.data = json.dumps(data)
+		db.session.commit()			
+	except:
+		pass
+
+		
 def verify_first_pick_wave(token):
 	current_user = Profile.find_owner(token)
 	if current_user:

@@ -45,5 +45,6 @@
       "change_on_reset": true,
       "completed": null
     }
-  ]
+  ],
+  "accepted_onboarding": false
 }
