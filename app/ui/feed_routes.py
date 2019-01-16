@@ -9,11 +9,13 @@ from app import app, db, rule
 from app.ui._forms import FeedForm
 from app.models import Message
 from app.plugins.feed_helper import filter_feed, get_filters
+from app.plugins.general_helper import first_time_check
 
 
 @app.route('/feed', methods=['GET', 'POST'])
 @login_required
 def feed_main():
+    first_time_check('visit_feed', current_user)
     user_profiles = current_user.load_user_profiles()
     current_user.last_feed_load_time = datetime.utcnow()
     db.session.commit()

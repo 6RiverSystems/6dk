@@ -1,0 +1,49 @@
+{
+  "startup_steps": [
+    {
+      "key": "set_pwd",
+      "name": "Change your password.",
+      "instructions": "Click account to change your password.",
+      "description": "In order to protect your security, we recommend that you change your password.",
+      "open": true,
+      "change_on_reset": false,
+      "completed": null
+    },
+    {
+      "key": "create_profile",
+      "name": "Create a profile.",
+      "instructions": "Click profiles to create a profile",
+      "description": "In 6DK, a profile is a virtual instance of a WMS. Profiles come with unique 6Dk-Tokens that you can use to interact with the development environment. You can also fill in your own test WMS details to test 6DK sending northbound confirmations to your interface.",
+      "open": true,
+      "change_on_reset": true,
+      "completed": null
+    },
+    {
+      "key": "review_docs",
+      "name": "Review the documentation.",
+      "instructions": "Click docs to review the documentation",
+      "description": "Here you can interact with our fulfilment automation system (FAS) APIs for WMS development.",
+      "open": true,
+      "change_on_reset": true,
+      "completed": null
+    },
+    {
+      "key": "post_pick_wave",
+      "name": "Post a pick-wave",
+      "instructions": "You can post a pick-wave from the docs or by posting directly to 6dk.6river.tech/*",
+      "description": "Pick waves are groups of pick tasks where each pick task minimally includes the product to pick, the location to pick from and the quantity to pick.",
+      "open": true,
+      "change_on_reset": true,
+      "completed": null
+    },
+    {
+      "key": "visit_feed",
+      "name": "Visit the feed",
+      "instructions": "Click feed to see your messages",
+      "description": "The message feed aggregates all messages for open profiles. You may search for messages and replay northbound confirmations to help with testing WMS development.",
+      "open": true,
+      "change_on_reset": true,
+      "completed": null
+    }
+  ]
+}
