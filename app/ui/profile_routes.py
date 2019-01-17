@@ -18,13 +18,16 @@ from app.plugins.profile_helper import (create_new_profile, make_profile_active,
                                         display_message_settings)
 from app.plugins.mail_helper import (send_forward_profile_email, 
                                         send_accept_profile_email)
-from app.plugins.general_helper import first_time_check
+from app.plugins.general_helper import first_time_check, is_step_completed
 
 
 @app.route('/profiles', methods=['GET'])
 @login_required
 def profiles_main():
-    first_time_check('create_profile', current_user, edit_entry=False)
+    if is_step_completed('create_profile', current_user):
+        first_time_check('mod_profile', current_user, edit_entry=False)
+    else:
+        first_time_check('create_profile', current_user, edit_entry=False)
     user_profiles = current_user.load_user_profiles()
     deleted_profiles = current_user.load_user_profiles(deleted=True)
     limit = app.config['MAX_PROFILE_COUNT']
@@ -196,6 +199,7 @@ def message_settings(token, message_direction, message_type, action):
                 return serve_northbound_settings_form(token, message_settings)
             elif action=='apply':
                 new_settings = parse_qs(request.form.to_dict()['formdata'])
+                first_time_check('mod_profile', current_user, flash_desc=False)
                 return update_northbound_settings(token, message_settings, 
                                                 new_settings)
             elif action=='view':
@@ -209,5 +213,6 @@ def message_settings(token, message_direction, message_type, action):
                 return serve_southbound_settings_form(token, message_settings)
             elif action=='apply':
                 new_settings = parse_qs(request.form.to_dict()['formdata'])
+                first_time_check('mod_profile', current_user, flash_desc=False)
                 return display_message_settings(token, message_settings, 
                                                 'southbound')    
