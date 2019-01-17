@@ -33,6 +33,20 @@ def first_time_check(key, current_user, flash_desc=True, edit_entry=True):
 		pass
 
 
+def is_step_completed(key, current_user):
+	try:
+		data = current_user.to_dict()['data']
+		step = next((step for step in data['startup_steps']
+					if step['key']==key), None)
+		if step:
+			if step['open']:
+				return False
+			else:
+				return True
+	except:
+		return
+		
+
 def reset_onboarding(current_user):
 	try:
 		data = current_user.to_dict()['data']

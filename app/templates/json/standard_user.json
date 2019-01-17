@@ -19,6 +19,15 @@
       "completed": null
     },
     {
+      "key": "mod_profile",
+      "name": "Modify a profile.",
+      "instructions": "Modify settings for a message type in a profile",
+      "description": "You can modify message type settings by clicking the Profile Settings icon then the edit button next to the appropriate message type.",
+      "open": true,
+      "change_on_reset": true,
+      "completed": null
+    },
+    {
       "key": "review_docs",
       "name": "Review the documentation.",
       "instructions": "Click docs to review the documentation",

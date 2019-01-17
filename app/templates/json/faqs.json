@@ -1,0 +1,6 @@
+[
+  {
+    "Q": "My test and production servers are behind corporate firewalls. Which IP addresses do I need to whitelist to communicate with 6RS?",
+    "A": "6RS northbound messages are routed through 4 IP addresses in both test and production environments: 35.224.245.180, 35.192.177.203, 35.232.243.155, 35.232.247.34"
+  }
+]
