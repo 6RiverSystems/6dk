@@ -10,4 +10,5 @@ from app import app
 def faq_main():
 	with open('app/templates/json/faqs.json', 'r') as f:
 		faqs = json.loads(f.read())
+	faqs = sorted(faqs, key=lambda k: k['Q'])
 	return render_template('faq.html', faqs=faqs)
