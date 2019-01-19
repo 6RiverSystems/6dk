@@ -10,6 +10,7 @@ from app.plugins.decipher_engine import decipher
 from app.plugins.proxy_engine import wms_forwarder
 from app.plugins.proxy_engine import wms_repeater
 
+
 @app.route('/wms/<message_type>', methods=['POST'])
 def receive_wms_request(message_type):
 	valid_messages = rule.get_northbound_messages()

@@ -1,5 +1,9 @@
 <h6 class="center-align">{{ message_settings.name }}</h6>
 <table>
+	<tr>
+		<th>Transport</th>
+		<td>{{ message_settings.format }} via {{ message_settings.transport }}</td>
+	</tr>
 {% if message_direction=='northbound' %}
 	<tr>
 		<th>WMS Host</th>

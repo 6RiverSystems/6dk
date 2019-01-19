@@ -17,8 +17,9 @@ from app.plugins.general_helper import first_time_check
 def feed_main():
     first_time_check('visit_feed', current_user)
     user_profiles = current_user.load_user_profiles()
-    current_user.last_feed_load_time = datetime.utcnow()
-    db.session.commit()
+    if request.method == 'GET':
+        current_user.last_feed_load_time = datetime.utcnow()
+        db.session.commit()
     filters = get_filters(request)
     messages, filters = filter_feed(filters, user_profiles)
     valid_northbound = rule.get_northbound_messages()
