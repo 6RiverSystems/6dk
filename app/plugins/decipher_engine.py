@@ -14,10 +14,13 @@ def decipher(payload, message_type):
 					for path in lookup_paths
 					]
 	token_list = [token for token in token_list if token != 'not-found']
-	if all(x == token_list[0] for x in token_list):
-		token = token_list[0]
-	else:
+	if len(token_list)==0:
 		token = None
+	else:
+		if all(x == token_list[0] for x in token_list):
+			token = token_list[0]
+		else:
+			token = None
 	if token:
 		logger.debug('found token for {0} message {1}'.format(message_type, 
 																token))
