@@ -13,6 +13,7 @@
 		{{ message.name }}
 	</div>
 	<div class="col s7 right-align">
+		<small><i>{{ message.format }} via {{ message.transport }} | </i></small>
 		{% if message.send==True %}
 		<small><i>messages are being sent to {{ message.wms_host }}:{{ message.wms_port }}/{{ message.wms_path }}</i></small>
 		{% else %}
