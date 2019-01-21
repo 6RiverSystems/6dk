@@ -5,66 +5,98 @@
     {
       "send": false,
       "name": "acknowledgement",
+      "format": "JSON",
+      "transport": "HTTPS",
       "wms_host": null,
       "wms_path": null,
       "wms_port": 443,
-      "wms_headers": []
+      "wms_headers": [],
+      "wms_username": null,
+      "wms_password": null
     },
     {
       "send": false,
       "name": "container-accepted",
+      "format": "JSON",
+      "transport": "HTTPS",
       "wms_host": null,
       "wms_path": null,
       "wms_port": 443,
-      "wms_headers": []
+      "wms_headers": [],
+      "wms_username": null,
+      "wms_password": null
     },
     {
       "send": false,
       "name": "container-validation",
+      "format": "JSON",
+      "transport": "HTTPS",
       "wms_host": null,
       "wms_path": null,
       "wms_port": 443,
-      "wms_headers": []
+      "wms_headers": [],
+      "wms_username": null,
+      "wms_password": null
     },
     {
       "send": false,
       "name": "print-request",
+      "format": "JSON",
+      "transport": "HTTPS",
       "wms_host": null,
       "wms_path": null,
       "wms_port": 443,
-      "wms_headers": []
+      "wms_headers": [],
+      "wms_username": null,
+      "wms_password": null
     },
     {
       "send": false,
       "name": "container-inducted",
+      "format": "JSON",
+      "transport": "HTTPS",
       "wms_host": null,
       "wms_path": null,
       "wms_port": 443,
-      "wms_headers": []
+      "wms_headers": [],
+      "wms_username": null,
+      "wms_password": null
     },
     {
       "send": false,
       "name": "pick-task-picked",
+      "format": "JSON",
+      "transport": "HTTPS",
       "wms_host": null,
       "wms_path": null,
       "wms_port": 443,
-      "wms_headers": []
+      "wms_headers": [],
+      "wms_username": null,
+      "wms_password": null
     },
     {
       "send": false,
       "name": "container-picked-complete",
+      "format": "JSON",
+      "transport": "HTTPS",
       "wms_host": null,
       "wms_path": null,
       "wms_port": 443,
-      "wms_headers": []
+      "wms_headers": [],
+      "wms_username": null,
+      "wms_password": null
     },
     {
       "send": false,
       "name": "container-taken-off",
+      "format": "JSON",
+      "transport": "HTTPS",
       "wms_host": null,
       "wms_path": null,
       "wms_port": 443,
-      "wms_headers": []
+      "wms_headers": [],
+      "wms_username": null,
+      "wms_password": null
     }
   ],
   "southbound_messages": [
@@ -74,7 +106,9 @@
         "containerType": true,
         "sourceLocation": true
       },
-      "name": "pick-waves"
+      "name": "pick-waves",
+      "format": "JSON",
+      "transport": "HTTPS"
     },
     {
       "exception_pick": false,
@@ -82,7 +116,9 @@
         "containerType": true,
         "sourceLocation": true
       },
-      "name": "group-updates"
+      "name": "group-updates",
+      "format": "JSON",
+      "transport": "HTTPS"
     },
     {
       "exception_pick": false,
@@ -90,7 +126,9 @@
         "containerType": true,
         "sourceLocation": true
       },
-      "name": "group-cancels"
+      "name": "container-cancels",
+      "format": "JSON",
+      "transport": "HTTPS"
     }
   ]
 }

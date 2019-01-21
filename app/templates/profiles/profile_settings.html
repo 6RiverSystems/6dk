@@ -1,8 +1,10 @@
+{% if has_northbound %}
 <h6 class="center-align">Northbound</h6>
 </br>
 {% for message in profile.data.northbound_messages %}
+{% if message.name in user.data.message_types.northbound %}
 <div class="row">
-	<div class="col s2">
+	<div class="col s1">
 		{% if message.send %}
 		<i class="material-icons">check</i>
 		{% else %}
@@ -12,7 +14,8 @@
 	<div class="col s3">
 		{{ message.name }}
 	</div>
-	<div class="col s7 right-align">
+	<div class="col s8 right-align">
+		<small><i>{{ message.format }} via {{ message.transport }} | </i></small>
 		{% if message.send==True %}
 		<small><i>messages are being sent to {{ message.wms_host }}:{{ message.wms_port }}/{{ message.wms_path }}</i></small>
 		{% else %}
@@ -25,15 +28,19 @@
 			<i class="material-icons">visibility</i>
 		</a>	
 	</div>
-
 </div>
+{% endif %}
 {% endfor %}
 <div class="divider"></div>
+{% endif %}
+
+{% if has_southbound %}
 <h6 class="center-align">Southbound</h6>
 </br>
 {% for message in profile.data.southbound_messages %}
+{% if message.name in user.data.message_types.southbound %}
 <div class="row">
-	<div class="col s2">
+	<div class="col s1">
 		{% if not message.exception_pick %}
 		<i class="material-icons">check</i>
 		{% else %}
@@ -43,18 +50,17 @@
 	<div class="col s3">
 		{{ message.name }}
 	</div>
-	<div class="col s7 right-align">
-		{% if not message.exception_pick %}
-		<small><i>messages are processed as soon as possible</i></small>
-		{% else %}
-		<small><i>do not process messages immediately</i></small>
-		{% endif %}		
-        <!--
-        <a class="waves-effect waves-blue btn-flat btn-small" href="#">
+	<div class="col s8 right-align">
+		<small><i>{{ message.format }} via {{ message.transport }}</i></small>	
+        <a class="waves-effect waves-blue btn-flat btn-small" href="javascript:get_message_transport_selector('{{ profile.token_id }}', 'southbound', '{{ message.name }}');">
 			<i class="material-icons">edit</i>
 		</a>
-		-->
 	</div>
-
 </div>
+{% endif %}
 {% endfor %}
+{% endif %}
+
+{% if not has_northbound and not has_southbound %}
+<p class="center-align"><i>Please choose messages for your account</i></p>
+{% endif %}

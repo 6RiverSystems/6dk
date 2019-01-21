@@ -9,5 +9,22 @@
     	{% set method = 'post' %}
     	{% endif %}
     	{{ wtf.quick_form(form, action=action, id=id, method=method) }}
+    	{% if foot_text %}
+    	<small><i>{{ foot_text }}</i></small>
+    	{% if foot_url_text and foot_url_link %}
+    	<a href="{{ foot_url_link }}">
+    		<small><i>{{ foot_url_text }}</i></small>
+    	</a>
+    	{% endif %}
+    	{% endif %}
     </div>
 </div>
+    {{ moment.include_jquery() }}
+    <script>
+          $(document).ready(function(){
+            $('select').formSelect();
+            $('.datepicker').datepicker({
+                format: 'yyyy-mm-dd'
+            });
+          });
+    </script>

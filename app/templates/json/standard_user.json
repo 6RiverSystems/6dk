@@ -10,6 +10,15 @@
       "completed": null
     },
     {
+      "key": "choose_messages",
+      "name": "Choose your messages",
+      "instructions": "Click account to choose your messages.",
+      "description": "Let us know which message types you would like to use.",
+      "open": true,
+      "change_on_reset": false,
+      "completed": null
+    },
+    {
       "key": "create_profile",
       "name": "Create a profile.",
       "instructions": "Click profiles to create a profile",
@@ -38,8 +47,8 @@
     },
     {
       "key": "post_pick_wave",
-      "name": "Post a pick-wave",
-      "instructions": "You can post a pick-wave from the docs or by posting directly to 6dk.6river.tech/*",
+      "name": "Successfully send a pick-wave",
+      "instructions": "You can post a pick-wave from the docs or by posting directly to 6dk.6river.tech/*.",
       "description": "Pick waves are groups of pick tasks where each pick task minimally includes the product to pick, the location to pick from and the quantity to pick.",
       "open": true,
       "change_on_reset": true,
@@ -55,5 +64,9 @@
       "completed": null
     }
   ],
-  "accepted_onboarding": false
+  "accepted_onboarding": false,
+  "message_types": {
+    "northbound": [],
+    "southbound": []
+  }
 }

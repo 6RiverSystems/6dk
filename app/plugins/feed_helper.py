@@ -13,6 +13,10 @@ def get_filters(request):
                 'q': request.form.get('q'),
                 'page': request.form.get('page', 1, type=int)
                 }
+    for q in ['q', 'sent_before', 'sent_after']:
+	    if type(filters[q])==str:
+		    if filters[q].lower() in ['none', 'null']:
+		    	filters[q] = None
     if len(filters['message_type']) == 0:
     	filters['message_type'] = request.form.getlist('message_type[]')
     if len(filters['profile']) == 0:
@@ -21,13 +25,19 @@ def get_filters(request):
 
 
 
-def filter_feed(filters, user_profiles, return_data=False, order="desc"):
+def filter_feed(filters, user_profiles, user, return_data=False, order="desc"):
 	messages = Message.query
 	filtered = False
+	valid_types = user['data']['message_types']['northbound'] + user['data']['message_types']['southbound']
+	valid_types = valid_types + [msg+'-response' for msg in valid_types]
+
 	if len(filters['message_type'])>0:
 		messages = messages.filter(
 							Message.message_type.in_(filters['message_type']))
 		filtered = True
+	else:
+		messages = messages.filter(
+							Message.message_type.in_(valid_types))
 
 	if len(filters['profile'])>0:
 		messages = messages.filter(Message.token_id.in_(filters['profile']))
@@ -44,21 +54,21 @@ def filter_feed(filters, user_profiles, return_data=False, order="desc"):
 					]
 		messages = messages.filter(Message.token_id.in_(token_ids))
 		filters['profile_names'] = ['all profiles']
-
 	try:
-		start = dateparser.parse(filters['sent_after'])
-		messages = messages.filter(Message.updated>=start)
-		filtered = True
+		if filters['sent_after']:
+			start = dateparser.parse(filters['sent_after'])
+			messages = messages.filter(Message.updated>=start)
+			filtered = True
 	except:
 		pass
 
 	try:
-		end = dateparser.parse(filters['sent_before'])
-		messages = messages.filter(Message.updated<=end)
-		filtered = True
+		if filters['sent_before']:
+			end = dateparser.parse(filters['sent_before'])
+			messages = messages.filter(Message.updated<=end)
+			filtered = True
 	except:
 		pass
-
 	if filters['q']:
 		if len(filters['q'])>=3:
 			messages = messages.filter(
@@ -66,7 +76,6 @@ def filter_feed(filters, user_profiles, return_data=False, order="desc"):
 												'%{}%'.format(filters['q'])))
 			filtered = True
 	filters['count'] = messages.count()
-	
 	if order=='desc':
 		messages = messages.order_by(
 								Message.updated.desc()
@@ -75,7 +84,6 @@ def filter_feed(filters, user_profiles, return_data=False, order="desc"):
 		messages = messages.order_by(
 								Message.updated.asc()
 								)
-	
 	data = [m.to_dict(include_profile=True, parse_timestamps=True,
 							include_transmissions=True) 
 				for m in messages.all()]

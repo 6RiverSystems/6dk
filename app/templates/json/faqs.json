@@ -2,5 +2,33 @@
   {
     "Q": "My test and production servers are behind corporate firewalls. Which IP addresses do I need to whitelist to communicate with 6RS?",
     "A": "6RS northbound messages are routed through 4 IP addresses in both test and production environments: 35.224.245.180, 35.192.177.203, 35.232.243.155, 35.232.247.34"
+  },
+  {
+  	"Q": "What are the message formats that you support?",
+  	"A": "JSON, XML, CSV"
+  },
+  {
+  	"Q": "What are the different transport protocol supported by you?",
+  	"A": "HTTPS, SFTP"
+  },
+  {
+  	"Q": "How does chuck integrate to your cloud to get work?",
+  	"A": "Chuck requests work from our cloud services via HTTPS"
+  },
+  {
+  	"Q": "We do not allow direct access to our end points. Do you support VPN?",
+  	"A": "Yes. We would work with your IT security team to set that up"
+  },
+  {
+  	"Q": "How much data do your chucks use?",
+  	"A": "Around 200 MB/chuck/per day with full logging turned on. If bandwidth is a problem we can turn logging down to limit the data usage"
+  },
+  {
+  	"Q": "Can I assign static IPs to chucks?",
+  	"A": "No. We can only accept IPs via DHCP"
+  },
+  {
+  	"Q": "Our warehouse has spotty connection, can chucks still work?",
+  	"A": "Yes. but we would need internet at some key locations defined by our solutions/deployment team"
   }
 ]

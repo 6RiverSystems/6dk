@@ -24,6 +24,35 @@
 		<i class="material-icons small left">security</i> change password
 	</a>
 	</div>
+  {% if (account.data.message_types.northbound + account.data.message_types.southbound)|length == 0 %}
+  <div id="choose-messages">
+  <a class="waves-effect waves-blue btn-flat btn-small" href="javascript:choose_messages()">
+    <i class="material-icons small left">settings</i> choose messages
+  </a>
+  </div>
+  {% else %}
+  {% if account.data.message_types.southbound|length > 0 %}
+  </br>
+  <div id="choose-messages">
+  <div class="divider"></div>
+  <h6>Southbound Messages</h6>
+  {% for message in account.data.message_types.southbound %}
+  {{ message }}</br>
+  {% endfor %}
+  </br>
+  {% endif %}
+  {% if account.data.message_types.northbound|length > 0 %}
+  <h6>Northbound Messages</h6>
+  {% for message in account.data.message_types.northbound %}
+  {{ message }}</br>
+  {% endfor %}
+  {% endif %}
+  </br>
+  <a class="waves-effect waves-blue btn-flat btn-small" href="javascript:choose_messages()">
+    <i class="material-icons small left">edit</i> edit messages
+  </a>
+  </div>
+  {% endif %}
 <script>
  function edit_account() {
       $('#edit-account').html('<div class="progress"><div class="indeterminate blue darken-4"></div></div>');
@@ -44,6 +73,17 @@
       }).fail(function() {
           $('#change-password').html("<p>{{ (' Error: Cannot edit.') }}</p>");
       }); 	
+ }
+</script>
+<script>
+ function choose_messages() {
+      $('#choose-messages').html('<div class="progress"><div class="indeterminate blue darken-4"></div></div>');
+      $.get('/account/choose-messages', {
+      }).done(function(response) {
+          $('#choose-messages').html(response['html'])
+      }).fail(function() {
+          $('#choose-messages').html("<p>{{ (' Error: Cannot edit.') }}</p>");
+      });   
  }
 </script>
 {% endblock %}

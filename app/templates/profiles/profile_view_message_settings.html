@@ -1,5 +1,9 @@
 <h6 class="center-align">{{ message_settings.name }}</h6>
 <table>
+	<tr>
+		<th>Transport</th>
+		<td>{{ message_settings.format }} via {{ message_settings.transport }}</td>
+	</tr>
 {% if message_direction=='northbound' %}
 	<tr>
 		<th>WMS Host</th>
@@ -13,6 +17,7 @@
 		<th>WMS Path</th>
 		<td>{{ message_settings.wms_path }}</td>
 	</tr>
+	{% if message_settings.transport == 'HTTPS' %}
 	<tr>
 		<th>WMS Headers</th>
 		<td>
@@ -21,13 +26,32 @@
 			{% endfor %}
 		</td>
 	</tr>
+	{% elif message_settings.transport == 'SFTP' %}
+	<tr>
+		<th>WMS Username</th>
+		<td>{{ message_settings.wms_username }}</td>
+	</tr>
+	<tr>
+		<th>WMS Password</th>
+		<td>{{ message_settings.wms_password }}</td>
+	</tr>
+	{% endif %}
 	<tr>
 		<th>Send Confirmations</th>
 		<td><i class="material-icons">{% if message_settings.send==True %}check{% else %}close{% endif %}</i></td>
+	</tr>
+	{% if message_settings.transport == 'HTTPS' %}
 	<tr>
 		<td colspan="2">
-			<code><small>curl -v -d@{{ message_settings.name }}.json {% for header in message_settings.wms_headers %}-H "{{ header }}" {% endfor %} -m 2.0 {{ message_settings.wms_host }}:{{ message_settings.wms_port}}/{{ message_settings.wms_path }}</small></code>
+			<code><small>curl -v -d@{{ message_settings.name }}.{{ message_settings.format.lower() }} {% for header in message_settings.wms_headers %}-H "{{ header }}" {% endfor %} -m 2.0 {{ message_settings.wms_host }}:{{ message_settings.wms_port}}/{{ message_settings.wms_path }}</small></code>
 		</td>
 	</tr>
+	{% elif message_settings.transport == 'SFTP' %}
+	<tr>
+		<td colspan="2">
+			<code><small>curl  -k "{{ message_settings.wms_host }}:{{ message_settings.wms_port}}/" --user "{{ message_settings.wms_username }}:{{ message_settings.wms_password }}" && curl  -k "{{ message_settings.wms_host }}:{{ message_settings.wms_port}}/{{ message_settings.wms_path }}" --user "{{ message_settings.wms_username }}:{{ message_settings.wms_password }}" -T "./{{ message_settings.name }}.{{ message_settings.format.lower() }}" --ftp-create-dirs</small></code>
+		</td>
+	</tr>
+	{% endif %}
 {% endif %}
 </table>
