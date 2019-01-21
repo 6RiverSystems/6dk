@@ -15,13 +15,17 @@ def save_message(data, masked_data, message_type, incoming_endpoint, token,
 	logger.debug('saving unmasked data and masked data for {} message'.format(
 																message_type))
 	message = Message()
+	if type(data)==dict:
+		data = json.dumps(data)
+	elif type(data)==bytes:
+		data = data.decode('utf-8')
 	message.from_dict(
 						data=dict(
 								token_id=token,
 								message_type=message_type,
 								message_format=message_format,
 								incoming_endpoint=incoming_endpoint,
-								unmasked_data=json.dumps(data),
+								unmasked_data=data,
 								masked_data=json.dumps(masked_data)
 							)
 						,
@@ -40,9 +44,10 @@ def save_message(data, masked_data, message_type, incoming_endpoint, token,
 	db.session.commit()
 
 
-def serve_proxy(data, masked_data, message_type, incoming_endpoint, token, 
-				destination, request):
-	save_message(data, masked_data, message_type, incoming_endpoint, token)
+def serve_proxy(settings, data, masked_data, message_type, incoming_endpoint, 
+				token, destination, request):
+	save_message(data, masked_data, message_type, incoming_endpoint, token, 
+				message_format=settings['format'])
 	response = _proxy(request, json.dumps(masked_data), destination, to_fs=True)
 	response_message_type = message_type + '-response'
 	logger.debug('unmasking synchronous {} from server'.format(

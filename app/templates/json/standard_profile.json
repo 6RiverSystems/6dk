@@ -7,20 +7,6 @@
       "name": "acknowledgement",
       "format": "JSON",
       "transport": "HTTPS",
-      "valid_combinations": [
-        {
-          "transport": "HTTPS",
-          "format": "JSON"
-        },
-        {
-          "transport": "HTTPS",
-          "format": "XML"
-        },
-        {
-          "transport": "SFTP",
-          "format": "CSV"
-        }
-      ],
       "wms_host": null,
       "wms_path": null,
       "wms_port": 443,
@@ -38,21 +24,7 @@
       "wms_port": 443,
       "wms_headers": [],
       "wms_username": null,
-      "wms_password": null,
-      "valid_combinations": [
-        {
-          "transport": "HTTPS",
-          "format": "JSON"
-        },
-        {
-          "transport": "HTTPS",
-          "format": "XML"
-        },
-        {
-          "transport": "SFTP",
-          "format": "CSV"
-        }
-      ]
+      "wms_password": null
     },
     {
       "send": false,
@@ -64,21 +36,7 @@
       "wms_port": 443,
       "wms_headers": [],
       "wms_username": null,
-      "wms_password": null,
-      "valid_combinations": [
-        {
-          "transport": "HTTPS",
-          "format": "JSON"
-        },
-        {
-          "transport": "HTTPS",
-          "format": "XML"
-        },
-        {
-          "transport": "SFTP",
-          "format": "CSV"
-        }
-      ]
+      "wms_password": null
     },
     {
       "send": false,
@@ -90,17 +48,7 @@
       "wms_port": 443,
       "wms_headers": [],
       "wms_username": null,
-      "wms_password": null,
-      "valid_combinations": [
-        {
-          "transport": "HTTPS",
-          "format": "JSON"
-        },
-        {
-          "transport": "HTTPS",
-          "format": "XML"
-        }
-      ]
+      "wms_password": null
     },
     {
       "send": false,
@@ -112,21 +60,7 @@
       "wms_port": 443,
       "wms_headers": [],
       "wms_username": null,
-      "wms_password": null,
-      "valid_combinations": [
-        {
-          "transport": "HTTPS",
-          "format": "JSON"
-        },
-        {
-          "transport": "HTTPS",
-          "format": "XML"
-        },
-        {
-          "transport": "SFTP",
-          "format": "CSV"
-        }
-      ]
+      "wms_password": null
     },
     {
       "send": false,
@@ -138,21 +72,7 @@
       "wms_port": 443,
       "wms_headers": [],
       "wms_username": null,
-      "wms_password": null,
-      "valid_combinations": [
-        {
-          "transport": "HTTPS",
-          "format": "JSON"
-        },
-        {
-          "transport": "HTTPS",
-          "format": "XML"
-        },
-        {
-          "transport": "SFTP",
-          "format": "CSV"
-        }
-      ]
+      "wms_password": null
     },
     {
       "send": false,
@@ -164,21 +84,7 @@
       "wms_port": 443,
       "wms_headers": [],
       "wms_username": null,
-      "wms_password": null,
-      "valid_combinations": [
-        {
-          "transport": "HTTPS",
-          "format": "JSON"
-        },
-        {
-          "transport": "HTTPS",
-          "format": "XML"
-        },
-        {
-          "transport": "SFTP",
-          "format": "CSV"
-        }
-      ]
+      "wms_password": null
     },
     {
       "send": false,
@@ -190,21 +96,7 @@
       "wms_port": 443,
       "wms_headers": [],
       "wms_username": null,
-      "wms_password": null,
-      "valid_combinations": [
-        {
-          "transport": "HTTPS",
-          "format": "JSON"
-        },
-        {
-          "transport": "HTTPS",
-          "format": "XML"
-        },
-        {
-          "transport": "SFTP",
-          "format": "CSV"
-        }
-      ]
+      "wms_password": null
     }
   ],
   "southbound_messages": [
@@ -216,21 +108,7 @@
       },
       "name": "pick-waves",
       "format": "JSON",
-      "transport": "HTTPS",
-      "valid_combinations": [
-        {
-          "transport": "HTTPS",
-          "format": "JSON"
-        },
-        {
-          "transport": "HTTPS",
-          "format": "XML"
-        },
-        {
-          "transport": "SFTP",
-          "format": "CSV"
-        }
-      ]
+      "transport": "HTTPS"
     },
     {
       "exception_pick": false,
@@ -240,21 +118,7 @@
       },
       "name": "group-updates",
       "format": "JSON",
-      "transport": "HTTPS",
-      "valid_combinations": [
-        {
-          "transport": "HTTPS",
-          "format": "JSON"
-        },
-        {
-          "transport": "HTTPS",
-          "format": "XML"
-        },
-        {
-          "transport": "SFTP",
-          "format": "CSV"
-        }
-      ]
+      "transport": "HTTPS"
     },
     {
       "exception_pick": false,
@@ -264,21 +128,7 @@
       },
       "name": "group-cancels",
       "format": "JSON",
-      "transport": "HTTPS",
-      "valid_combinations": [
-        {
-          "transport": "HTTPS",
-          "format": "JSON"
-        },
-        {
-          "transport": "HTTPS",
-          "format": "XML"
-        },
-        {
-          "transport": "SFTP",
-          "format": "CSV"
-        }
-      ]
+      "transport": "HTTPS"
     }
   ]
 }

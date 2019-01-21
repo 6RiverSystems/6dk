@@ -1,0 +1,12 @@
+{
+  "phase": "induct",
+  "printerId": "warehouse_printer",
+  "mfpId": "mfp03",
+  "userId": "user03",
+  "jobAndContainerIds": [
+    {
+      "jobId": "d18c2229-7888-4107-9262-7fa6e5d7a4cf",
+      "containerId": "f2bc98ca-7370-4fb4-b88e-32c32b570cef"
+    }
+  ]
+}

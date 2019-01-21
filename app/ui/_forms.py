@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import (StringField, PasswordField, BooleanField, SubmitField, 
-					IntegerField, TextAreaField, SelectMultipleField)
+					IntegerField, TextAreaField, SelectMultipleField,
+					SelectField)
 from wtforms.validators import DataRequired, Email, EqualTo, Length
 
 
@@ -63,7 +64,7 @@ class ExplorerMessage(FlaskForm):
 	submit = SubmitField('Post')
 
 
-class NorthboundMessageSettings(FlaskForm):
+class NbMessageHttps(FlaskForm):
 	wms_host = StringField('WMS Host', validators=[DataRequired()],
 						render_kw={"placeholder": "https://wms.warehouse.com"})
 	wms_port = IntegerField('WMS Port', validators=[DataRequired()],
@@ -73,4 +74,26 @@ class NorthboundMessageSettings(FlaskForm):
 	wms_headers = TextAreaField('WMS Headers', validators=[DataRequired()],
 						render_kw={"placeholder": "Content-Type: application/json\nAccept: application/json"})
 	send_confirmations = BooleanField('Send Confirmations')
+	submit = SubmitField('Submit')
+
+
+class NbMessageSftp(FlaskForm):
+	wms_host = StringField('WMS Host', validators=[DataRequired()],
+						render_kw={"placeholder": "sftp://wms.warehouse.com"})
+	wms_port = IntegerField('WMS Port', validators=[DataRequired()],
+						render_kw={"placeholder": "22"})
+	wms_path = StringField('WMS Path', validators=[DataRequired()],
+						render_kw={"placeholder": "northbound"})
+	wms_username = StringField('WMS Username', validators=[DataRequired()],
+						render_kw={"placeholder": "sftpuser"})
+	wms_password = StringField('WMS Password', validators=[DataRequired()],
+						render_kw={"placeholder": "sftppassword"})
+	send_confirmations = BooleanField('Send Confirmations')
+	submit = SubmitField('Submit')
+
+
+class ChooseMessages(FlaskForm):
+	southbound_messages = SelectMultipleField('Southbound Messages: WMS to 6RS (choose at least 1)', 
+												validators=[DataRequired()])
+	northbound_messages = SelectMultipleField('Northbound Messages: 6RS to WMS')
 	submit = SubmitField('Submit')

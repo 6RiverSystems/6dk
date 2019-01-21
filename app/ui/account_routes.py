@@ -1,20 +1,25 @@
+import json
 from datetime import datetime
 
 from flask import render_template, url_for, request, flash, jsonify, redirect
 from flask_login import current_user, login_required
 
-from app import app, db
+from app import app, db, rule
 from app.models import User
-from app.ui._forms import EditAccount, ChangePassword
+from app.ui._forms import EditAccount, ChangePassword, ChooseMessages
 from app.plugins.mail_helper import send_password_reset_done_email
-from app.plugins.general_helper import first_time_check, reset_onboarding
+from app.plugins.general_helper import (first_time_check, reset_onboarding, 
+										is_step_completed)
 from app.ui.application_routes import check_welcome
 
 
 @app.route('/account', methods=['GET'])
 @login_required
 def account_main():
-	first_time_check('set_pwd', current_user, edit_entry=False)
+	if is_step_completed('set_pwd', current_user):
+		first_time_check('choose_messages', current_user, edit_entry=False)
+	else:
+		first_time_check('set_pwd', current_user, edit_entry=False)
 	onboarding = check_welcome(jsonified=False)
 	return render_template('account.html', account=current_user.to_dict(), 
 							onboarding=onboarding)
@@ -85,5 +90,34 @@ def account_change_password():
 							formname='Change Password',
 							action=url_for('account_change_password'),
 							id='change-password-form')
+					})
+	return redirect(url_for('account_main'))
+
+
+@app.route('/account/choose-messages', methods=['GET', 'POST'])
+@login_required
+def account_choose_messages():
+	form = ChooseMessages()
+	form.southbound_messages.choices = [(msg, msg) 
+										for msg in rule.get_messages_list('southbound')]
+	form.northbound_messages.choices = [(msg, msg) 
+										for msg in rule.get_messages_list('northbound')]
+	if form.validate_on_submit():
+		data = current_user.to_dict()['data']
+		data['message_types']['northbound'] = form.northbound_messages.data
+		data['message_types']['southbound'] = form.southbound_messages.data
+		current_user.data = json.dumps(data)
+		db.session.commit()
+		first_time_check('choose_messages', current_user, flash_desc=False)
+	elif request.method == 'GET':
+		data = current_user.to_dict()['data']['message_types']
+		form.southbound_messages.data = data['southbound']
+		form.northbound_messages.data = data['northbound']
+		return jsonify({
+					'html': render_template('embedded_form.html',
+							form=form,
+							formname='Choose Messages',
+							action=url_for('account_choose_messages'),
+							id='choose-messages-form')
 					})
 	return redirect(url_for('account_main'))

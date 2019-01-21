@@ -18,7 +18,7 @@ def explorer_main():
                             action='#',
                             id='post-{}'.format(message))
 						}
-					for message in rule.get_southbound_messages()]
+					for message in rule.get_messages_list('southbound')]
 		return render_template('explorer/explorer_main.html', 
 								messages=messages,
 								profile=profile,

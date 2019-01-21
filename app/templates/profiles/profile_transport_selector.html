@@ -1,0 +1,10 @@
+<h6 class="center-align">Select {{ message_settings.name }} message transport</h6>
+<div class="row">
+    <div class="col s12 center-align">
+        {% for transport in transports %}
+        <a href="javascript:apply_transport_settings('{{ token }}', '{{ direction }}', '{{ message_settings.name }}', '{{ transport.format }}', '{{ transport.transport }}')" class="btn blue darken-4 waves-effect">
+            {{ transport.format }} via {{ transport.transport }}
+        </a>
+        {% endfor %}
+    </div>
+</div>

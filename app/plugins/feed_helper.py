@@ -25,13 +25,20 @@ def get_filters(request):
 
 
 
-def filter_feed(filters, user_profiles, return_data=False, order="desc"):
+def filter_feed(filters, user_profiles, user, return_data=False, order="desc"):
 	messages = Message.query
 	filtered = False
+	valid_types = user['data']['message_types']['northbound'] + user['data']['message_types']['southbound']
+	valid_types = valid_types + [msg+'-response' for msg in valid_types]
+
 	if len(filters['message_type'])>0:
 		messages = messages.filter(
 							Message.message_type.in_(filters['message_type']))
 		filtered = True
+	else:
+		messages = messages.filter(
+							Message.message_type.in_(valid_types))
+
 	if len(filters['profile'])>0:
 		messages = messages.filter(Message.token_id.in_(filters['profile']))
 		profiles = Profile.query.filter(

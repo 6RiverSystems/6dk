@@ -74,3 +74,18 @@ def verify_first_pick_wave(token):
 	current_user = Profile.find_owner(token)
 	if current_user:
 		first_time_check('post_pick_wave', current_user, flash_desc=False)
+
+
+def enabled_message(token, message_type):
+	user = Profile.find_owner(token)
+	if user:
+		user = user.to_dict()
+		valid = user['data']['message_types']['northbound'] \
+				+ user['data']['message_types']['southbound']
+		valid = valid + [msg+'-response' for msg in valid]
+		if message_type in valid:
+			return True
+		else:
+			return False
+	else:
+		return False
