@@ -1,0 +1,53 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/python:3
+    steps:
+      - checkout
+      - run:
+          name: Set Up CI Environment
+          command: |
+            git submodule update --init
+            sudo pip install pipenv
+      - run:
+          name: pipenv install
+          command: |
+            sudo apt-get install python3-dev
+            pipenv install
+      - run:
+          name: tests 
+          command: pipenv run coverage run --source app/ tests.py
+      - run: 
+          name: upload coverage 
+          command: pipenv run coveralls
+      - persist_to_workspace:
+          root: ./
+          paths:
+            - .
+  publish:
+    docker:
+      - image: circleci/python:3
+    steps:
+      - setup_remote_docker
+      - attach_workspace:
+          at: ./
+      - run:
+          name: Publish Docker
+          command: |
+            ci_scripts/ci_tool.sh --run_release
+            ci_scripts/ci_tool.sh --docker_login
+            docker build -t gcr.io/plasma-column-128721/6dk:$(cat .version) .
+            docker push gcr.io/plasma-column-128721/6dk:$(cat .version)
+  
+workflows:
+  version: 2
+
+  test_and_publish:
+    jobs:
+      - build:
+          context: 6rs-circle
+      - publish:
+          context: 6rs-circle
+          requires:
+            - build
