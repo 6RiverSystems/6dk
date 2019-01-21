@@ -126,7 +126,7 @@
         "containerType": true,
         "sourceLocation": true
       },
-      "name": "group-cancels",
+      "name": "container-cancels",
       "format": "JSON",
       "transport": "HTTPS"
     }
