@@ -22,3 +22,4 @@ class Config(object):
 class TestingConfig(Config):
     TESTING = True
     WTF_CSRF_ENABLED = False
+    
