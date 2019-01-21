@@ -2,18 +2,21 @@ from flask_wtf import FlaskForm
 from wtforms import (StringField, PasswordField, BooleanField, SubmitField, 
 					IntegerField, TextAreaField, SelectMultipleField,
 					SelectField)
-from wtforms.validators import DataRequired, Email, EqualTo, Length
+from wtforms.validators import (DataRequired, Email, EqualTo, Length)
 
 
 class LoginForm(FlaskForm):
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
+    email = StringField('Email', validators=[
+    										DataRequired(message="Enter your email."), 
+    										Email(message="Enter a valid email address.")])
+    password = PasswordField('Password', validators=[DataRequired(message="Enter your password")])
     remember_me = BooleanField('Remember Me')
     submit = SubmitField('Login')
 
 
 class ResetPasswordRequestForm(FlaskForm):
-    email = StringField('Email', validators=[DataRequired(), Email()])
+    email = StringField('Email', validators=[DataRequired(), 
+    										Email(message="Enter a valid email address.")])
     submit = SubmitField('Request Password Reset')
 
 
@@ -27,7 +30,8 @@ class ResetPasswordForm(FlaskForm):
 class EditAccount(FlaskForm):
 	first_name = StringField('Email', validators=[DataRequired()])
 	last_name = StringField('Email', validators=[DataRequired()])
-	email = StringField('Email', validators=[DataRequired(), Email()])
+	email = StringField('Email', validators=[DataRequired(), 
+											Email(message="Enter a valid email address.")])
 	password = PasswordField('Password', validators=[DataRequired()])
 	submit = SubmitField('Save')
 
@@ -46,7 +50,8 @@ class ProfileForm(FlaskForm):
 
 
 class ForwardProfileForm(FlaskForm):
-	recipient = StringField('Recipient Email', validators=[DataRequired()])
+	recipient = StringField('Recipient Email', validators=[DataRequired(), 
+												Email(message="Enter a valid email address.")])
 	submit = SubmitField('Submit')
 
 
@@ -67,7 +72,7 @@ class ExplorerMessage(FlaskForm):
 class NbMessageHttps(FlaskForm):
 	wms_host = StringField('WMS Host', validators=[DataRequired()],
 						render_kw={"placeholder": "https://wms.warehouse.com"})
-	wms_port = IntegerField('WMS Port', validators=[DataRequired()],
+	wms_port = StringField('WMS Port', validators=[DataRequired()],
 						render_kw={"placeholder": "443"})
 	wms_path = StringField('WMS Path', validators=[DataRequired()],
 						render_kw={"placeholder": "northbound/messages"})
@@ -80,7 +85,7 @@ class NbMessageHttps(FlaskForm):
 class NbMessageSftp(FlaskForm):
 	wms_host = StringField('WMS Host', validators=[DataRequired()],
 						render_kw={"placeholder": "sftp://wms.warehouse.com"})
-	wms_port = IntegerField('WMS Port', validators=[DataRequired()],
+	wms_port = StringField('WMS Port', validators=[DataRequired()],
 						render_kw={"placeholder": "22"})
 	wms_path = StringField('WMS Path', validators=[DataRequired()],
 						render_kw={"placeholder": "northbound"})

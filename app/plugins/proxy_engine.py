@@ -74,7 +74,7 @@ def wms_forwarder(data, masked_data, message_type, incoming_endpoint, token,
 								if msg['name'] == message_type
 								), None)
 		if message_settings:
-			if message_settings['send']:
+			if message_settings['send'] and not profile['deleted']:
 				destination = message_settings['wms_host'] \
 							+ ':' + str(message_settings['wms_port']) \
 							+ '/' + message_settings['wms_path']

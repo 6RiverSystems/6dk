@@ -562,15 +562,6 @@
           "adapter_headers": {
             "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
           }
-        },
-        {
-          "transport": "SFTP",
-          "format": "CSV",
-          "adapter_required": true,
-          "adapter_endpoint": null,
-          "adapter_headers": {
-            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
-          }
         }
       ],
       "tags": [

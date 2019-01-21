@@ -95,7 +95,6 @@ Direct
 Directed
 Disciplined
 Discreet
-Discriminating
 Distinct
 Dominant
 Dreamer
@@ -135,7 +134,6 @@ Fascinating
 Fashionable
 Fearless
 Feisty
-Feminine
 Fervent
 Fighter
 Fine
@@ -181,7 +179,6 @@ Hopeful
 Humble
 Humorous
 Hyperactive
-Hypochondriac
 Idealistic
 Imaginative
 Immaculate
@@ -209,11 +206,8 @@ Joyous
 Judgmental
 Keen
 Kind
-Kind
 Kind-hearted
 Knowledgeable
-Knowledgeable
-Laid-back
 Laid-back
 Leader
 Leadership
@@ -226,8 +220,6 @@ Likable
 Likeable
 Lively
 Logical
-Lovable
-Loveable
 Lovely
 Loving
 Loyal
@@ -238,7 +230,6 @@ Mannerly
 Materialistic
 Mature
 Mean
-Melancholy
 Mellow
 Memorable
 Merry
@@ -268,7 +259,6 @@ Optimistic
 Organized
 Original
 Outgoing
-Painstaking
 Passive
 Patient
 Patriotic
@@ -360,7 +350,6 @@ Serious
 Sharp
 Sharp-witted
 Short
-Shrewd
 Shy
 Sincere
 Skillful
@@ -375,7 +364,6 @@ Spontaneous
 Spunky
 Stable
 Steadfast
-Steady
 Steady
 Stimulating
 Strong
@@ -405,7 +393,6 @@ Tricky
 Trusting
 Trustworthy
 Truthful
-Ugly
 Unbiased
 Understanding
 Unique
