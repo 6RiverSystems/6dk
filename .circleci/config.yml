@@ -18,9 +18,6 @@ jobs:
       - run:
           name: tests 
           command: pipenv run coverage run --source app/ tests.py
-      - run: 
-          name: upload coverage 
-          command: pipenv run coveralls
       - persist_to_workspace:
           root: ./
           paths:
