@@ -9,24 +9,41 @@ class Rule():
 		self.app_config = app_config
 
 
-	def get_northbound_messages(self):
-		return self.rules_dictionary['northbound_message_list']
+	def get_messages_list(self, tag, exclude=['response']):
+		return [
+				message['message_type'] 
+				for message in self.rules_dictionary['messages'] 
+				if tag in message['tags']
+				and set(message['tags']).isdisjoint(exclude)
+				]
 
 
-	def get_southbound_messages(self):
-		return self.rules_dictionary['southbound_message_list']
+	def get_message_transports(self, message_settings):
+		message = next((rule for rule in self.rules_dictionary['messages']
+						if rule['message_type']==message_settings['name']), None)
+		return message['valid_transports']
 
 
-	def get_all_messages(self):
-		messages = self.get_northbound_messages() + self.get_southbound_messages()
+	def get_transporter_rules(self, message_type, message_transport, message_format):
+		message = next((rule for rule in self.rules_dictionary['messages']
+						if rule['message_type']==message_type), None)
+		return next((transporter for transporter in message['valid_transports'] 
+					if transporter['format']==message_format \
+					and transporter['transport']==message_transport), None)
+
+
+	def get_all_messages(self, user):
+		messages = self.get_messages_list('northbound') + self.get_messages_list('southbound')
+		messages = [msg for msg in messages 
+					if msg in (user['data']['message_types']['northbound'] + user['data']['message_types']['southbound'])]
 		messages = [msg+'-response' for msg in messages] + messages
 		messages.sort()
 		return messages
 
-	def substitutes(self, message_type, message_format='JSON'):
+
+	def substitutes(self, message_type):
 		message = next((rule for rule in self.rules_dictionary['messages']
-						if rule['message_type']==message_type
-						and rule['message_format']==message_format), None)
+						if rule['message_type']==message_type), None)
 		if message:
 			if 'substitute_paths' in message.keys():
 				return message['substitute_paths']
@@ -36,10 +53,9 @@ class Rule():
 			return
 
 
-	def sanitizers(self, message_type, message_format='JSON'):
+	def sanitizers(self, message_type):
 		message = next((rule for rule in self.rules_dictionary['messages']
-						if rule['message_type']==message_type
-						and rule['message_format']==message_format), None)
+						if rule['message_type']==message_type), None)
 		if message:
 			if 'sanitize_paths' in message.keys():
 				return message['sanitize_paths']
@@ -49,11 +65,9 @@ class Rule():
 			return
 
 
-	def sanitize_value(self, message_type, field_name, 
-						message_format='JSON', exception=False):
+	def sanitize_value(self, message_type, field_name, exception=False):
 		message = next((rule for rule in self.rules_dictionary['messages']
-						if rule['message_type']==message_type
-						and rule['message_format']==message_format), None)
+						if rule['message_type']==message_type), None)
 		if message:
 			sanitizer_name = next((rule['sanitizer'] for rule in message['sanitize_paths']
 							if rule['field_name']==field_name), None)

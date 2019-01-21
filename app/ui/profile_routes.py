@@ -4,7 +4,7 @@ from flask import render_template, redirect, url_for, flash, jsonify, request
 from flask_login import current_user, login_required
 from urllib.parse import parse_qs
 
-from app import app, db
+from app import app, db, rule
 from app.ui._forms import ForwardProfileForm
 from app.models import Profile, User
 from app.plugins.profile_helper import (create_new_profile, make_profile_active,
@@ -15,7 +15,8 @@ from app.plugins.profile_helper import (create_new_profile, make_profile_active,
                                         serve_southbound_settings_form,
                                         serve_forward_profile_form,
                                         update_northbound_settings,
-                                        display_message_settings)
+                                        display_message_settings,
+                                        serve_transport_selector_form)
 from app.plugins.mail_helper import (send_forward_profile_email, 
                                         send_accept_profile_email)
 from app.plugins.general_helper import first_time_check, is_step_completed
@@ -162,6 +163,7 @@ def undelete_profile(token):
 
 
 @app.route('/profiles/<token>/activate', methods=['GET', 'POST'])
+@login_required
 def activate_profile(token):
     if not current_user.owns_token(token):
         flash('You do not own token: {}'.format(token))
@@ -172,20 +174,30 @@ def activate_profile(token):
 
 
 @app.route('/profiles/<token>/settings', methods=['GET', 'POST'])
+@login_required
 def retrieve_settings(token):
     if not current_user.owns_token(token):
         return jsonify({'html':'You do not own token: {}'.format(token)})
     else:
         profile = Profile.query.filter_by(token_id=token).first().to_dict()
+        user = current_user.to_dict()
+        has_northbound = not set(user['data']['message_types']['northbound']
+                            ).isdisjoint([msg['name'] for msg in profile['data']['northbound_messages']])
+        has_southbound = not set(user['data']['message_types']['southbound']
+                            ).isdisjoint([msg['name'] for msg in profile['data']['southbound_messages']])
         return jsonify({
                         'html': render_template('profiles/profile_settings.html',
-                                                profile=profile),
+                                                profile=profile,
+                                                user=user,
+                                                has_northbound=has_northbound,
+                                                has_southbound=has_southbound),
                         'data': profile['data']
                         })
 
 
 @app.route('/profiles/<token>/<message_direction>/<message_type>/settings/<action>', 
             methods=['GET', 'POST'])
+@login_required
 def message_settings(token, message_direction, message_type, action):
     if not current_user.owns_token(token):
         return jsonify({'html':'You do not own token: {}'.format(token)})
@@ -204,15 +216,45 @@ def message_settings(token, message_direction, message_type, action):
                                                 new_settings)
             elif action=='view':
                 return display_message_settings(token, message_settings, 
-                                                'northbound')                
+                                                'northbound') 
+            elif action=='change-transport':
+                return serve_transport_selector_form(token, message_settings, 'northbound')            
         elif message_direction == 'southbound':
             message_settings = next(message 
                                     for message in profile['data']['southbound_messages']
                                     if message['name']==message_type)
             if action=='retrieve':
                 return serve_southbound_settings_form(token, message_settings)
-            elif action=='apply':
-                new_settings = parse_qs(request.form.to_dict()['formdata'])
-                first_time_check('mod_profile', current_user, flash_desc=False)
-                return display_message_settings(token, message_settings, 
-                                                'southbound')    
+            elif action=='change-transport':
+                return serve_transport_selector_form(token, message_settings, 'southbound')   
+
+
+@app.route('/profiles/<token>/<message_direction>/<message_type>/settings/apply-transport/<message_format>/<message_transport>', 
+            methods=['POST'])
+@login_required
+def change_message_transport(token, message_direction, message_type, message_format, message_transport):
+    if not current_user.owns_token(token):
+        return jsonify({'html':'You do not own token: {}'.format(token)})
+    else:
+        first_time_check('mod_profile', current_user, flash_desc=False)
+        profile_obj = Profile.query.filter_by(token_id=token).first()
+        profile = profile_obj.to_dict()
+        message_settings = next(message for message in profile['data'][message_direction+'_messages'] 
+                                if message['name']==message_type)
+        transports = rule.get_message_transports(message_settings)
+        valid = next((transport for transport in transports 
+                        if transport['format']==message_format 
+                        and transport['transport']==message_transport), None)
+        if valid:
+            message_settings['format'] = message_format
+            message_settings['transport'] = message_transport
+            message_settings['send'] = False
+            profile_obj.data = json.dumps(profile['data'])
+            db.session.commit()
+            if message_direction=='northbound':
+                return redirect(url_for('message_settings', token=token, message_direction=message_direction, 
+                                message_type=message_type, action='retrieve'))
+            else:
+                return redirect(url_for('retrieve_settings', token=token))
+        else:
+            return jsonify({'html':'Invalid message transport'})  

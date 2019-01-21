@@ -1,0 +1,32 @@
+{
+	"timestamp": "2018-04-11T11:30:52-04:00",
+	"messageType": "groupUpdate",
+	"groupType": "orderPick",
+	"groupID": "6RSTEST10006",
+	"picks": [
+		{
+			"pickID": "00000001",
+			"sourceLocation": "710011255",
+			"eachQuantity": 12,
+			"product": {
+				"productID": "445433",
+				"unitOfMeasure": "each",
+				"unitOfMeasureQuantity": 1.0,
+				"name": "SAVANNAH DINNER PLATE",
+				"description": "SAVANNAH DINNER PLATE",
+				"length": 10.87,
+				"width": 10.87,
+				"height": 1.0,
+				"weight": 1.9,
+				"dimensionUnitOfMeasure": "inches",
+				"weightUnitOfMeasure": "pounds",
+				"identifiers": [
+					"445433"
+				]
+			}
+		}
+	],
+	"data": {
+		"MessageId": "68F94D80-8645-43F8-A5F9-3942E1797305"
+	}
+}

@@ -1,0 +1,9 @@
+{
+	"timestamp": "2018-04-11T11:30:52-04:00",
+	"messageType": "groupCancel",
+	"groupType": "orderPick",
+	"groupID": "6RSTEST10006",
+	"data": {
+		"MessageId": "00d5cf5b-58cb-433e-b07c-041dc67a1297"
+	}
+}

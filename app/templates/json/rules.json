@@ -1,23 +1,7 @@
 {
-  "southbound_message_list": [
-    "pick-waves",
-    "group-updates",
-    "group-cancels"
-  ],
-  "northbound_message_list": [
-    "container-accepted",
-    "acknowledgement",
-    "print-request",
-    "container-validation",
-    "container-inducted",
-    "pick-task-picked",
-    "container-picked-complete",
-    "container-taken-off"
-  ],
   "messages": [
     {
       "message_type": "pick-waves",
-      "message_format": "JSON",
       "substitute_paths": [
         {
           "key_path": "picks.\\d+.groupID",
@@ -47,11 +31,43 @@
           "field_name": "sourceLocation",
           "sanitizer": "sourceLocation"
         }
+      ],
+      "valid_transports": [
+        {
+          "transport": "HTTPS",
+          "format": "JSON",
+          "adapter_required": false,
+          "adapter_endpoint": null,
+          "adapter_headers": {
+            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
+          }
+        },
+        {
+          "transport": "HTTPS",
+          "format": "XML",
+          "adapter_required": true,
+          "adapter_endpoint": null,
+          "adapter_headers": {
+            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
+          }
+        },
+        {
+          "transport": "SFTP",
+          "format": "CSV",
+          "adapter_required": true,
+          "adapter_endpoint": null,
+          "adapter_headers": {
+            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
+          }
+        }
+      ],
+      "tags": [
+        "southbound",
+        "required"
       ]
     },
     {
       "message_type": "pick-waves-response",
-      "message_format": "JSON",
       "substitute_paths": [
         {
           "key_path": "picks.\\d+.groupID",
@@ -81,11 +97,43 @@
           "field_name": "sourceLocation",
           "sanitizer": "sourceLocation"
         }
+      ],
+      "valid_transports": [
+        {
+          "transport": "HTTPS",
+          "format": "JSON",
+          "adapter_required": false,
+          "adapter_endpoint": null,
+          "adapter_headers": {
+            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
+          }
+        },
+        {
+          "transport": "HTTPS",
+          "format": "XML",
+          "adapter_required": true,
+          "adapter_endpoint": null,
+          "adapter_headers": {
+            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
+          }
+        },
+        {
+          "transport": "SFTP",
+          "format": "CSV",
+          "adapter_required": true,
+          "adapter_endpoint": null,
+          "adapter_headers": {
+            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
+          }
+        }
+      ],
+      "tags": [
+        "northbound",
+        "response"
       ]
     },
     {
       "message_type": "group-updates",
-      "message_format": "JSON",
       "substitute_paths": [
         {
           "key_path": "groupID",
@@ -121,12 +169,49 @@
           "key_path": "picks.\\d+.container.containerType",
           "field_name": "containerType",
           "sanitizer": "containerType"
+        },
+        {
+          "key_path": "picks.\\d+.sourceLocation",
+          "field_name": "sourceLocation",
+          "sanitizer": "sourceLocation"
         }
+      ],
+      "valid_transports": [
+        {
+          "transport": "HTTPS",
+          "format": "JSON",
+          "adapter_required": false,
+          "adapter_endpoint": null,
+          "adapter_headers": {
+            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
+          }
+        },
+        {
+          "transport": "HTTPS",
+          "format": "XML",
+          "adapter_required": true,
+          "adapter_endpoint": null,
+          "adapter_headers": {
+            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
+          }
+        },
+        {
+          "transport": "SFTP",
+          "format": "CSV",
+          "adapter_required": true,
+          "adapter_endpoint": null,
+          "adapter_headers": {
+            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
+          }
+        }
+      ],
+      "tags": [
+        "southbound",
+        "order_update"
       ]
     },
     {
       "message_type": "group-updates-response",
-      "message_format": "JSON",
       "substitute_paths": [
         {
           "key_path": "groupID",
@@ -162,12 +247,49 @@
           "key_path": "picks.\\d+.container.containerType",
           "field_name": "containerType",
           "sanitizer": "containerType"
+        },
+        {
+          "key_path": "picks.\\d+.sourceLocation",
+          "field_name": "sourceLocation",
+          "sanitizer": "sourceLocation"
         }
+      ],
+      "valid_transports": [
+        {
+          "transport": "HTTPS",
+          "format": "JSON",
+          "adapter_required": false,
+          "adapter_endpoint": null,
+          "adapter_headers": {
+            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
+          }
+        },
+        {
+          "transport": "HTTPS",
+          "format": "XML",
+          "adapter_required": true,
+          "adapter_endpoint": null,
+          "adapter_headers": {
+            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
+          }
+        },
+        {
+          "transport": "SFTP",
+          "format": "CSV",
+          "adapter_required": true,
+          "adapter_endpoint": null,
+          "adapter_headers": {
+            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
+          }
+        }
+      ],
+      "tags": [
+        "northbound",
+        "response"
       ]
     },
     {
-      "message_type": "group-cancels",
-      "message_format": "JSON",
+      "message_type": "container-cancels",
       "substitute_paths": [
         {
           "key_path": "groupID",
@@ -178,11 +300,43 @@
           "field_name": "containerID"
         }
       ],
-      "sanitize_paths": []
+      "sanitize_paths": [],
+      "valid_transports": [
+        {
+          "transport": "HTTPS",
+          "format": "JSON",
+          "adapter_required": false,
+          "adapter_endpoint": null,
+          "adapter_headers": {
+            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
+          }
+        },
+        {
+          "transport": "HTTPS",
+          "format": "XML",
+          "adapter_required": true,
+          "adapter_endpoint": null,
+          "adapter_headers": {
+            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
+          }
+        },
+        {
+          "transport": "SFTP",
+          "format": "CSV",
+          "adapter_required": true,
+          "adapter_endpoint": null,
+          "adapter_headers": {
+            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
+          }
+        }
+      ],
+      "tags": [
+        "southbound",
+        "order_update"
+      ]
     },
     {
-      "message_type": "group-cancels-response",
-      "message_format": "JSON",
+      "message_type": "container-cancels-response",
       "substitute_paths": [
         {
           "key_path": "groupID",
@@ -193,11 +347,43 @@
           "field_name": "containerID"
         }
       ],
-      "sanitize_paths": []
+      "sanitize_paths": [],
+      "valid_transports": [
+        {
+          "transport": "HTTPS",
+          "format": "JSON",
+          "adapter_required": false,
+          "adapter_endpoint": null,
+          "adapter_headers": {
+            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
+          }
+        },
+        {
+          "transport": "HTTPS",
+          "format": "XML",
+          "adapter_required": true,
+          "adapter_endpoint": null,
+          "adapter_headers": {
+            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
+          }
+        },
+        {
+          "transport": "SFTP",
+          "format": "CSV",
+          "adapter_required": true,
+          "adapter_endpoint": null,
+          "adapter_headers": {
+            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
+          }
+        }
+      ],
+      "tags": [
+        "northbound",
+        "response"
+      ]
     },
     {
       "message_type": "acknowledgement",
-      "message_format": "JSON",
       "substitute_paths": [
         {
           "key_path": "containerID",
@@ -208,11 +394,42 @@
           "field_name": "groupID"
         }
       ],
-      "sanitize_paths": []
+      "sanitize_paths": [],
+      "valid_transports": [
+        {
+          "transport": "HTTPS",
+          "format": "JSON",
+          "adapter_required": false,
+          "adapter_endpoint": null,
+          "adapter_headers": {
+            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
+          }
+        },
+        {
+          "transport": "HTTPS",
+          "format": "XML",
+          "adapter_required": true,
+          "adapter_endpoint": null,
+          "adapter_headers": {
+            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
+          }
+        },
+        {
+          "transport": "SFTP",
+          "format": "CSV",
+          "adapter_required": true,
+          "adapter_endpoint": null,
+          "adapter_headers": {
+            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
+          }
+        }
+      ],
+      "tags": [
+        "northbound"
+      ]
     },
     {
       "message_type": "print-request",
-      "message_format": "JSON",
       "substitute_paths": [
         {
           "key_path": "containers.\\d+.containerID",
@@ -223,11 +440,33 @@
           "field_name": "groupID"
         }
       ],
-      "sanitize_paths": []
+      "sanitize_paths": [],
+      "valid_transports": [
+        {
+          "transport": "HTTPS",
+          "format": "JSON",
+          "adapter_required": false,
+          "adapter_endpoint": null,
+          "adapter_headers": {
+            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
+          }
+        },
+        {
+          "transport": "HTTPS",
+          "format": "XML",
+          "adapter_required": true,
+          "adapter_endpoint": null,
+          "adapter_headers": {
+            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
+          }
+        }
+      ],
+      "tags": [
+        "northbound"
+      ]
     },
     {
       "message_type": "container-accepted",
-      "message_format": "JSON",
       "substitute_paths": [
         {
           "key_path": "groupID",
@@ -257,11 +496,43 @@
           "field_name": "sourceLocation",
           "sanitizer": "sourceLocation"
         }
+      ],
+      "valid_transports": [
+        {
+          "transport": "HTTPS",
+          "format": "JSON",
+          "adapter_required": false,
+          "adapter_endpoint": null,
+          "adapter_headers": {
+            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
+          }
+        },
+        {
+          "transport": "HTTPS",
+          "format": "XML",
+          "adapter_required": true,
+          "adapter_endpoint": null,
+          "adapter_headers": {
+            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
+          }
+        },
+        {
+          "transport": "SFTP",
+          "format": "CSV",
+          "adapter_required": true,
+          "adapter_endpoint": null,
+          "adapter_headers": {
+            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
+          }
+        }
+      ],
+      "tags": [
+        "northbound",
+        "container_lifecycle"
       ]
     },
     {
       "message_type": "container-validation",
-      "message_format": "JSON",
       "substitute_paths": [
         {
           "key_path": "groupID",
@@ -272,11 +543,42 @@
           "field_name": "containerID"
         }
       ],
-      "sanitize_paths": []
+      "sanitize_paths": [],
+      "valid_transports": [
+        {
+          "transport": "HTTPS",
+          "format": "JSON",
+          "adapter_required": false,
+          "adapter_endpoint": null,
+          "adapter_headers": {
+            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
+          }
+        },
+        {
+          "transport": "HTTPS",
+          "format": "XML",
+          "adapter_required": true,
+          "adapter_endpoint": null,
+          "adapter_headers": {
+            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
+          }
+        },
+        {
+          "transport": "SFTP",
+          "format": "CSV",
+          "adapter_required": true,
+          "adapter_endpoint": null,
+          "adapter_headers": {
+            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
+          }
+        }
+      ],
+      "tags": [
+        "northbound"
+      ]
     },
     {
       "message_type": "container-inducted",
-      "message_format": "JSON",
       "substitute_paths": [
         {
           "key_path": "groupID",
@@ -306,11 +608,43 @@
           "field_name": "sourceLocation",
           "sanitizer": "sourceLocation"
         }
+      ],
+      "valid_transports": [
+        {
+          "transport": "HTTPS",
+          "format": "JSON",
+          "adapter_required": false,
+          "adapter_endpoint": null,
+          "adapter_headers": {
+            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
+          }
+        },
+        {
+          "transport": "HTTPS",
+          "format": "XML",
+          "adapter_required": true,
+          "adapter_endpoint": null,
+          "adapter_headers": {
+            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
+          }
+        },
+        {
+          "transport": "SFTP",
+          "format": "CSV",
+          "adapter_required": true,
+          "adapter_endpoint": null,
+          "adapter_headers": {
+            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
+          }
+        }
+      ],
+      "tags": [
+        "northbound",
+        "container_lifecycle"
       ]
     },
     {
       "message_type": "pick-task-picked",
-      "message_format": "JSON",
       "substitute_paths": [
         {
           "key_path": "groupID",
@@ -340,11 +674,43 @@
           "field_name": "sourceLocation",
           "sanitizer": "sourceLocation"
         }
+      ],
+      "valid_transports": [
+        {
+          "transport": "HTTPS",
+          "format": "JSON",
+          "adapter_required": false,
+          "adapter_endpoint": null,
+          "adapter_headers": {
+            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
+          }
+        },
+        {
+          "transport": "HTTPS",
+          "format": "XML",
+          "adapter_required": true,
+          "adapter_endpoint": null,
+          "adapter_headers": {
+            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
+          }
+        },
+        {
+          "transport": "SFTP",
+          "format": "CSV",
+          "adapter_required": true,
+          "adapter_endpoint": null,
+          "adapter_headers": {
+            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
+          }
+        }
+      ],
+      "tags": [
+        "northbound",
+        "container_lifecycle"
       ]
     },
     {
       "message_type": "container-picked-complete",
-      "message_format": "JSON",
       "substitute_paths": [
         {
           "key_path": "groupID",
@@ -374,11 +740,43 @@
           "field_name": "sourceLocation",
           "sanitizer": "sourceLocation"
         }
+      ],
+      "valid_transports": [
+        {
+          "transport": "HTTPS",
+          "format": "JSON",
+          "adapter_required": false,
+          "adapter_endpoint": null,
+          "adapter_headers": {
+            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
+          }
+        },
+        {
+          "transport": "HTTPS",
+          "format": "XML",
+          "adapter_required": true,
+          "adapter_endpoint": null,
+          "adapter_headers": {
+            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
+          }
+        },
+        {
+          "transport": "SFTP",
+          "format": "CSV",
+          "adapter_required": true,
+          "adapter_endpoint": null,
+          "adapter_headers": {
+            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
+          }
+        }
+      ],
+      "tags": [
+        "northbound",
+        "container_lifecycle"
       ]
     },
     {
       "message_type": "container-taken-off",
-      "message_format": "JSON",
       "substitute_paths": [
         {
           "key_path": "groupID",
@@ -408,6 +806,39 @@
           "field_name": "sourceLocation",
           "sanitizer": "sourceLocation"
         }
+      ],
+      "valid_transports": [
+        {
+          "transport": "HTTPS",
+          "format": "JSON",
+          "adapter_required": false,
+          "adapter_endpoint": null,
+          "adapter_headers": {
+            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
+          }
+        },
+        {
+          "transport": "HTTPS",
+          "format": "XML",
+          "adapter_required": true,
+          "adapter_endpoint": null,
+          "adapter_headers": {
+            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
+          }
+        },
+        {
+          "transport": "SFTP",
+          "format": "CSV",
+          "adapter_required": true,
+          "adapter_endpoint": null,
+          "adapter_headers": {
+            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
+          }
+        }
+      ],
+      "tags": [
+        "northbound",
+        "container_lifecycle"
       ]
     }
   ],

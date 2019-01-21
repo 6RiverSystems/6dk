@@ -9,20 +9,28 @@ from app.models import Message, Profile
 from app.plugins.decipher_engine import decipher
 from app.plugins.proxy_engine import wms_forwarder
 from app.plugins.proxy_engine import wms_repeater
+from app.plugins.general_helper import enabled_message
 
 
 @app.route('/wms/<message_type>', methods=['POST'])
 def receive_wms_request(message_type):
-	valid_messages = rule.get_northbound_messages()
+	"""
+	only attempt to get JSON if token says transport is JSON via HTTPS
+	otherwise use adapter
+	"""
+	valid_messages = rule.get_messages_list('northbound')
 	if message_type in valid_messages:
 		original_payload = request.get_json(force=True) or {}
 		payload = copy.deepcopy(original_payload)
 		logger.debug('receiving {0} message: {1}'.format(message_type, payload))
 		token, unmasked_data = decipher(payload, message_type)
 		if token:
-			return wms_forwarder(unmasked_data, original_payload, message_type, 
-						'/wms/{}'.format(message_type), token, 
-						request)
+			if enabled_message(token, message_type):
+				return wms_forwarder(unmasked_data, original_payload, message_type, 
+							'/wms/{}'.format(message_type), token, 
+							request)
+			else:
+				jsonify({'message': 'accepted but origin wms is not configured to receive {}'.format(message_type)})
 		else:
 			return jsonify({'message': 'accepted but origin wms not found'})	
 	else:

@@ -4,6 +4,7 @@ from datetime import datetime
 
 from flask import render_template, jsonify, url_for, request
 from flask_login import current_user, login_required
+import lxml.etree as etree
 
 from app import app, db, rule
 from app.ui._forms import FeedForm
@@ -21,10 +22,10 @@ def feed_main():
         current_user.last_feed_load_time = datetime.utcnow()
         db.session.commit()
     filters = get_filters(request)
-    messages, filters = filter_feed(filters, user_profiles)
-    valid_northbound = rule.get_northbound_messages()
+    messages, filters = filter_feed(filters, user_profiles, current_user.to_dict())
+    valid_northbound = rule.get_messages_list('northbound')
     form = FeedForm()
-    form.message_type.choices = [(msg, msg) for msg in rule.get_all_messages()]
+    form.message_type.choices = [(msg, msg) for msg in rule.get_all_messages(current_user.to_dict())]
     form.profile.choices = [(profile['token_id'], profile['data']['friendly_name'])
                             for profile in user_profiles]
     form_render = render_template('embedded_form.html',
@@ -52,9 +53,24 @@ def feed_message(message_id, task):
     message = Message.query.filter_by(id=message_id).first(
                                     ).to_dict(parse_timestamps=True,
                                                 include_profile=True)
-    message_data = json.dumps(json.loads(message['unmasked_data']), indent=4, 
-                                                                sort_keys=True)
-    size = sys.getsizeof(json.dumps(json.loads(message['unmasked_data'])))
+    err = False
+    if message['message_format']=='JSON':
+        try:
+            message_data = json.dumps(json.loads(message['unmasked_data']), indent=4, 
+                                                                        sort_keys=True)
+        except:
+            err = True
+    elif message['message_format']=='XML':
+        try:
+            xml = etree.fromstring(message['unmasked_data'].encode('utf-8'))
+            message_data = etree.tostring(xml, pretty_print=True).decode('utf-8')
+        except:
+            err = True
+    else:
+        err = True
+    if err:
+        message_data = message['unmasked_data']
+    size = sys.getsizeof(message['unmasked_data'])
     replays = Message.get_replays(message_id)
     return jsonify({
                     'html': render_template('feed/feed_message_options.html',
@@ -78,5 +94,5 @@ def new_messages():
 def count_transmissions():
     filters = get_filters(request)
     user_profiles = current_user.load_user_profiles()
-    data, filters = filter_feed(filters, user_profiles, return_data=True, order="asc")
+    data, filters = filter_feed(filters, user_profiles, current_user.to_dict(), return_data=True, order="asc")
     return jsonify({'count': filters['transmissions']})

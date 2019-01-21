@@ -10,6 +10,15 @@
       "completed": null
     },
     {
+      "key": "choose_messages",
+      "name": "Choose your messages",
+      "instructions": "Click account to choose your messages.",
+      "description": "Let us know which message types you would like to use.",
+      "open": true,
+      "change_on_reset": false,
+      "completed": null
+    },
+    {
       "key": "create_profile",
       "name": "Create a profile.",
       "instructions": "Click profiles to create a profile",
@@ -55,5 +64,9 @@
       "completed": null
     }
   ],
-  "accepted_onboarding": false
+  "accepted_onboarding": false,
+  "message_types": {
+    "northbound": [],
+    "southbound": []
+  }
 }

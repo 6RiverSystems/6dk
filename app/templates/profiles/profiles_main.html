@@ -174,6 +174,34 @@
 </script>
 
 <script>
+  function get_message_transport_selector(token, message_direction, message_type) {
+      var form = document.getElementById('edit-'+token+'-'+message_type)
+      $('#profile-panel-'+token).html('<div class="progress"><div class="indeterminate blue darken-4"></div></div>');
+      $.post('/profiles/'+token+'/'+message_direction+'/'+message_type+'/settings/change-transport', {
+          token: token,
+          message_type: message_type,
+          formdata: $(form).serialize()
+      }).done(function(response) {
+          $('#profile-panel-'+token).html(response['html'])
+      }).fail(function() {
+          $('#profile-panel-'+token).html("<p>{{ (' Error: Could not load transport selector.') }}</p>");
+      });
+  }
+</script>
+<script>
+  function apply_transport_settings(token, message_direction, message_type, message_format, message_transport) {
+      $('#profile-panel-'+token).html('<div class="progress"><div class="indeterminate blue darken-4"></div></div>');
+      $.post('/profiles/'+token+'/'+message_direction+'/'+message_type+'/settings/apply-transport/'+message_format+'/'+message_transport, {
+          token: token,
+      }).done(function(response) {
+          $('#profile-panel-'+token).html(response['html'])
+      }).fail(function() {
+          $('#profile-panel-'+token).html("<p>{{ (' Error: Apply failed.') }}</p>");
+      });
+  }
+</script>
+
+<script>
   function view_profile_settings(token, message_direction, message_type) {
       $('#profile-panel-'+token).html('<div class="progress"><div class="indeterminate blue darken-4"></div></div>');
       $.post('/profiles/'+token+'/'+message_direction+'/'+message_type+'/settings/view', {
