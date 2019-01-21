@@ -1,0 +1,7 @@
+messageType,groupType,groupID,pickID,containerid,containerType,sourceLocation,destinationLocation,unitOfMeasureQuantity,unitOfMeasure,eachQuantity,productID,lotID,identifiers,name,description,image,length,width,height,weight,dimensionUnitOfMeasure,weightUnitOfMeasure,expectedShippingDate,data
+pickWave,orderPick,8YFH,2038,,default,PIK1-C-01-L1-B4,,1,EA,2,2600,,883588398390,HH-2172-R-WINE-3X,JORDAN TOP-WINE,,14,11.5,0.5,0.5,in,lb,,
+pickWave,orderPick,8YFH,2039,,default,PIK1-C-01-L1-B4,,1,EA,2,2600,,883588398390,HH-2172-R-WINE-3X,JORDAN TOP-WINE,,14,11.5,0.5,0.5,in,lb,,
+pickWave,orderPick,8YFH,2040,,default,PIK1-C-01-L1-B4,,1,EA,2,2600,,883588398390,HH-2172-R-WINE-3X,JORDAN TOP-WINE,,14,11.5,0.5,0.5,in,lb,,
+pickWave,orderPick,GTG5,2068,,default,PIK1-C-01-L1-B4,,1,EA,2,2600,,883588398390,HH-2172-R-WINE-3X,JORDAN TOP-WINE,,14,11.5,0.5,0.5,in,lb,,
+pickWave,orderPick,GTG5,2069,,default,PIK1-C-01-L1-B4,,1,EA,2,2600,,883588398390,HH-2172-R-WINE-3X,JORDAN TOP-WINE,,14,11.5,0.5,0.5,in,lb,,
+pickWave,orderPick,GTG5,2070,,default,PIK1-C-01-L1-B4,,1,EA,2,2600,,883588398390,HH-2172-R-WINE-3X,JORDAN TOP-WINE,,14,11.5,0.5,0.5,in,lb,,
