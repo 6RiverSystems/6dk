@@ -15,8 +15,12 @@ def user_token_validation(f):
 			profile = Profile.query.filter_by(
 									token_id=headers['6Dk-Token']).first()
 			if profile != None:
-				logger.debug('6Dk-Token accepted')
-				return f(*args, **kwargs)
+				if not profile.deleted:
+					logger.debug('6Dk-Token accepted')
+					return f(*args, **kwargs)
+				else:
+					logger.debug('6Dk-Token not valid')
+					return jsonify({'message': '6Dk-Token not valid'})
 			else:
 				logger.debug('6Dk-Token not found')
 				return jsonify({'message': '6Dk-Token not found'}), 401

@@ -158,7 +158,7 @@ def update_northbound_settings(token, message_settings, new_settings):
 							if message['name']==message_settings['name']))
 	profile_settings = profile['data']['northbound_messages'][msg_index]
 	profile_settings['wms_host'] = new_settings['wms_host'][0]
-	profile_settings['wms_port'] = int(new_settings['wms_port'][0])
+	profile_settings['wms_port'] = new_settings['wms_port'][0]
 	if 'wms_path' in new_settings.keys():
 		profile_settings['wms_path'] = new_settings['wms_path'][0]
 	if 'send_confirmations' in new_settings.keys():

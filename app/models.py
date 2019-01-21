@@ -168,6 +168,7 @@ class Profile(PaginatedAPIMixin, db.Model):
 		data = {
 			'token_id': self.token_id,
 			'user': self.user,
+			'deleted': self.deleted,
 			'created': self.created.isoformat()+'Z',
 			'updated': self.updated.isoformat()+'Z',
 		}
