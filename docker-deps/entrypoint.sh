@@ -11,7 +11,7 @@ while true; do
 done
 
 
-pipenv run gunicorn --bind unix:/app/6dk.sock -m 777 wsgi --workers=2 &
+pipenv run gunicorn --bind unix:/app/6dk.sock -m 777 wsgi --workers=3 &
 
 nginx -g 'daemon off;'
 
