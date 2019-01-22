@@ -10,7 +10,7 @@ while true; do
     sleep 5
 done
 
-pipenv run gunicorn -k gthread --bind unix:/app/6dk.sock -m 777 wsgi --threads=10--workers=3 &
+pipenv run gunicorn -k gthread --bind unix:/app/6dk.sock -m 777 wsgi --threads=10 --workers=3 &
 
 nginx -g 'daemon off;'
 
