@@ -1,0 +1,11 @@
+Dear {{ user.first_name }},
+
+Welcome to 6 River Systems Development Kit. Your account has been created. To login click the following link:
+
+{{ url_for('login', _external=True) }}
+
+Your temporary password is: {{ temp_pass }}.
+
+Sincerely,
+
+6 River Systems

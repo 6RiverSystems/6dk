@@ -25,6 +25,14 @@ def send_mail(subject, recipients, text_body, html_body,
     Thread(target=send_async_email, args=(app, msg)).start()
 
 
+def send_welcome(user, temp_pass):
+    send_mail('[6DK - 6 River Systems] Welcome',
+               recipients=[user.email],
+               text_body=render_template('email/welcome.txt',
+                                         user=user, temp_pass=temp_pass),
+               html_body=render_template('email/welcome.html',
+                                         user=user, temp_pass=temp_pass))
+
 def send_password_reset_email(user):
     token = user.get_reset_password_token()
     send_mail('[6DK - 6 River Systems] Reset Your Password',
