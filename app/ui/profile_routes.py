@@ -212,8 +212,9 @@ def message_settings(token, message_direction, message_type, action):
             elif action=='apply':
                 new_settings = parse_qs(request.form.to_dict()['formdata'])
                 first_time_check('mod_profile', current_user, flash_desc=False)
-                return update_northbound_settings(token, message_settings, 
+                update_northbound_settings(token, message_settings, 
                                                 new_settings)
+                return retrieve_settings(token)
             elif action=='view':
                 return display_message_settings(token, message_settings, 
                                                 'northbound') 
@@ -252,9 +253,8 @@ def change_message_transport(token, message_direction, message_type, message_for
             profile_obj.data = json.dumps(profile['data'])
             db.session.commit()
             if message_direction=='northbound':
-                return redirect(url_for('message_settings', token=token, message_direction=message_direction, 
-                                message_type=message_type, action='retrieve'))
+                return message_settings(token, message_direction, message_type, 'retrieve')
             else:
-                return redirect(url_for('retrieve_settings', token=token))
+                return retrieve_settings(token)
         else:
             return jsonify({'html':'Invalid message transport'})  

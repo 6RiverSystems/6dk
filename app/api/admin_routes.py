@@ -1,4 +1,6 @@
 import json
+import string
+import random
 
 from flask import request, jsonify
 
@@ -8,17 +10,28 @@ from app.plugins.auth_helper import admin_token_validation
 from app.plugins.general_helper import check_for_keys
 from app.plugins.profile_helper import create_new_profile
 from app.plugins.user_helper import create_new_user
+from app.plugins.mail_helper import send_welcome
 
 
 @app.route('/admin/users', methods=['POST'])
 @admin_token_validation
 def create_user():
 	data = request.get_json(force=True) or {}
+	welcome = request.args.get('welcome', 0, type=int)
+	if welcome:
+		temp_pass = ''.join(
+					random.choice(string.ascii_uppercase + string.digits \
+									+string.ascii_lowercase) 
+					for _ in range(12))
+		data['password'] = temp_pass
 	all_keys_present, results = check_for_keys(['email', 'first_name', 
 												'last_name', 'password'], data)
 	if all_keys_present:
 		response, success = create_new_user(data)
 		if success:
+			user = User.query.filter_by(email=data['email']).first()
+			if welcome:
+				send_welcome(user, temp_pass)
 			response.status_code = 201
 		else:
 			response.status_code = 400
