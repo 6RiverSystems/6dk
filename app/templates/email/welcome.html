@@ -1,0 +1,13 @@
+<p>Dear {{ user.first_name }},</p>
+<p>
+    Welcome to 6 River Systems Development Kit. Your account has been created. Please log in
+    <a href="{{ url_for('login', _external=True) }}">
+        here
+    </a>.
+</p>
+<p>Your temporary password is: {{ temp_pass }}.</p>
+<p>Alternatively, you can paste the following link in your browser's address bar:</p>
+<p>{{ url_for('login', _external=True) }}</p>
+
+<p>Sincerely,</p>
+<p>6 River Systems</p>
