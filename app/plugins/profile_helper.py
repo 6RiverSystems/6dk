@@ -173,7 +173,6 @@ def update_northbound_settings(token, message_settings, new_settings):
 		profile_settings['wms_password'] = new_settings['wms_password'][0]
 	profile_obj.data = json.dumps(profile['data'])
 	db.session.commit()
-	return redirect(url_for('retrieve_settings', token=token))
 
 
 def convert_confirmations(conf):
@@ -181,10 +180,6 @@ def convert_confirmations(conf):
 		return True
 	else:
 		return False
-
-
-def update_southbound_settings(token, message_settings, new_settings):
-	return redirect(url_for('retrieve_settings', token=token))
 
 
 def display_message_settings(token, message_settings, message_direction):
