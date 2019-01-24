@@ -41,24 +41,6 @@
           "adapter_headers": {
             "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
           }
-        },
-        {
-          "transport": "HTTPS",
-          "format": "XML",
-          "adapter_required": true,
-          "adapter_endpoint": null,
-          "adapter_headers": {
-            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
-          }
-        },
-        {
-          "transport": "SFTP",
-          "format": "CSV",
-          "adapter_required": true,
-          "adapter_endpoint": null,
-          "adapter_headers": {
-            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
-          }
         }
       ],
       "tags": [
@@ -103,24 +85,6 @@
           "transport": "HTTPS",
           "format": "JSON",
           "adapter_required": false,
-          "adapter_endpoint": null,
-          "adapter_headers": {
-            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
-          }
-        },
-        {
-          "transport": "HTTPS",
-          "format": "XML",
-          "adapter_required": true,
-          "adapter_endpoint": null,
-          "adapter_headers": {
-            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
-          }
-        },
-        {
-          "transport": "SFTP",
-          "format": "CSV",
-          "adapter_required": true,
           "adapter_endpoint": null,
           "adapter_headers": {
             "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
@@ -185,24 +149,6 @@
           "adapter_headers": {
             "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
           }
-        },
-        {
-          "transport": "HTTPS",
-          "format": "XML",
-          "adapter_required": true,
-          "adapter_endpoint": null,
-          "adapter_headers": {
-            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
-          }
-        },
-        {
-          "transport": "SFTP",
-          "format": "CSV",
-          "adapter_required": true,
-          "adapter_endpoint": null,
-          "adapter_headers": {
-            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
-          }
         }
       ],
       "tags": [
@@ -263,24 +209,6 @@
           "adapter_headers": {
             "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
           }
-        },
-        {
-          "transport": "HTTPS",
-          "format": "XML",
-          "adapter_required": true,
-          "adapter_endpoint": null,
-          "adapter_headers": {
-            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
-          }
-        },
-        {
-          "transport": "SFTP",
-          "format": "CSV",
-          "adapter_required": true,
-          "adapter_endpoint": null,
-          "adapter_headers": {
-            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
-          }
         }
       ],
       "tags": [
@@ -306,24 +234,6 @@
           "transport": "HTTPS",
           "format": "JSON",
           "adapter_required": false,
-          "adapter_endpoint": null,
-          "adapter_headers": {
-            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
-          }
-        },
-        {
-          "transport": "HTTPS",
-          "format": "XML",
-          "adapter_required": true,
-          "adapter_endpoint": null,
-          "adapter_headers": {
-            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
-          }
-        },
-        {
-          "transport": "SFTP",
-          "format": "CSV",
-          "adapter_required": true,
           "adapter_endpoint": null,
           "adapter_headers": {
             "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
@@ -357,24 +267,6 @@
           "adapter_headers": {
             "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
           }
-        },
-        {
-          "transport": "HTTPS",
-          "format": "XML",
-          "adapter_required": true,
-          "adapter_endpoint": null,
-          "adapter_headers": {
-            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
-          }
-        },
-        {
-          "transport": "SFTP",
-          "format": "CSV",
-          "adapter_required": true,
-          "adapter_endpoint": null,
-          "adapter_headers": {
-            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
-          }
         }
       ],
       "tags": [
@@ -404,29 +296,9 @@
           "adapter_headers": {
             "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
           }
-        },
-        {
-          "transport": "HTTPS",
-          "format": "XML",
-          "adapter_required": true,
-          "adapter_endpoint": null,
-          "adapter_headers": {
-            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
-          }
-        },
-        {
-          "transport": "SFTP",
-          "format": "CSV",
-          "adapter_required": true,
-          "adapter_endpoint": null,
-          "adapter_headers": {
-            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
-          }
         }
       ],
-      "tags": [
-        "northbound"
-      ]
+      "tags": []
     },
     {
       "message_type": "print-request",
@@ -450,20 +322,9 @@
           "adapter_headers": {
             "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
           }
-        },
-        {
-          "transport": "HTTPS",
-          "format": "XML",
-          "adapter_required": true,
-          "adapter_endpoint": null,
-          "adapter_headers": {
-            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
-          }
         }
       ],
-      "tags": [
-        "northbound"
-      ]
+      "tags": []
     },
     {
       "message_type": "container-accepted",
@@ -506,24 +367,6 @@
           "adapter_headers": {
             "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
           }
-        },
-        {
-          "transport": "HTTPS",
-          "format": "XML",
-          "adapter_required": true,
-          "adapter_endpoint": null,
-          "adapter_headers": {
-            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
-          }
-        },
-        {
-          "transport": "SFTP",
-          "format": "CSV",
-          "adapter_required": true,
-          "adapter_endpoint": null,
-          "adapter_headers": {
-            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
-          }
         }
       ],
       "tags": [
@@ -549,15 +392,6 @@
           "transport": "HTTPS",
           "format": "JSON",
           "adapter_required": false,
-          "adapter_endpoint": null,
-          "adapter_headers": {
-            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
-          }
-        },
-        {
-          "transport": "HTTPS",
-          "format": "XML",
-          "adapter_required": true,
           "adapter_endpoint": null,
           "adapter_headers": {
             "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
@@ -605,24 +439,6 @@
           "transport": "HTTPS",
           "format": "JSON",
           "adapter_required": false,
-          "adapter_endpoint": null,
-          "adapter_headers": {
-            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
-          }
-        },
-        {
-          "transport": "HTTPS",
-          "format": "XML",
-          "adapter_required": true,
-          "adapter_endpoint": null,
-          "adapter_headers": {
-            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
-          }
-        },
-        {
-          "transport": "SFTP",
-          "format": "CSV",
-          "adapter_required": true,
           "adapter_endpoint": null,
           "adapter_headers": {
             "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
@@ -675,24 +491,6 @@
           "adapter_headers": {
             "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
           }
-        },
-        {
-          "transport": "HTTPS",
-          "format": "XML",
-          "adapter_required": true,
-          "adapter_endpoint": null,
-          "adapter_headers": {
-            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
-          }
-        },
-        {
-          "transport": "SFTP",
-          "format": "CSV",
-          "adapter_required": true,
-          "adapter_endpoint": null,
-          "adapter_headers": {
-            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
-          }
         }
       ],
       "tags": [
@@ -741,24 +539,6 @@
           "adapter_headers": {
             "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
           }
-        },
-        {
-          "transport": "HTTPS",
-          "format": "XML",
-          "adapter_required": true,
-          "adapter_endpoint": null,
-          "adapter_headers": {
-            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
-          }
-        },
-        {
-          "transport": "SFTP",
-          "format": "CSV",
-          "adapter_required": true,
-          "adapter_endpoint": null,
-          "adapter_headers": {
-            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
-          }
         }
       ],
       "tags": [
@@ -803,24 +583,6 @@
           "transport": "HTTPS",
           "format": "JSON",
           "adapter_required": false,
-          "adapter_endpoint": null,
-          "adapter_headers": {
-            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
-          }
-        },
-        {
-          "transport": "HTTPS",
-          "format": "XML",
-          "adapter_required": true,
-          "adapter_endpoint": null,
-          "adapter_headers": {
-            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
-          }
-        },
-        {
-          "transport": "SFTP",
-          "format": "CSV",
-          "adapter_required": true,
           "adapter_endpoint": null,
           "adapter_headers": {
             "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
