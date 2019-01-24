@@ -240,16 +240,16 @@ def change_message_transport(token, message_direction, message_type, message_for
         first_time_check('mod_profile', current_user, flash_desc=False)
         profile_obj = Profile.query.filter_by(token_id=token).first()
         profile = profile_obj.to_dict()
-        message_settings = next(message for message in profile['data'][message_direction+'_messages'] 
+        message_settings_dict = next(message for message in profile['data'][message_direction+'_messages'] 
                                 if message['name']==message_type)
-        transports = rule.get_message_transports(message_settings)
+        transports = rule.get_message_transports(message_settings_dict)
         valid = next((transport for transport in transports 
                         if transport['format']==message_format 
                         and transport['transport']==message_transport), None)
         if valid:
-            message_settings['format'] = message_format
-            message_settings['transport'] = message_transport
-            message_settings['send'] = False
+            message_settings_dict['format'] = message_format
+            message_settings_dict['transport'] = message_transport
+            message_settings_dict['send'] = False
             profile_obj.data = json.dumps(profile['data'])
             db.session.commit()
             if message_direction=='northbound':
