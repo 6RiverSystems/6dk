@@ -3,7 +3,7 @@ import json
 
 from flask import flash
 
-from app import db
+from app import db, logger
 from app.models import Profile
 
 
@@ -27,6 +27,10 @@ def first_time_check(key, current_user, flash_desc=True, edit_entry=True):
 				if flash_desc:
 					flash(step['description'])
 				if edit_entry:
+					logger.debug('onboarding: user {0} has completed step {1}'.format(
+															current_user.email,
+															key
+															))
 					current_user.data = json.dumps(data)
 					db.session.commit()
 	except:
@@ -48,26 +52,32 @@ def is_step_completed(key, current_user):
 		
 
 def reset_onboarding(current_user):
-	try:
-		data = current_user.to_dict()['data']
-		data['accepted_onboarding'] = False
-		for step in data['startup_steps']:
-			if step['change_on_reset']:
-				step['open'] = True
-				current_user.data = json.dumps(data)
-				db.session.commit()			
-	except:
-		pass
+		try:
+			data = current_user.to_dict()['data']
+			data['accepted_onboarding'] = False
+			for step in data['startup_steps']:
+				if step['change_on_reset']:
+					step['open'] = True
+					current_user.data = json.dumps(data)
+					db.session.commit()
+			logger.debug('onboarding: user {} has reset onboarding'.format(
+														current_user.email
+														))		
+		except:
+			pass
 
 
 def user_accept_onboarding(current_user):
-	try:
-		data = current_user.to_dict()['data']
-		data['accepted_onboarding'] = True
-		current_user.data = json.dumps(data)
-		db.session.commit()			
-	except:
-		pass
+		try:
+			data = current_user.to_dict()['data']
+			data['accepted_onboarding'] = True
+			current_user.data = json.dumps(data)
+			db.session.commit()
+			logger.debug('onboarding: user {} has accepted onboarding'.format(
+														current_user.email
+														))				
+		except:
+			pass
 
 
 def verify_first_pick_wave(token):

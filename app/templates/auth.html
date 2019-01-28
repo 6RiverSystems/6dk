@@ -20,8 +20,15 @@
                     {% if mode=='login' %}
     				<p class=" center-align">Please login to countinue</p>
                     {{ wtf.quick_form(form) }}
-                    <small><a href="{{ url_for('reset_password_request') }}">Forgot password</a></small>
-                    {% elif mode in ['reset-request', 'reset'] %}
+                    <div class="row">
+                        <div class="col s6">
+                            <small><a href="{{ url_for('reset_password_request') }}">Forgot password</a></small>
+                        </div>
+                        <div class="col s6 right-align">
+                            <small><a href="{{ url_for('request_account') }}">Request account</a></small>
+                        </div>
+                    </div>
+                    {% elif mode in ['reset-request', 'reset', 'request-account'] %}
                     {{ wtf.quick_form(form) }}
                     <small><a href="{{ url_for('login') }}">Back to Login</a></small>
                     {% endif %}
