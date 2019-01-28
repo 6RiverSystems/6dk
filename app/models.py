@@ -40,7 +40,7 @@ def load_user(id):
     return User.query.get(id)
 
 
-class User(UserMixin, db.Model):
+class User(UserMixin, PaginatedAPIMixin, db.Model):
 	id = db.Column(db.String(128), index=True, unique=True, primary_key=True)
 	email = db.Column(db.String(128), index=True, unique=True)
 	first_name = db.Column(db.String(128))

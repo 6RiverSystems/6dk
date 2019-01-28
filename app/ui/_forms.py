@@ -27,9 +27,18 @@ class ResetPasswordForm(FlaskForm):
     submit = SubmitField('Reset')
 
 
+class RequestAccountForm(FlaskForm):
+	first_name = StringField('First Name', validators=[DataRequired()])
+	last_name = StringField('Last Name', validators=[DataRequired()])
+	email = StringField('Email', validators=[
+    										DataRequired(message="Enter your email."), 
+    										Email(message="Enter a valid email address.")])
+	submit = SubmitField('Submit')
+
+
 class EditAccount(FlaskForm):
-	first_name = StringField('Email', validators=[DataRequired()])
-	last_name = StringField('Email', validators=[DataRequired()])
+	first_name = StringField('First Name', validators=[DataRequired()])
+	last_name = StringField('Last Name', validators=[DataRequired()])
 	email = StringField('Email', validators=[DataRequired(), 
 											Email(message="Enter a valid email address.")])
 	password = PasswordField('Password', validators=[DataRequired()])

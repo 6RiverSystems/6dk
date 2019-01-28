@@ -17,7 +17,9 @@ class Config(object):
     MAIL_USERNAME = 'rivs@6river.com'
     MAIL_PASSWORD = '6riverrivs'
     FS_AUTH = 'REVWS0lUOnNyYVdUQWRuaFdFcQ=='
-
+    HOME_BASE_URL = 'https://6rweb.6river.tech'
+    HOME_BASE_USERNAME = '6rswebapi'
+    HOME_BASE_PASSWORD = '1U2rSrfVcru0PrONhR7i'
 
 class TestingConfig(Config):
     TESTING = True
