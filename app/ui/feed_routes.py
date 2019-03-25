@@ -1,15 +1,11 @@
-import json
-import sys
 from datetime import datetime
 
 from flask import render_template, jsonify, url_for, request
 from flask_login import current_user, login_required
-import lxml.etree as etree
 
 from app import app, db, rule
 from app.ui._forms import FeedForm
-from app.models import Message
-from app.plugins.feed_helper import filter_feed, get_filters
+from app.plugins.feed_helper import filter_feed, get_filters, get_message_data
 from app.plugins.general_helper import first_time_check
 
 
@@ -50,37 +46,7 @@ def feed_main():
 @app.route('/feed/message/<message_id>/<task>', methods=['POST'])
 @login_required
 def feed_message(message_id, task):
-    message = Message.query.filter_by(id=message_id).first(
-                                    ).to_dict(parse_timestamps=True,
-                                                include_profile=True)
-    err = False
-    if message['message_format']=='JSON':
-        try:
-            message_data = json.dumps(json.loads(message['unmasked_data']), indent=4, 
-                                                                        sort_keys=True)
-        except:
-            err = True
-    elif message['message_format']=='XML':
-        try:
-            xml = etree.fromstring(message['unmasked_data'].encode('utf-8'))
-            message_data = etree.tostring(xml, pretty_print=True).decode('utf-8')
-        except:
-            err = True
-    else:
-        err = True
-    if err:
-        message_data = message['unmasked_data']
-    size = sys.getsizeof(message['unmasked_data'])
-    replays = Message.get_replays(message_id)
-    return jsonify({
-                    'html': render_template('feed/feed_message_options.html',
-                    message=message,
-                    message_data=message_data,
-                    size=size,
-                    task=task,
-                    replays=replays),
-                    'data': message
-                    })
+    return get_message_data(message_id, task)
 
 
 @app.route('/feed/new-messages', methods=['GET', 'POST'])

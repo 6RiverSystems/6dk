@@ -10,6 +10,7 @@ from app.plugins.adapter_engine import adapt_payload
 from app.plugins.general_helper import verify_first_pick_wave, enabled_message
 
 
+@app.route('/<mode>/<version>/pick-waves', methods=['POST'])
 @app.route('/<mode>/wis-southbound/<version>/pick-waves', methods=['POST'])
 @user_token_validation
 def receive_southbound(mode, version):
