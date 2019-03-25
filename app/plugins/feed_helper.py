@@ -1,10 +1,15 @@
 import dateparser
+import json
+import sys
+
+from flask import render_template, jsonify
+import lxml.etree as etree
 
 from app import app
 from app.models import Message, Profile 
 
 
-def get_filters(request):
+def get_filters(request, email=False):
     filters = {
                 'message_type': request.form.getlist('message_type'),
                 'profile': request.form.getlist('profile'),
@@ -13,6 +18,8 @@ def get_filters(request):
                 'q': request.form.get('q'),
                 'page': request.form.get('page', 1, type=int)
                 }
+    if email:
+    	filters['email'] = request.form.getlist('email')
     for q in ['q', 'sent_before', 'sent_after']:
 	    if type(filters[q])==str:
 		    if filters[q].lower() in ['none', 'null']:
@@ -25,6 +32,38 @@ def get_filters(request):
 
 
 
+def get_message_data(message_id, task):
+    message = Message.query.filter_by(id=message_id).first(
+                                    ).to_dict(parse_timestamps=True,
+                                                include_profile=True)
+    err = False
+    if message['message_format']=='JSON':
+        try:
+            message_data = json.dumps(json.loads(message['unmasked_data']), indent=4, 
+                                                                        sort_keys=True)
+        except:
+            err = True
+    elif message['message_format']=='XML':
+        try:
+            xml = etree.fromstring(message['unmasked_data'].encode('utf-8'))
+            message_data = etree.tostring(xml, pretty_print=True).decode('utf-8')
+        except:
+            err = True
+    else:
+        err = True
+    if err:
+        message_data = message['unmasked_data']
+    size = sys.getsizeof(message['unmasked_data'])
+    replays = Message.get_replays(message_id)
+    return jsonify({
+                    'html': render_template('feed/feed_message_options.html',
+                    message=message,
+                    message_data=message_data,
+                    size=size,
+                    task=task,
+                    replays=replays),
+                    'data': message
+                    })
 def filter_feed(filters, user_profiles, user, return_data=False, order="desc"):
 	messages = Message.query
 	filtered = False

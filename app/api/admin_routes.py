@@ -4,12 +4,14 @@ import random
 
 from flask import request, jsonify
 
-from app import app, db, logger
+from app import app, db, logger, rule
 from app.models import Profile, User
+from app.plugins.feed_helper import get_message_data
 from app.plugins.auth_helper import admin_token_validation
 from app.plugins.general_helper import check_for_keys
 from app.plugins.profile_helper import create_new_profile
 from app.plugins.user_helper import create_new_user
+from app.plugins.feed_helper import filter_feed, get_filters
 from app.plugins.mail_helper import send_welcome
 
 
@@ -156,3 +158,29 @@ def delete_profile(token_id, data, profile):
 	response = jsonify({'message': 'profile deleted'})
 	response.status_code = 202
 	return response
+
+
+@app.route('/admin/messages', methods=['POST'])
+@admin_token_validation
+def get_messages():
+	filters = get_filters(request)
+	user_profiles = [p.to_dict() 
+					for p in Profile.query.filter_by(deleted=False).all()]
+	user_data = {
+				'data': {
+						'message_types': {
+							'northbound': rule.get_messages_list('northbound'),
+							'southbound': rule.get_messages_list('southbound')
+							}
+						}
+				}
+	messages, filters = filter_feed(filters, user_profiles, user_data)
+	return jsonify({'messages': messages, 'filters': filters, 
+					'message_types': user_data['data']['message_types'],
+					'user_profiles': user_profiles})
+
+
+@app.route('/admin/messages/<message_id>/<task>', methods=['GET'])
+@admin_token_validation
+def message_task(message_id,task):
+	return get_message_data(message_id, task)
