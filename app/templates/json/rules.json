@@ -41,6 +41,16 @@
           "adapter_headers": {
             "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
           }
+        },
+        {
+          "transport": "HTTPS",
+          "format": "XML",
+          "adapter_required": true,
+          "adapter_endpoint": "http://talend-devkit.6river.org:8086/input",
+          "adapter_headers": {
+            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ==",
+            "Content-Type": "application/xml"
+          }
         }
       ],
       "tags": [
@@ -367,6 +377,15 @@
           "adapter_headers": {
             "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
           }
+        },
+        {
+          "transport": "HTTPS",
+          "format": "XML",
+          "adapter_required": true,
+          "adapter_endpoint": "http://talend-devkit.6river.org:8082/xml",
+          "adapter_headers": {
+            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
+          }
         }
       ],
       "tags": [
@@ -443,6 +462,15 @@
           "adapter_headers": {
             "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
           }
+        },
+        {
+          "transport": "HTTPS",
+          "format": "XML",
+          "adapter_required": true,
+          "adapter_endpoint": "http://talend-devkit.6river.org:8082/xml",
+          "adapter_headers": {
+            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
+          }
         }
       ],
       "tags": [
@@ -488,6 +516,15 @@
           "format": "JSON",
           "adapter_required": false,
           "adapter_endpoint": null,
+          "adapter_headers": {
+            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
+          }
+        },
+        {
+          "transport": "HTTPS",
+          "format": "XML",
+          "adapter_required": true,
+          "adapter_endpoint": "http://talend-devkit.6river.org:8082/xml",
           "adapter_headers": {
             "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
           }
@@ -539,6 +576,15 @@
           "adapter_headers": {
             "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
           }
+        },
+        {
+          "transport": "HTTPS",
+          "format": "XML",
+          "adapter_required": true,
+          "adapter_endpoint": "http://talend-devkit.6river.org:8082/xml",
+          "adapter_headers": {
+            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
+          }
         }
       ],
       "tags": [
@@ -584,6 +630,15 @@
           "format": "JSON",
           "adapter_required": false,
           "adapter_endpoint": null,
+          "adapter_headers": {
+            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
+          }
+        },
+        {
+          "transport": "HTTPS",
+          "format": "XML",
+          "adapter_required": true,
+          "adapter_endpoint": "http://talend-devkit.6river.org:8082/xml",
           "adapter_headers": {
             "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
           }
