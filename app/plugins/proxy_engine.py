@@ -63,8 +63,9 @@ def serve_proxy(settings, data, masked_data, message_type, incoming_endpoint,
 
 
 def wms_forwarder(data, masked_data, message_type, incoming_endpoint, token, 
-				request):
-	save_message(data, masked_data, message_type, incoming_endpoint, token)
+				request, message_format='JSON'):
+	save_message(data, masked_data, message_type, incoming_endpoint, token,
+				message_format=message_format)
 	profile = Profile.query.filter_by(token_id=token).first()
 	if profile:
 		profile = profile.to_dict()
@@ -87,8 +88,11 @@ def wms_forwarder(data, masked_data, message_type, incoming_endpoint, token,
 					data = response.get_json()
 					if not data:
 						data = response.get_data().decode('utf-8')
+						data_format = '?'
+					else:
+						data_format = 'JSON'
 					save_message(data, data, response_message_type,
-								incoming_endpoint, token)
+								incoming_endpoint, token, message_format=data_format)
 				except:
 					logger.debug('could not save {}'.format(response_message_type))
 				return response

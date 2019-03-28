@@ -24,7 +24,7 @@ def receive_southbound(mode, version):
 			payload = copy.deepcopy(original_payload)
 		else:
 			original_payload = request.get_data()
-			payload = adapt_payload(original_payload, settings)
+			payload = adapt_payload(original_payload, settings, 'southbound')
 		logger.debug('receiving pick-waves message: {}'.format(original_payload))
 		if mode=='dev':
 			masked_data = translate(payload, 'pick-waves', token, 'mask')

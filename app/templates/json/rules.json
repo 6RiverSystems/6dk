@@ -384,7 +384,8 @@
           "adapter_required": true,
           "adapter_endpoint": "http://talend-devkit.6river.org:8082/xml",
           "adapter_headers": {
-            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
+            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ==",
+            "Content-Type": "application/json"
           }
         }
       ],
@@ -469,7 +470,8 @@
           "adapter_required": true,
           "adapter_endpoint": "http://talend-devkit.6river.org:8082/xml",
           "adapter_headers": {
-            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
+            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ==",
+            "Content-Type": "application/json"
           }
         }
       ],
@@ -526,7 +528,8 @@
           "adapter_required": true,
           "adapter_endpoint": "http://talend-devkit.6river.org:8082/xml",
           "adapter_headers": {
-            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
+            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ==",
+            "Content-Type": "application/json"
           }
         }
       ],
@@ -583,7 +586,8 @@
           "adapter_required": true,
           "adapter_endpoint": "http://talend-devkit.6river.org:8082/xml",
           "adapter_headers": {
-            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
+            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ==",
+            "Content-Type": "application/json"
           }
         }
       ],
@@ -640,7 +644,8 @@
           "adapter_required": true,
           "adapter_endpoint": "http://talend-devkit.6river.org:8082/xml",
           "adapter_headers": {
-            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ=="
+            "Authorization": "Basic REVWS0lUOnNyYVdUQWRuaFdFcQ==",
+            "Content-Type": "application/json"
           }
         }
       ],

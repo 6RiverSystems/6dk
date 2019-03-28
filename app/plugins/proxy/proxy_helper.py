@@ -9,6 +9,8 @@ def _proxy(request, data, destination, additional_headers=None, to_fs=False):
 	headers = {key: value for (key, value) in request.headers if key != 'Host'}
 	if to_fs:
 		additional_headers = {'Authorization': 'Basic '+app.config['FS_AUTH']}
+		if 'Content-Type' in headers.keys():
+			headers['Content-Type'] = 'application/json'
 	if additional_headers:
 		headers = {**headers, **additional_headers}
 	resp = requests.request(
