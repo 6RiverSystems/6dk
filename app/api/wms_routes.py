@@ -1,11 +1,13 @@
 import copy
 import subprocess
 import os
+import json
 
 from flask import jsonify, request
 
 from app import app, logger, rule
 from app.models import Message, Profile
+from app.plugins.adapter_engine import adapt_payload
 from app.plugins.decipher_engine import decipher
 from app.plugins.proxy_engine import wms_forwarder
 from app.plugins.proxy_engine import wms_repeater
@@ -26,9 +28,14 @@ def receive_wms_request(message_type):
 		token, unmasked_data = decipher(payload, message_type)
 		if token:
 			if enabled_message(token, message_type):
+				profile = Profile.query.get(token).to_dict()
+				settings = next(message for message in profile['data']['northbound_messages'] 
+								if message['name']==message_type)
+				if settings['format'].lower()!='json':
+					unmasked_data = adapt_payload(json.dumps(unmasked_data), settings, 'northbound')	
 				return wms_forwarder(unmasked_data, original_payload, message_type, 
 							'/wms/{}'.format(message_type), token, 
-							request)
+							request, message_format=settings['format'])
 			else:
 				return jsonify({'message': 'accepted but origin wms is not configured to receive {}'.format(message_type)})
 		else:
@@ -67,3 +74,8 @@ def resend_to_wms(message_id, token_id):
 	return jsonify({'html': '{}'.format(out.decode('utf-8')),
 					'replays': replays,
 					'replay_text': replay_text})
+
+
+@app.route('/wms/receiver', methods=['POST'])
+def wms_receiver():
+	return jsonify({'message': 'OK'})
