@@ -21,7 +21,7 @@ class Config(object):
     HOME_BASE_USERNAME = '6rswebapi'
     HOME_BASE_PASSWORD = '1U2rSrfVcru0PrONhR7i'
 
+
 class TestingConfig(Config):
     TESTING = True
     WTF_CSRF_ENABLED = False
-    
