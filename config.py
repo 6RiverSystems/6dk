@@ -15,7 +15,7 @@ class Config(object):
     MAIL_PORT = 587
     MAIL_USE_TLS = True
     MAIL_USERNAME = 'rivs@6river.com'
-    MAIL_PASSWORD = '6riverrivs'
+    MAIL_PASSWORD = 'X9FJcKE6SnBTUqK6'
     FS_AUTH = 'REVWS0lUOnNyYVdUQWRuaFdFcQ=='
     HOME_BASE_URL = 'https://6rweb.6river.tech'
     HOME_BASE_USERNAME = '6rswebapi'
