@@ -18,28 +18,30 @@ def feed_main():
         current_user.last_feed_load_time = datetime.utcnow()
         db.session.commit()
     filters = get_filters(request)
-    messages, filters = filter_feed(filters, user_profiles, current_user.to_dict())
+    messages, filters = filter_feed(
+        filters, user_profiles, current_user.to_dict())
     valid_northbound = rule.get_messages_list('northbound')
     form = FeedForm()
-    form.message_type.choices = [(msg, msg) for msg in rule.get_all_messages(current_user.to_dict())]
+    form.message_type.choices = [
+        (msg, msg) for msg in rule.get_all_messages(current_user.to_dict())]
     form.profile.choices = [(profile['token_id'], profile['data']['friendly_name'])
                             for profile in user_profiles]
     form_render = render_template('embedded_form.html',
-                        form=form,
-                        action=url_for('feed_main'),
-                        id='feed-search-form')
+                                  form=form,
+                                  action=url_for('feed_main'),
+                                  id='feed-search-form')
     message_block = render_template('feed/feed_messages.html',
                                     valid_northbound=valid_northbound,
                                     messages=messages)
     if filters['page'] == 1:
-        return render_template('feed/feed.html', 
-                                message_block=message_block, 
-        						valid_northbound=valid_northbound,
-                                form_render=form_render,
-                                filters=filters)
+        return render_template('feed/feed.html',
+                               message_block=message_block,
+                               valid_northbound=valid_northbound,
+                               form_render=form_render,
+                               filters=filters)
     else:
         return jsonify({'html': message_block, 'has_next': filters['has_next'],
-                        'pull_btn': '<a href="javascript:get_more('+ "'{}'".format(filters['next_page']) +')"><i>more</i></a>',
+                        'pull_btn': '<a href="javascript:get_more(' + "'{}'".format(filters['next_page']) + ')"><i>more</i></a>',
                         'end_btn': "<i>That's all folks!</i>"})
 
 
@@ -60,5 +62,6 @@ def new_messages():
 def count_transmissions():
     filters = get_filters(request)
     user_profiles = current_user.load_user_profiles()
-    data, filters = filter_feed(filters, user_profiles, current_user.to_dict(), return_data=True, order="asc")
+    data, filters = filter_feed(
+        filters, user_profiles, current_user.to_dict(), return_data=True, order="asc")
     return jsonify({'count': filters['transmissions']})

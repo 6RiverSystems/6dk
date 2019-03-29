@@ -5,10 +5,11 @@ from flask_login import login_required
 
 from app import app
 
+
 @app.route('/faq', methods=['GET'])
 @login_required
 def faq_main():
-	with open('app/templates/json/faqs.json', 'r') as f:
-		faqs = json.loads(f.read())
-	faqs = sorted(faqs, key=lambda k: k['Q'])
-	return render_template('faq.html', faqs=faqs)
+    with open('app/templates/json/faqs.json', 'r') as f:
+        faqs = json.loads(f.read())
+    faqs = sorted(faqs, key=lambda k: k['Q'])
+    return render_template('faq.html', faqs=faqs)
