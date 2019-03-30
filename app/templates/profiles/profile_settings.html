@@ -21,11 +21,11 @@
 		{% else %}
 		<small><i>messages are not being sent to WMS</i></small>
 		{% endif %}	
-        <a class="waves-effect waves-blue btn-flat btn-small" href="javascript:edit_profile_settings('{{ profile.token_id }}', 'northbound', '{{ message.name }}');">
-			<i class="material-icons">edit</i>
+        <a class="waves-effect waves-blue btn-flat btn-small btn-floating" href="javascript:edit_profile_settings('{{ profile.token_id }}', 'northbound', '{{ message.name }}');">
+			<i class="material-icons black-text">edit</i>
 		</a>
-        <a class="waves-effect waves-blue btn-flat btn-small" href="javascript:view_profile_settings('{{ profile.token_id }}', 'northbound', '{{ message.name }}');">
-			<i class="material-icons">visibility</i>
+        <a class="waves-effect waves-blue btn-flat btn-small btn-floating" href="javascript:view_profile_settings('{{ profile.token_id }}', 'northbound', '{{ message.name }}');">
+			<i class="material-icons black-text">visibility</i>
 		</a>	
 	</div>
 </div>
@@ -52,8 +52,8 @@
 	</div>
 	<div class="col s8 right-align">
 		<small><i>{{ message.format }} via {{ message.transport }}</i></small>	
-        <a class="waves-effect waves-blue btn-flat btn-small" href="javascript:get_message_transport_selector('{{ profile.token_id }}', 'southbound', '{{ message.name }}');">
-			<i class="material-icons">edit</i>
+        <a class="waves-effect waves-blue btn-flat btn-small btn-floating" href="javascript:get_message_transport_selector('{{ profile.token_id }}', 'southbound', '{{ message.name }}');">
+			<i class="material-icons black-text">edit</i>
 		</a>
 	</div>
 </div>

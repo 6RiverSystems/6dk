@@ -62,8 +62,8 @@
 							<td colspan="2">
 								<p class="center-align" id="transmission-info-{{ message.id }}">{{ replays.count }} transmission{% if replays.count != 1%}s{% endif %}</p>
 								<code><small>curl -v -d@{{ message.message_type }}.json {% for header in message_type.wms_headers %}-H "{{ header }}" {% endfor %} -m 2.0 {{ message_type.wms_host }}:{{ message_type.wms_port}}/{{ message_type.wms_path }}</small></code>
-						        <a class="waves-effect waves-blue btn-flat" href="javascript:replay_message('{{ message.id }}', '{{ message.profile.token_id }}');">
-						            <i class="material-icons">send</i>
+						        <a class="waves-effect waves-blue btn-flat btn-floating" href="javascript:replay_message('{{ message.id }}', '{{ message.profile.token_id }}');">
+						            <i class="material-icons black-text">send</i>
 						        </a>
 							</td>
 						</tr>

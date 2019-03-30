@@ -13,12 +13,12 @@
 	<div class="divider"></div>
 	<div class="right-align">
         {% if message.message_type in valid_northbound %}
-        <a class="waves-effect waves-blue btn-flat tooltipped" data-position="top" data-tooltip="Replay Message" href="javascript:get_message('{{ message.id }}', 'replay');">
-            <i class="material-icons">replay</i>
+        <a class="waves-effect waves-blue btn-flat tooltipped btn-floating" data-position="top" data-tooltip="Replay Message" href="javascript:get_message('{{ message.id }}', 'replay');">
+            <i class="material-icons black-text">replay</i>
         </a>
         {% endif %}
-        <a class="waves-effect waves-blue btn-flat tooltipped" data-position="top" data-tooltip="View Data" href="javascript:get_message('{{ message.id }}', 'data');">
-            <i class="material-icons">code</i>
+        <a class="waves-effect waves-blue btn-flat tooltipped btn-floating" data-position="top" data-tooltip="View Data" href="javascript:get_message('{{ message.id }}', 'data');">
+            <i class="material-icons black-text">code</i>
         </a>
     </div>
     <div id="message-panel-{{ message.id }}"></div>

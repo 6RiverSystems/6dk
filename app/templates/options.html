@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block app_content %}
+
+	<h5 class="center-align">{{ header }}</h5>
+	{% if search %}
+    <form action="{{ search }}" autocomplete="on" class="form-horizontal" method="get" accept-charset="utf-8" id="searchOptions">
+        <div class="input-field col s12">
+            <i class="material-icons prefix">search</i>
+            <input name="q" value="" class="validate" type="text" id="q" autocomplete="off">
+            <label for="q">Search</label>
+        </div>
+    </form>        	
+	{% endif %}
+
+    <div class="row">
+        <div class="col s12" id="optionsList">
+        	{{ option_block|safe }}
+        </div>
+	</div>
+
+{% if floating_action %}
+<div class="fixed-action-btn">
+  <a class="btn-floating btn-large blue darken-4 waves-effect" href="{{ floating_action.url }}">
+    <i class="large material-icons">{{ floating_action.icon }}</i>
+  </a>
+</div>
+{% endif %}
+{% endblock %}
+
+{% if search %}
+    {% block scripts %}
+    <script>
+    $(function() {
+      $("#q").keyup(function() {
+                        var search = $("#q").val();
+                        $.post('{{ search }}?q='+search, {
+                        }).done(function(response) {
+                            $("#optionsList").html(response['html'])
+                        }).fail(function() {
+                            console.log('failed to search')
+                        });
+                    });
+      });
+    </script>
+    <script>
+        function reveal_meta(showElem) {
+            $(showElem).show();
+        }
+    </script>
+    {% endblock %}
+{% endif %}
