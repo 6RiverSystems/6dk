@@ -16,6 +16,7 @@ from config import Config
 from app.plugins.loaders.rule_loader import Rule
 from app.plugins.loaders.profile_loader import DkProfile
 from app.plugins.loaders.user_loader import DkUser
+from app.plugins.loaders.faqs_loader import DkFaqs
 
 
 app = Flask(__name__, static_url_path='')
@@ -38,29 +39,31 @@ logger.setLevel(logging.DEBUG)
 
 logger.info('loading message rules')
 with open('app/templates/json/rules.json', 'r') as f:
-	rule = Rule(json.loads(f.read()), app.config)
+    rule = Rule(json.loads(f.read()), app.config)
 
 
 logger.info('loading standard dk user')
 with open('app/templates/json/standard_user.json', 'r') as f:
-	standard_user = json.loads(f.read())
-	dk_user = DkUser(standard_user)
+    standard_user = json.loads(f.read())
+    dk_user = DkUser(standard_user)
 
 logger.info('loading standard dk profile')
 with open('app/templates/json/standard_profile.json', 'r') as f:
-	standard_profile = json.loads(f.read())
+    standard_profile = json.loads(f.read())
 
 with open('app/templates/json/profile_name_A.txt', 'r') as f:
-	adjectives = f.read().splitlines()
+    adjectives = f.read().splitlines()
 
 with open('app/templates/json/profile_name_B.txt', 'r') as f:
-	nouns = f.read().splitlines()
+    nouns = f.read().splitlines()
 
 dk_profile = DkProfile(standard_profile, adjectives, nouns)
 
+logger.info('loading dk faqs')
+dk_faqs = DkFaqs()
 
 from app import models
 from app.api import admin_routes, fs_routes, wms_routes
 from app.ui import (account_routes, application_routes, auth_routes, docs_routes,
-					errors_routes, explorer_routes, feed_routes, profile_routes,
-					faq_routes)
+                    errors_routes, explorer_routes, feed_routes, profile_routes,
+                    faq_routes)

@@ -1,0 +1,44 @@
+{% if options|length > 0 %}
+    {% if query %}
+    <div class="center-align">
+         <div class="chip center-align">{{ options|length }}</div> result{% if options|length != 1%}s{% endif %}
+    </div>
+    {% endif %}
+	{% for option in options %}       	
+		<a href="{{ option.route }}">
+			<div class="card-panel hoverable black-text">
+				<div class="row">
+    				<div class="col s11">
+                        {% if bold_text %}
+                        <strong>{{ option.linkname }}</strong>
+                        {% else %}
+                        <h6>{{ option.linkname }}</h6>
+                        {% endif %}    					
+    					{% if option.link_caption %}
+    					<p>{{ option.link_caption }}</p>
+    					{% endif %}
+    				</div>
+    				<div class="col s1 center-align">
+    					{% if option.icon %}
+        					{% if option.icon.name %}
+        						<i class="material-icons">{{ option.icon.name }}</i>
+        					{% endif %}
+        					{% if option.icon.caption %}
+        						<p>{{ option.icon.caption }}</p>
+        					{% endif %}
+        				{% endif %}
+    				</div>
+                    {% if option.meta_html %}
+                    <div class="col s12">
+                        <div class="divider"></div>
+                        </br>
+                        {{ option.meta_html|safe }}
+                    </div>
+                    {% endif %}
+				</div>
+			</div>
+		</a>        	
+	{% endfor %}
+{% else %}
+	<p class="center-align"><i>Your search did not return any results.</i></p>
+{% endif %}
