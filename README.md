@@ -30,19 +30,5 @@ This will create an initial user for testing - username and password in sdk-user
 http://localhost:5000/
 
 
-### Environment Variables
-SECRET_KEY <br />
-SQLALCHEMY_DATABASE_URI <br />
-ADMIN_TOKENS <br />
-DEV_FS_BASE_URL <br />
-MAX_PROFILE_COUNT <br />
-ELEMENTS_PER_PAGE <br />
-MAIL_SERVER <br />
-MAIL_PORT <br />
-MAIL_USE_TLS <br />
-MAIL_PASSWORD <br />
-FS_AUTH <br />
-
-
 ## Tests
 coverage run tests.py && coverage report app/\*.py && coverage report app/\*/\*.py && coverage report app/\*/\*/\*.py && coverage html app/\*.py && coverage html app/\*/\*.py && coverage html app/\*/\*/\*.py
