@@ -32,6 +32,18 @@
           "sanitizer": "sourceLocation"
         }
       ],
+      "data_paths": [
+        {
+          "key_path": "picks.\\d+.data",
+          "field_name": "data"
+        }        
+      ],
+      "generation_paths": [
+        {
+          "key_path": "picks.\\d+.container.containerID",
+          "field_name": "containerID"
+        }       
+      ],
       "valid_transports": [
         {
           "transport": "HTTPS",

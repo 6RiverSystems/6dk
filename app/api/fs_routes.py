@@ -28,10 +28,14 @@ def receive_southbound(mode, version):
             payload = adapt_payload(original_payload, settings, 'southbound')
         logger.debug(
             'receiving pick-waves message: {}'.format(original_payload))
+
+        payload, settings = handle_southbound_containerId(
+            payload, settings, 'pick-waves')
         if mode == 'dev':
-            masked_data = translate(payload, 'pick-waves', token, 'mask')
+            masked_data = translate(
+                payload, 'pick-waves', token, 'mask', settings=settings)
         elif mode == 'exp':
-            masked_data = translate(payload, 'pick-waves', token, 'mask',
+            masked_data = translate(payload, 'pick-waves', token, 'mask', settings=settings,
                                     exception=True)
         else:
             return jsonify({'message': 'bad request'}), 400

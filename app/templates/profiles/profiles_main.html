@@ -92,7 +92,7 @@
 
 <script>
   function get_profile_settings(token) {
-      $('#profile-panel-'+token).html('<div class="progress"><div class="indeterminate blue darken-4"></div></div>');
+      
       $.post('/profiles/'+token+'/settings', {
           token: token,
       }).done(function(response) {
@@ -105,7 +105,7 @@
 
 <script>
   function edit_profile_info(token) {
-      $('#profile-panel-'+token).html('<div class="progress"><div class="indeterminate blue darken-4"></div></div>');
+      
       $.get('/profiles/'+token+'/edit', {
           token: token,
       }).done(function(response) {
@@ -118,7 +118,7 @@
 
 <script>
   function forward_profile(token) {
-      $('#profile-panel-'+token).html('<div class="progress"><div class="indeterminate blue darken-4"></div></div>');
+      
       $.get('/profiles/'+token+'/forward', {
           token: token,
       }).done(function(response) {
@@ -131,7 +131,7 @@
 
 <script>
   function edit_profile_settings(token, message_direction, message_type) {
-      $('#profile-panel-'+token).html('<div class="progress"><div class="indeterminate blue darken-4"></div></div>');
+      
       $.post('/profiles/'+token+'/'+message_direction+'/'+message_type+'/settings/retrieve', {
           token: token,
           message_type: message_type,
@@ -145,7 +145,7 @@
 
 <script>
   function edit_profile_settings(token, message_direction, message_type) {
-      $('#profile-panel-'+token).html('<div class="progress"><div class="indeterminate blue darken-4"></div></div>');
+      
       $.post('/profiles/'+token+'/'+message_direction+'/'+message_type+'/settings/retrieve', {
           token: token,
           message_type: message_type,
@@ -160,7 +160,7 @@
 <script>
   function apply_profile_settings(token, message_direction, message_type) {
       var form = document.getElementById('edit-'+token+'-'+message_type)
-      $('#profile-panel-'+token).html('<div class="progress"><div class="indeterminate blue darken-4"></div></div>');
+      
       $.post('/profiles/'+token+'/'+message_direction+'/'+message_type+'/settings/apply', {
           token: token,
           message_type: message_type,
@@ -176,7 +176,7 @@
 <script>
   function get_message_transport_selector(token, message_direction, message_type) {
       var form = document.getElementById('edit-'+token+'-'+message_type)
-      $('#profile-panel-'+token).html('<div class="progress"><div class="indeterminate blue darken-4"></div></div>');
+      
       $.post('/profiles/'+token+'/'+message_direction+'/'+message_type+'/settings/change-transport', {
           token: token,
           message_type: message_type,
@@ -190,7 +190,7 @@
 </script>
 <script>
   function apply_transport_settings(token, message_direction, message_type, message_format, message_transport) {
-      $('#profile-panel-'+token).html('<div class="progress"><div class="indeterminate blue darken-4"></div></div>');
+      
       $.post('/profiles/'+token+'/'+message_direction+'/'+message_type+'/settings/apply-transport/'+message_format+'/'+message_transport, {
           token: token,
       }).done(function(response) {
@@ -203,7 +203,7 @@
 
 <script>
   function view_profile_settings(token, message_direction, message_type) {
-      $('#profile-panel-'+token).html('<div class="progress"><div class="indeterminate blue darken-4"></div></div>');
+      
       $.post('/profiles/'+token+'/'+message_direction+'/'+message_type+'/settings/view', {
           token: token,
           message_type: message_type,
@@ -215,4 +215,29 @@
   }
 </script>
 
+<script>
+  function tune_message_settings(token, message_direction, message_type) {      
+      $.post('/profiles/'+token+'/'+message_direction+'/'+message_type+'/settings/tune', {
+          token: token,          
+      }).done(function(response) {
+          $('#profile-panel-'+token).html(response['html'])
+      }).fail(function() {
+          $('#profile-panel-'+token).html("<p>{{ (' Error: Tuning failed.') }}</p>");
+      });
+  }
+</script>
+
+<script>
+  function apply_message_tuning(token, message_direction, message_type) {
+      var form = document.getElementById('tune-'+token+'-'+message_type)
+      $.post('/profiles/'+token+'/'+message_direction+'/'+message_type+'/settings/apply-tuning', {
+          token: token,
+          formdata: $(form).serialize()
+      }).done(function(response) {
+          $('#profile-panel-'+token).html(response['html'])
+      }).fail(function() {
+          $('#profile-panel-'+token).html("<p>{{ (' Error: Tuning failed.') }}</p>");
+      });
+  }
+</script>
 {% endblock %}

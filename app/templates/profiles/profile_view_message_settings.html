@@ -53,5 +53,41 @@
 		</td>
 	</tr>
 	{% endif %}
+{% elif message_direction=='southbound' %}
+	{% if message_settings.name=='pick-waves' %}
+	<table>
+		{% if not message_settings.containerId %}
+		<tr>
+			<td>
+				Container ID Type
+			</td>
+			<td>
+				?
+			</td>
+		</tr>
+		{% else %}
+		<tr>
+			<td>
+				Container ID Type
+			</td>
+			<td>
+				{{message_settings.containerId.type}}
+			</td>
+		</tr>
+			{% if message_settings.containerId.type=='scanAtInduct' %}
+			<tr>
+				<td>
+					Allowed Containers
+				</td>
+				<td>
+					{% for container in message_settings.containerId.collection %}
+					<div class="chip center-align">{{ container.id }}</div>
+					{% endfor %}
+				</td>
+			</tr>
+			{% endif %}
+		{% endif %}
+	</table>
+	{% endif %}
 {% endif %}
 </table>

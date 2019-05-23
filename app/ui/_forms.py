@@ -114,3 +114,17 @@ class ChooseMessages(FlaskForm):
     northbound_messages = SelectMultipleField(
         'Northbound Messages: 6RS to WMS')
     submit = SubmitField('Submit')
+
+
+class TunePickWavesSettingsForm(FlaskForm):
+    container_id_type = SelectField('Container ID Type', validators=[DataRequired()],
+                                    choices=[
+                                    ('first', 'First containerID in pick wave'),
+                                    ('random', 'Generate random containerIDs'),
+                                    ('scanAtInduct', 'Assign containerIDs at induct')
+                                    ])
+    container_id_collection = TextAreaField('Container ID Collection',
+                                            render_kw={"placeholder": ''.join(["If you are assigning containerIDs at induct,",
+                                                                               " tell us which ones to use in 6DK. ",
+                                                                               "Enter each containerID on a new line."])})
+    submit = SubmitField('Submit')

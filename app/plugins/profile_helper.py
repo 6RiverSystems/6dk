@@ -2,7 +2,8 @@ import json
 
 from flask import render_template, jsonify, redirect, url_for
 from app import db, logger, dk_profile, rule
-from app.ui._forms import (NbMessageHttps, NbMessageSftp, ProfileForm)
+from app.ui._forms import (
+    NbMessageHttps, NbMessageSftp, ProfileForm, TunePickWavesSettingsForm)
 from app.models import Profile
 from datetime import datetime
 
@@ -145,6 +146,47 @@ def serve_transport_selector_form(token, message_settings, direction):
                                 token=token,
                                 direction=direction),
     })
+
+
+def serve_message_tuner_form(token, message_settings, message_direction):
+    form = TunePickWavesSettingsForm()
+    if 'containerId' in message_settings.keys():
+        form.container_id_type.data = message_settings['containerId']['type']
+        form.container_id_collection.data = '\n'.join([container['id'] for container in
+                                                       message_settings['containerId']['collection']])
+    action = "javascript:apply_message_tuning('{0}', '{1}', '{2}');".format(
+        token,
+        'southbound',
+        message_settings['name'])
+    return jsonify({'html': render_template('embedded_form.html',
+                                            form=form, action=action,
+                                            formname="Tune {} settings.".format(
+                                                message_settings['name']),
+                                            id='tune-{0}-{1}'.format(token,
+                                                                     message_settings['name']))})
+
+
+def apply_message_tuning(token, message_settings, new_settings):
+    profile_obj = Profile.query.filter_by(token_id=token).first()
+    profile = profile_obj.to_dict()
+    msg_index = profile['data']['southbound_messages'].index(next(message
+                                                                  for message in profile['data']['southbound_messages']
+                                                                  if message['name'] == message_settings['name']))
+    profile_settings = profile['data']['southbound_messages'][msg_index]
+    try:
+        collection = [{
+            'id': container,
+            'last_used': datetime.utcnow().isoformat() + 'Z'}
+            for container in new_settings['container_id_collection'][0].splitlines()]
+    except:
+        collection = []
+    profile_settings['containerId'] = {
+        'type': new_settings['container_id_type'][0],
+        'collection': collection
+    }
+    profile_obj.data = json.dumps(profile['data'])
+    db.session.commit()
+    return profile_settings
 
 
 def serve_southbound_settings_form(token, message_settings):

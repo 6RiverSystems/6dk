@@ -49,6 +49,29 @@ class Rule():
         else:
             return
 
+    def custom_data(self, message_type):
+        message = next((rule for rule in self.rules_dictionary['messages']
+                        if rule['message_type'] == message_type), None)
+        if message:
+            if 'data_paths' in message.keys():
+                return message['data_paths']
+            else:
+                return
+        else:
+            return
+
+    def generations(self, message_type, generation_type):
+        message = next((rule for rule in self.rules_dictionary['messages']
+                        if rule['message_type'] == message_type), None)
+        if message:
+            if 'generation_paths' in message.keys():
+                return [path for path in message['generation_paths']
+                        if path['field_name'] == generation_type]
+            else:
+                return
+        else:
+            return
+
     def sanitizers(self, message_type):
         message = next((rule for rule in self.rules_dictionary['messages']
                         if rule['message_type'] == message_type), None)

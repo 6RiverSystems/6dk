@@ -108,7 +108,12 @@
       },
       "name": "pick-waves",
       "format": "JSON",
-      "transport": "HTTPS"
+      "transport": "HTTPS",
+      "containerId": {
+        "type": "first",
+        "collection": []
+      }
+
     },
     {
       "exception_pick": false,
