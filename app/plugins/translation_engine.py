@@ -7,7 +7,7 @@ from app.plugins.translation.mask_helper import mask, unmask
 #-----------------------------TRANSLATION ENGINE-------------------------------#
 
 
-def translate(payload, message_type, token_id, mode, exception=False):
+def translate(payload, message_type, token_id, mode, exception=False, settings={}):
 	#mask/unmask payload
 	logger.debug('{0}ing fields: {1}'.format(mode, token_id))
 	
@@ -64,4 +64,33 @@ def sanitize(payload, path, token_id, mode, address_book,
 			payload = unmask(address, payload, token_id, 'sanitize', 
 							message_type)
 	return payload
+
+
+#---------------------------CONFIGURATION HANDLER-------------------------------#
+"""
+        "containerIdFilters": {
+          "required": [
+            {
+              "property": "containerIdGeneration",
+              "value": "enabled"
+            }
+          ]
+        }
+"""
+def handle_southbound_containerId(payload, settings):
+	#check settings for settings.containerId.type
+	#if settings.containerId.type != "first", for each pick set pick.data.containerIdGeneration = "enabled" (based on rulebook)
+	return
+
+def handle_northbound_containerId(payload, settings, token):
+	#check settings for settings.containerId.type
+	#if type == first, do nothing and return payload
+	#if type == random, remove containerIdGeneration and return payload
+	#if type == scanAtInduct
+		#check if MaskMap exists for containerId
+		#if MaskMap exists, unmask containerIds (based on rulebook)
+		#if MaskMap does not exist, select oldest used container from settings.containerId.collection and make mask
+		#unmask containerIds
+		#return payload
+	return
 

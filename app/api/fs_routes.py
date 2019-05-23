@@ -26,10 +26,11 @@ def receive_southbound(mode, version):
 			payload = adapt_payload(original_payload, settings)
 		logger.debug('receiving pick-waves message: {}'.format(original_payload))
 		if mode=='dev':
-			masked_data = translate(payload, 'pick-waves', token, 'mask')
+			masked_data = translate(payload, 'pick-waves', token, 'mask',
+									settings=settings)
 		elif mode=='exp':
 			masked_data = translate(payload, 'pick-waves', token, 'mask', 
-									exception=True)
+									settings=settings, exception=True)
 		else:
 			return jsonify({'message': 'bad request'}), 400
 		response = serve_proxy(settings, original_payload, masked_data, 'pick-waves', 

@@ -30,7 +30,7 @@ def receive_wms_request(message_type):
 							'/wms/{}'.format(message_type), token, 
 							request)
 			else:
-				jsonify({'message': 'accepted but origin wms is not configured to receive {}'.format(message_type)})
+				return jsonify({'message': 'accepted but origin wms is not configured to receive {}'.format(message_type)})
 		else:
 			return jsonify({'message': 'accepted but origin wms not found'})	
 	else:
