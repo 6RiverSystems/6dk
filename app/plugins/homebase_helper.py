@@ -12,7 +12,7 @@ def send_account_request(form):
         'email': form.email.data
     }
     response = requests.post(app.config['HOME_BASE_URL']
-                             + '/6dk-manager/user-request',
+                             + '/6dk/manager/user-request',
                              data=json.dumps(data),
                              auth=(app.config['HOME_BASE_USERNAME'],
                                    app.config['HOME_BASE_PASSWORD']),
