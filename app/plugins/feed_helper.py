@@ -38,8 +38,9 @@ def get_message_data(message_id, task):
     err = False
     if message['message_format'] == 'JSON':
         try:
-            message_data = json.dumps(json.loads(message['unmasked_data']), indent=4,
-                                      sort_keys=True)
+            message_data = json.dumps(
+                json.loads(message['unmasked_data']), indent=4,
+                sort_keys=True)
         except:
             err = True
     elif message['message_format'] == 'XML':

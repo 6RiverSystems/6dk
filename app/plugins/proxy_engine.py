@@ -53,7 +53,8 @@ def serve_proxy(settings, data, masked_data, message_type, incoming_endpoint,
         response_message_type))
     original_response = response.get_json(force=True) or {}
     copied_response = copy.deepcopy(original_response)
-    unmasked_response = translate(copied_response, response_message_type, token,
+    unmasked_response = translate(copied_response, response_message_type,
+                                  token,
                                   "unmask")
     save_message(unmasked_response, original_response, response_message_type,
                  incoming_endpoint, token)
@@ -80,7 +81,9 @@ def wms_forwarder(data, masked_data, message_type, incoming_endpoint, token,
                     + '/' + message_settings['wms_path']
                 additional_headers = {header.split(':')[0].strip(): header.split(':')[-1].strip()
                                       for header in message_settings['wms_headers']}
-                response = _proxy(request, json.dumps(masked_data), destination,
+                response = _proxy(request,
+                                  json.dumps(masked_data),
+                                  destination,
                                   additional_headers=additional_headers)
                 response_message_type = message_type + '-response'
                 try:
@@ -91,7 +94,8 @@ def wms_forwarder(data, masked_data, message_type, incoming_endpoint, token,
                     else:
                         data_format = 'JSON'
                     save_message(data, data, response_message_type,
-                                 incoming_endpoint, token, message_format=data_format)
+                                 incoming_endpoint, token,
+                                 message_format=data_format)
                 except:
                     logger.debug('could not save {}'.format(
                         response_message_type))
@@ -99,7 +103,9 @@ def wms_forwarder(data, masked_data, message_type, incoming_endpoint, token,
             else:
                 return jsonify({'msg': 'accepted but not forwarding to wms'})
         else:
-            return jsonify({'msg': 'accepted but {} message settings not found'.format(message_type)})
+            return jsonify(
+                {'msg': 'accepted but {} message settings not found'.format(
+                    message_type)})
     else:
         return jsonify({'msg': 'accepted but profile not found'})
 

@@ -3,7 +3,7 @@ from unittests.base import sixDKTests
 
 class PluginTranslationTests(sixDKTests):
 
-    #---------------------------TRANSLATION ENGINE-----------------------------#
+    #---------------------------TRANSLATION ENGINE--------------------------#
 
     def testMaskPayload(self):
         return
@@ -29,7 +29,7 @@ class PluginTranslationTests(sixDKTests):
     def testSanitizeElementDatabase(self):
         return
 
-    #------------------------------DECIPHER ENGINE-----------------------------#
+    #------------------------------DECIPHER ENGINE--------------------------#
 
     def testDecipherPayload(self):
         return

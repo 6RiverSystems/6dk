@@ -14,7 +14,7 @@ def user_token_validation(f):
         if '6Dk-Token' in headers.keys():
             profile = Profile.query.filter_by(
                 token_id=headers['6Dk-Token']).first()
-            if profile != None:
+            if not profile:
                 if not profile.deleted:
                     logger.debug('6Dk-Token accepted')
                     return f(*args, **kwargs)

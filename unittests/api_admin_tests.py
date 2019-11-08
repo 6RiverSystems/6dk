@@ -1,4 +1,3 @@
-import json
 from unittests.base import sixDKTests
 
 from app.models import User, Profile
@@ -133,12 +132,13 @@ class ApiAdminTests(sixDKTests):
         response = self.app.post('/admin/profiles',
                                  data='{"email": "rivs@6river.com"}',
                                  headers=self.admin_header())
-        self.assertTrue(check_for_keys(['token_id', 'user', 'created', 'updated',
+        self.assertTrue(
+            check_for_keys(['token_id', 'user', 'created', 'updated',
                                         'data'], response.json)[0]
-                        and check_for_keys(['friendly_name', 'active',
-                                            'northbound_messages',
-                                            'southbound_messages'],
-                                           response.json['data'])[0])
+            and check_for_keys(['friendly_name', 'active',
+                                'northbound_messages',
+                                'southbound_messages'],
+                               response.json['data'])[0])
 
     def testCreateProfileSuccessDatabase(self):
         """test Admin API database update for creating a new profile
@@ -164,7 +164,8 @@ class ApiAdminTests(sixDKTests):
                         == 'no 6Dk-Admin-Token supplied')
 
     def testCreateProfileMissingTokenDatabase(self):
-        """test Admin API missing token database update for creating a new profile
+        """test Admin API missing token database update
+        for creating a new profile
 
         API should not create profile
         """
@@ -174,7 +175,8 @@ class ApiAdminTests(sixDKTests):
         self.assertTrue(Profile.query.count() == 0)
 
     def testCreateProfileWrongTokenResponse(self):
-        """test Admin API wrong token response for creating a new profile
+        """test Admin API wrong token response
+        for creating a new profile
 
         API should return error message
         """
@@ -187,7 +189,8 @@ class ApiAdminTests(sixDKTests):
                         == '6Dk-Admin-Token not found')
 
     def testCreateProfileWrongTokenDatabase(self):
-        """test Admin API wrong token database update for creating a new profile
+        """test Admin API wrong token database update
+        for creating a new profile
 
         API should not create profile
         """
@@ -203,18 +206,19 @@ class ApiAdminTests(sixDKTests):
 
         API should return error message
         """
-        user = self.create_user()
+        self.create_user()
         response = self.app.post('/admin/profiles',
                                  data='{"foo": "bar"}',
                                  headers=self.admin_header())
         self.assertTrue(response.json['message'] == 'missing email')
 
     def testCreateProfileMissingEmailDatabase(self):
-        """test Admin API missing email database update for creating a new profile
+        """test Admin API missing email database update
+        for creating a new profile
 
         API should not create profile
         """
-        user = self.create_user()
+        self.create_user()
         self.app.post('/admin/profiles',
                       data='{"foo": "bar"}',
                       headers=self.admin_header())
@@ -225,7 +229,7 @@ class ApiAdminTests(sixDKTests):
 
         API should return error message
         """
-        user = self.create_user()
+        self.create_user()
         response = self.app.post('/admin/profiles',
                                  data='{"email": "rivs2@6river.com"}',
                                  headers=self.admin_header())
@@ -233,11 +237,12 @@ class ApiAdminTests(sixDKTests):
                         'user not found for email: rivs2@6river.com')
 
     def testCreateProfileUnknownEmailDatabase(self):
-        """test Admin API unknown email database update for creating a new profile
+        """test Admin API unknown email database update
+        for creating a new profile
 
         API should not create profile
         """
-        user = self.create_user()
+        self.create_user()
         self.app.post('/admin/profiles',
                       data='{"email": "rivs2@6river.com"}',
                       headers=self.admin_header())
@@ -249,13 +254,15 @@ class ApiAdminTests(sixDKTests):
         API should return Profile object
         """
         user, profile = self.create_user(include_profile=True)
-        response = self.app.put('/admin/profiles/{}'.format(profile['token_id']),
-                                data='{"data":{"foo":"bar"}}',
-                                headers=self.admin_header())
-        self.assertTrue(check_for_keys(['token_id', 'user', 'created', 'updated',
+        response = self.app.put(
+            '/admin/profiles/{}'.format(profile['token_id']),
+            data='{"data":{"foo":"bar"}}',
+            headers=self.admin_header())
+        self.assertTrue(
+            check_for_keys(['token_id', 'user', 'created', 'updated',
                                         'data'], response.json)[0]
-                        and check_for_keys(['foo'],
-                                           response.json['data'])[0])
+            and check_for_keys(['foo'],
+                               response.json['data'])[0])
 
     def testModProfileSuccessDatabase(self):
         """test Admin API database update for updating a profile
@@ -275,8 +282,9 @@ class ApiAdminTests(sixDKTests):
         API should return error message
         """
         user, profile = self.create_user(include_profile=True)
-        response = self.app.put('/admin/profiles/{}'.format(profile['token_id']),
-                                data='{"data":{"foo":"bar"}}')
+        response = self.app.put(
+            '/admin/profiles/{}'.format(profile['token_id']),
+            data='{"data":{"foo":"bar"}}')
         self.assertTrue(response.json['message']
                         == 'no 6Dk-Admin-Token supplied')
 
@@ -296,9 +304,10 @@ class ApiAdminTests(sixDKTests):
         API should return error message
         """
         user, profile = self.create_user(include_profile=True)
-        response = self.app.put('/admin/profiles/{}'.format(profile['token_id']),
-                                data='{"data":{"foo":"bar"}}',
-                                headers={'6Dk-Admin-Token': 'bad-token-1234'})
+        response = self.app.put(
+            '/admin/profiles/{}'.format(profile['token_id']),
+            data='{"data":{"foo":"bar"}}',
+            headers={'6Dk-Admin-Token': 'bad-token-1234'})
         self.assertTrue(response.json['message']
                         == '6Dk-Admin-Token not found')
 
@@ -319,9 +328,10 @@ class ApiAdminTests(sixDKTests):
         API should return error message
         """
         user, profile = self.create_user(include_profile=True)
-        response = self.app.put('/admin/profiles/{}'.format(profile['token_id']),
-                                data='{"foo":"bar"}',
-                                headers=self.admin_header())
+        response = self.app.put(
+            '/admin/profiles/{}'.format(profile['token_id']),
+            data='{"foo":"bar"}',
+            headers=self.admin_header())
         self.assertTrue(response.json['message'] == 'missing data')
 
     def testModProfileMissingDataDatabase(self):
@@ -341,20 +351,23 @@ class ApiAdminTests(sixDKTests):
         API should return error message
         """
         user, profile = self.create_user(include_profile=True)
-        response = self.app.put('/admin/profiles/{}'.format(profile['token_id']),
-                                data='{"data":123}',
-                                headers=self.admin_header())
+        response = self.app.put(
+            '/admin/profiles/{}'.format(profile['token_id']),
+            data='{"data":123}',
+            headers=self.admin_header())
         self.assertTrue(response.json['message'] == 'data must be an object')
 
     def testModProfileWrongDataTypeDatabase(self):
-        """test Admin API wrong data data type database update for updating a profile
+        """test Admin API wrong data data type database update
+        for updating a profile
 
         API should not modify Profile.data
         """
         user, profile = self.create_user(include_profile=True)
-        self.app.put('/admin/profiles/{}'.format(profile['token_id']),
-                     data='{"data":123}',
-                     headers=self.admin_header())
+        self.app.put(
+            '/admin/profiles/{}'.format(profile['token_id']),
+            data='{"data":123}',
+            headers=self.admin_header())
         self.assertTrue(Profile.query.first().to_dict() == profile)
 
     def testModProfileUnknownProfileResponse(self):
@@ -374,9 +387,10 @@ class ApiAdminTests(sixDKTests):
         API should return a success message
         """
         user, profile = self.create_user(include_profile=True)
-        response = self.app.delete('/admin/profiles/{}'.format(profile['token_id']),
-                                   data="{}",
-                                   headers=self.admin_header())
+        response = self.app.delete(
+            '/admin/profiles/{}'.format(profile['token_id']),
+            data="{}",
+            headers=self.admin_header())
         self.assertTrue(response.json['message'] == 'profile deleted')
 
     def testDeleteProfileSuccessDatabase(self):
@@ -385,8 +399,8 @@ class ApiAdminTests(sixDKTests):
         API should return a success message
         """
         user, profile = self.create_user(include_profile=True)
-        response = self.app.delete('/admin/profiles/{}'.format(profile['token_id']),
-                                   data="{}",
-                                   headers=self.admin_header())
+        self.app.delete('/admin/profiles/{}'.format(profile['token_id']),
+                        data="{}",
+                        headers=self.admin_header())
         self.assertTrue(Profile.query.count() == 1
-                        and Profile.query.first().deleted == True)
+                        and Profile.query.first().deleted is True)

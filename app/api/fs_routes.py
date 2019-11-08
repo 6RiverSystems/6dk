@@ -18,8 +18,11 @@ def receive_southbound(mode, version):
     token = request.headers['6Dk-Token']
     if enabled_message(token, 'pick-waves'):
         profile = Profile.query.get(token).to_dict()
-        settings = next(message for message in profile['data']['southbound_messages']
-                        if message['name'] == 'pick-waves')
+        settings = next(
+            message
+            for message in profile['data']['southbound_messages']
+            if message['name'] == 'pick-waves'
+        )
         if settings['format'].lower() == 'json':
             original_payload = request.get_json(force=True) or {}
             payload = copy.deepcopy(original_payload)
@@ -35,7 +38,9 @@ def receive_southbound(mode, version):
                                     exception=True)
         else:
             return jsonify({'message': 'bad request'}), 400
-        response = serve_proxy(settings, original_payload, masked_data, 'pick-waves',
+        response = serve_proxy(settings,
+                               original_payload, masked_data,
+                               'pick-waves',
                                '/{0}/wis-southbound/{1}/pick-waves'.format(
                                    mode, version),
                                token, app.config['DEV_FS_BASE_URL'] +
@@ -45,7 +50,8 @@ def receive_southbound(mode, version):
         verify_first_pick_wave(token)
         return response
     else:
-        return jsonify({'message': 'pick-waves message type is not enabled'}), 405
+        return jsonify(
+            {'message': 'pick-waves message type is not enabled'}), 405
 
 
 @app.route('/dev/wis-order-update/v1/<message_type>', methods=['POST'])
@@ -70,11 +76,16 @@ def receive_order_update(message_type):
                 message_type, payload))
 
             profile = Profile.query.get(token).to_dict()
-            settings = next(message for message in profile['data']['southbound_messages']
-                            if message['name'] == 'pick-waves')
+            settings = next(
+                message
+                for message in profile['data']['southbound_messages']
+                if message['name'] == 'pick-waves'
+            )
             masked_data = translate(
                 payload, message_type, token, 'mask', exception=True)
-            response = serve_proxy(settings, original_payload, masked_data, message_type,
+            response = serve_proxy(settings,
+                                   original_payload, masked_data,
+                                   message_type,
                                    '/dev/wis-order-update/v1/{}'.format(
                                        message_type),
                                    token, app.config['DEV_FS_BASE_URL'] +
@@ -85,4 +96,6 @@ def receive_order_update(message_type):
         else:
             return jsonify({'message': 'unknown message type'}), 404
     else:
-        return jsonify({'message': '{} message type is not enabled'.format(message_type)}), 405
+        return jsonify(
+            {'message': '{} message type is not enabled'.format(
+                message_type)}), 405

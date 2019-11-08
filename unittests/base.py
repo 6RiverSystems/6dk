@@ -3,7 +3,6 @@ import unittest
 
 from app import app, db, dk_profile
 from app.models import User, Profile
-from app.plugins.general_helper import check_for_keys
 
 
 class sixDKTests(unittest.TestCase):

@@ -18,11 +18,15 @@ class Rule():
         ]
 
     def get_message_transports(self, message_settings):
-        message = next((rule for rule in self.rules_dictionary['messages']
-                        if rule['message_type'] == message_settings['name']), None)
+        message = next((
+            rule
+            for rule in self.rules_dictionary['messages']
+            if rule['message_type'] == message_settings['name']),
+            None)
         return message['valid_transports']
 
-    def get_transporter_rules(self, message_type, message_transport, message_format):
+    def get_transporter_rules(self, message_type, message_transport,
+                              message_format):
         message = next((rule for rule in self.rules_dictionary['messages']
                         if rule['message_type'] == message_type), None)
         return next((transporter for transporter in message['valid_transports']
@@ -33,7 +37,8 @@ class Rule():
         messages = self.get_messages_list(
             'northbound') + self.get_messages_list('southbound')
         messages = [msg for msg in messages
-                    if msg in (user['data']['message_types']['northbound'] + user['data']['message_types']['southbound'])]
+                    if msg in (user['data']['message_types']['northbound']
+                               + user['data']['message_types']['southbound'])]
         messages = [msg + '-response' for msg in messages] + messages
         messages.sort()
         return messages
@@ -64,14 +69,18 @@ class Rule():
         message = next((rule for rule in self.rules_dictionary['messages']
                         if rule['message_type'] == message_type), None)
         if message:
-            sanitizer_name = next((rule['sanitizer'] for rule in message['sanitize_paths']
-                                   if rule['field_name'] == field_name), None)
+            sanitizer_name = next((
+                rule['sanitizer']
+                for rule in message['sanitize_paths']
+                if rule['field_name'] == field_name), None)
         else:
             sanitizer_name = None
 
         if sanitizer_name:
-            sanitizer = next((rule for rule in self.rules_dictionary['sanitizers']
-                              if rule['name'] == sanitizer_name), None)
+            sanitizer = next((
+                rule
+                for rule in self.rules_dictionary['sanitizers']
+                if rule['name'] == sanitizer_name), None)
 
         else:
             sanitizer = None

@@ -4,7 +4,8 @@ from werkzeug.urls import url_parse
 
 from app import app, db
 from app.models import User
-from app.ui._forms import (LoginForm, ResetPasswordRequestForm, ResetPasswordForm,
+from app.ui._forms import (LoginForm, ResetPasswordRequestForm,
+                           ResetPasswordForm,
                            RequestAccountForm)
 from app.plugins.mail_helper import (send_password_reset_email,
                                      send_password_reset_done_email)
@@ -27,7 +28,8 @@ def login():
         if not next_page or url_parse(next_page).netloc != '':
             next_page = url_for('index')
         return redirect(next_page)
-    return render_template('auth.html', title='Log In', form=form, mode='login')
+    return render_template(
+        'auth.html', title='Log In', form=form, mode='login')
 
 
 @app.route('/logout')
@@ -47,7 +49,8 @@ def reset_password_request():
             send_password_reset_email(user)
         flash('Check your email for the instructions to reset your password')
         return redirect(url_for('login'))
-    return render_template('auth.html', title='Reset Password Request', form=form,
+    return render_template('auth.html', title='Reset Password Request',
+                           form=form,
                            mode='reset-request')
 
 
@@ -65,14 +68,15 @@ def reset_password(token):
         flash('Your password has been reset.')
         send_password_reset_done_email(user)
         return redirect(url_for('login'))
-    return render_template('auth.html', title='Reset Password', form=form,
+    return render_template('auth.html', title='Reset Password',
+                           form=form,
                            mode='reset')
 
 
 @app.route('/request-account', methods=['GET', 'POST'])
 def request_account():
     if current_user.is_authenticated:
-        return reditect(url_for('index'))
+        return redirect(url_for('index'))
     form = RequestAccountForm()
     if form.validate_on_submit():
         exist = User.query.filter_by(email=form.email.data).first()
@@ -80,8 +84,9 @@ def request_account():
             response = send_account_request(form)
             flash(response)
         else:
-            flash('Account already exists for {}. Try resetting your password'.format(
-                form.email.data))
+            flash(
+                'Account already exists for {}. Try resetting your password'.format(
+                    form.email.data))
         return redirect(url_for('login'))
     return render_template('auth.html', title='Request Account', form=form,
                            mode='request-account')

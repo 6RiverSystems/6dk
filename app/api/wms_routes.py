@@ -30,16 +30,22 @@ def receive_wms_request(message_type):
         if token:
             if enabled_message(token, message_type):
                 profile = Profile.query.get(token).to_dict()
-                settings = next(message for message in profile['data']['northbound_messages']
-                                if message['name'] == message_type)
+                settings = next(
+                    message
+                    for message in profile['data']['northbound_messages']
+                    if message['name'] == message_type
+                )
                 if settings['format'].lower() != 'json':
                     unmasked_data = adapt_payload(json.dumps(
                         unmasked_data), settings, 'northbound')
-                return wms_forwarder(unmasked_data, original_payload, message_type,
+                return wms_forwarder(unmasked_data,
+                                     original_payload, message_type,
                                      '/wms/{}'.format(message_type), token,
                                      request, message_format=settings['format'])
             else:
-                return jsonify({'message': 'accepted but origin wms is not configured to receive {}'.format(message_type)})
+                return jsonify(
+                    {'message': 'accepted but origin wms is not configured to receive {}'.format(
+                        message_type)})
         else:
             return jsonify({'message': 'accepted but origin wms not found'})
     else:

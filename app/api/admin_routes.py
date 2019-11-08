@@ -28,8 +28,10 @@ def create_user():
                               + string.ascii_lowercase)
                 for _ in range(12))
             data['password'] = temp_pass
-        all_keys_present, results = check_for_keys(['email', 'first_name',
-                                                    'last_name', 'password'], data)
+        all_keys_present, results = check_for_keys(
+            ['email', 'first_name', 'last_name', 'password'],
+            data
+        )
         if all_keys_present:
             logger.debug('adding user {}'.format(data['email']))
             response, success = create_new_user(data)
@@ -45,7 +47,8 @@ def create_user():
             return response
         else:
             logger.debug('missing {}'.format(', '.join(results)))
-            return jsonify({'message': 'missing {}'.format(', '.join(results))}), 400
+            return jsonify({'message': 'missing {}'.format(
+                ', '.join(results))}), 400
     else:
         return query_users(request)
 
@@ -95,9 +98,11 @@ def create_profile():
                 response = jsonify(profile)
                 response.status_code = 201
                 return response
-            return jsonify({'message': 'user not found for email: {}'.format(data['email'])}), 400
+            return jsonify({'message': 'user not found for email: {}'.format(
+                data['email'])}), 400
         else:
-            return jsonify({'message': 'missing {}'.format(', '.join(results))}), 400
+            return jsonify({'message': 'missing {}'.format(
+                ', '.join(results))}), 400
     else:
         return query_profiles(request)
 
@@ -128,7 +133,7 @@ def query_profiles(request):
 def mod_profile(token_id):
     data = request.get_json(force=True) or {}
     profile = Profile.query.filter_by(token_id=token_id).first()
-    if profile == None:
+    if not profile:
         return jsonify({'message': 'profile not found'}), 404
     if request.method == 'PUT':
         return edit_profile_data(token_id, data, profile)
@@ -147,7 +152,8 @@ def edit_profile_data(token_id, data, profile):
             db.session.commit()
             return jsonify(profile.to_dict())
     else:
-        return jsonify({'message': 'missing {}'.format(', '.join(results))}), 400
+        return jsonify({'message': 'missing {}'.format(
+            ', '.join(results))}), 400
 
 
 def delete_profile(token_id, data, profile):

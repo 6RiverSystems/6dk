@@ -64,6 +64,8 @@ dk_faqs = DkFaqs()
 
 from app import models
 from app.api import admin_routes, fs_routes, wms_routes
-from app.ui import (account_routes, application_routes, auth_routes, docs_routes,
-                    errors_routes, explorer_routes, feed_routes, profile_routes,
+from app.ui import (account_routes, application_routes,
+                    auth_routes, docs_routes,
+                    errors_routes, explorer_routes,
+                    feed_routes, profile_routes,
                     faq_routes)
