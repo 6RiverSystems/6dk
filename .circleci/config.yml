@@ -19,12 +19,26 @@ jobs:
             sudo pip install pipenv
             pipenv install
       - run:
-          name: tests 
-          command: pipenv run coverage run --source app/ tests.py
+          name: Upgrade Database
+          command: pipenv run flask db upgrade
+      - run:
+          name: Run Tests
+          command: |
+            pipenv run coverage run --source app/ tests.py
+            pipenv run coverage xml
+      - run:
+          name: Upload Coverage
+          command: bash <(curl -s https://codecov.io/bash)
+      - run:
+          name: Docker Build
+          command: |
+            ci_scripts/ci_tool.sh --docker_build
       - persist_to_workspace:
           root: ./
           paths:
             - .
+            - ci_scripts
+            - .version
   publish:
     docker:
       - image: circleci/python:3.6
@@ -47,7 +61,7 @@ jobs:
             - .
   
 workflows:
-  version: 2
+  version: 2.1
 
   test_and_publish:
     jobs:
