@@ -27,9 +27,6 @@ jobs:
             pipenv run coverage run --source app/ tests.py
             pipenv run coverage xml
       - run:
-          name: Upload Coverage
-          command: bash <(curl -s https://codecov.io/bash)
-      - run:
           name: Docker Build
           command: |
             ci_scripts/ci_tool.sh --docker_build
