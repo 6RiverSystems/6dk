@@ -24,7 +24,7 @@ jobs:
             - .
   publish:
     docker:
-      - image: circleci/python:3
+      - image: circleci/python:3.6
     steps:
       - setup_remote_docker
       - attach_workspace:
