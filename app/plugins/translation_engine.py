@@ -4,7 +4,7 @@ from app.plugins.translation.address_helper import (get_global_addresses,
 from app.plugins.translation.mask_helper import mask, unmask
 
 
-#-----------------------------TRANSLATION ENGINE-------------------------------#
+#-----------------------------TRANSLATION ENGINE----------------------------#
 
 
 def translate(payload, message_type, token_id, mode, exception=False):
@@ -32,7 +32,7 @@ def translate(payload, message_type, token_id, mode, exception=False):
     return payload
 
 
-#---------------------------SUBSTITUTION MANAGER-------------------------------#
+#---------------------------SUBSTITUTION MANAGER----------------------------#
 
 
 def substitute(payload, path, token_id, mode, address_book,
@@ -49,7 +49,7 @@ def substitute(payload, path, token_id, mode, address_book,
     return payload
 
 
-#---------------------------SANITIZATION MANAGER-------------------------------#
+#---------------------------SANITIZATION MANAGER----------------------------#
 
 
 def sanitize(payload, path, token_id, mode, address_book,

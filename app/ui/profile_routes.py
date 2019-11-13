@@ -7,7 +7,8 @@ from urllib.parse import parse_qs
 from app import app, db, rule
 from app.ui._forms import ForwardProfileForm
 from app.models import Profile, User
-from app.plugins.profile_helper import (create_new_profile, make_profile_active,
+from app.plugins.profile_helper import (create_new_profile,
+                                        make_profile_active,
                                         remove_profile, restore_profile,
                                         make_profile_copy,
                                         serve_edit_profile_form,
@@ -112,7 +113,8 @@ def receive_profile(token):
             send_accept_profile_email(token_data['source'], current_user,
                                       token_data['profile'])
         else:
-            flash('Maximum number of profiles reached. Remove a profile and try again.')
+            flash(
+                'Maximum number of profiles reached. Remove a profile and try again.')
     else:
         flash('Invalid forward profile token')
     return redirect(url_for('profiles_main'))
@@ -127,8 +129,9 @@ def copy_profile(token):
             flash('You do not own token: {}'.format(token))
         else:
             profile, old_name = make_profile_copy(token, current_user.id)
-            flash('Copied profile: {0} >> {1}'.format(old_name,
-                                                      profile['data']['friendly_name']))
+            flash('Copied profile: {0} >> {1}'.format(
+                old_name,
+                profile['data']['friendly_name']))
     else:
         flash('Maximum number of profiles reached')
     return redirect(url_for('profiles_main'))
@@ -207,9 +210,10 @@ def message_settings(token, message_direction, message_type, action):
     else:
         profile = Profile.query.filter_by(token_id=token).first().to_dict()
         if message_direction == 'northbound':
-            message_settings = next(message
-                                    for message in profile['data']['northbound_messages']
-                                    if message['name'] == message_type)
+            message_settings = next(
+                message
+                for message in profile['data']['northbound_messages']
+                if message['name'] == message_type)
             if action == 'retrieve':
                 return serve_northbound_settings_form(token, message_settings)
             elif action == 'apply':
@@ -222,29 +226,36 @@ def message_settings(token, message_direction, message_type, action):
                 return display_message_settings(token, message_settings,
                                                 'northbound')
             elif action == 'change-transport':
-                return serve_transport_selector_form(token, message_settings, 'northbound')
+                return serve_transport_selector_form(token, message_settings,
+                                                     'northbound')
         elif message_direction == 'southbound':
-            message_settings = next(message
-                                    for message in profile['data']['southbound_messages']
-                                    if message['name'] == message_type)
+            message_settings = next(
+                message
+                for message in profile['data']['southbound_messages']
+                if message['name'] == message_type)
             if action == 'retrieve':
                 return serve_southbound_settings_form(token, message_settings)
             elif action == 'change-transport':
-                return serve_transport_selector_form(token, message_settings, 'southbound')
+                return serve_transport_selector_form(token, message_settings,
+                                                     'southbound')
 
 
-@app.route('/profiles/<token>/<message_direction>/<message_type>/settings/apply-transport/<message_format>/<message_transport>',
-           methods=['POST'])
+@app.route(
+    '/profiles/<token>/<message_direction>/<message_type>/settings/apply-transport/<message_format>/<message_transport>',
+    methods=['POST'])
 @login_required
-def change_message_transport(token, message_direction, message_type, message_format, message_transport):
+def change_message_transport(token, message_direction, message_type,
+                             message_format, message_transport):
     if not current_user.owns_token(token):
         return jsonify({'html': 'You do not own token: {}'.format(token)})
     else:
         first_time_check('mod_profile', current_user, flash_desc=False)
         profile_obj = Profile.query.filter_by(token_id=token).first()
         profile = profile_obj.to_dict()
-        message_settings_dict = next(message for message in profile['data'][message_direction + '_messages']
-                                     if message['name'] == message_type)
+        message_settings_dict = next(
+            message
+            for message in profile['data'][message_direction + '_messages']
+            if message['name'] == message_type)
         transports = rule.get_message_transports(message_settings_dict)
         valid = next((transport for transport in transports
                       if transport['format'] == message_format
@@ -256,7 +267,8 @@ def change_message_transport(token, message_direction, message_type, message_for
             profile_obj.data = json.dumps(profile['data'])
             db.session.commit()
             if message_direction == 'northbound':
-                return message_settings(token, message_direction, message_type, 'retrieve')
+                return message_settings(token, message_direction, message_type,
+                                        'retrieve')
             else:
                 return retrieve_settings(token)
         else:

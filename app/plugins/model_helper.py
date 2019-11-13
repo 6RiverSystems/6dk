@@ -1,11 +1,12 @@
 import json
 
 from app import db
-from app.plugins.translation.payload_manipulator import flatten_dict, set_by_path
+from app.plugins.translation.payload_manipulator import (
+    flatten_dict, set_by_path)
 
 
 def model_data_updater(orig_object, template):
-    object_data = json.loads(orig_oject.data)
+    object_data = json.loads(orig_object.data)
     object_addresses = [x for x in flatten_dict(object_data)]
     to_add = []
     template_addresses = [x for x in flatten_dict(template)]

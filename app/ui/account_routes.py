@@ -97,10 +97,12 @@ def account_change_password():
 @login_required
 def account_choose_messages():
     form = ChooseMessages()
-    form.southbound_messages.choices = [(msg, msg)
-                                        for msg in rule.get_messages_list('southbound')]
-    form.northbound_messages.choices = [(msg, msg)
-                                        for msg in rule.get_messages_list('northbound')]
+    form.southbound_messages.choices = [
+        (msg, msg)
+        for msg in rule.get_messages_list('southbound')]
+    form.northbound_messages.choices = [
+        (msg, msg)
+        for msg in rule.get_messages_list('northbound')]
     if form.validate_on_submit():
         data = current_user.to_dict()['data']
         data['message_types']['northbound'] = form.northbound_messages.data

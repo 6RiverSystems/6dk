@@ -47,7 +47,7 @@ def match_masked_fields(path, address_book, stringified_address_book):
         MaskMap.query.filter_by(value=value).first()
         for value in value_matches
     ]
-    map_matches = [match for match in map_matches if match != None]
+    map_matches = [match for match in map_matches if not match]
     if len(map_matches) > 0:
         tokens = [match.token_id for match in map_matches]
         if all(x == tokens[0] for x in tokens):  # if they are all the same

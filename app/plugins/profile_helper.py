@@ -1,6 +1,6 @@
 import json
 
-from flask import render_template, jsonify, redirect, url_for
+from flask import render_template, jsonify, url_for
 from app import db, logger, dk_profile, rule
 from app.ui._forms import (NbMessageHttps, NbMessageSftp, ProfileForm)
 from app.models import Profile
@@ -15,8 +15,9 @@ def create_new_profile(data, as_obj=False):
     profile.from_dict(data, new_profile=True)
     db.session.add(profile)
     db.session.commit()
-    logger.debug('created new profile for {0}: {1}'.format(data['user'],
-                                                           profile_data['friendly_name']))
+    logger.debug('created new profile for {0}: {1}'.format(
+        data['user'],
+        profile_data['friendly_name']))
     if as_obj:
         return profile
     else:
@@ -119,19 +120,21 @@ def serve_northbound_settings_form(token, message_settings):
         'northbound',
         message_settings['name'])
     return jsonify({
-        'html': render_template('embedded_form.html',
-                                form=form,
-                                formname='Edit {} settings.'.format(
-                                    message_settings['name']),
-                                action=action,
-                                id='edit-{0}-{1}'.format(token,
-                                                         message_settings['name']),
-                                foot_text='Currently viewing settings for {0} via {1} transport.'.format(
-                                    message_settings['format'],
-                                    message_settings['transport']),
-                                foot_url_text='Need something else?',
-                                foot_url_link=foot_url_link
-                                ),
+        'html': render_template(
+            'embedded_form.html',
+            form=form,
+            formname='Edit {} settings.'.format(
+                message_settings['name']),
+            action=action,
+            id='edit-{0}-{1}'.format(
+                token,
+                message_settings['name']),
+            foot_text='Currently viewing settings for {0} via {1} transport.'.format(
+                message_settings['format'],
+                message_settings['transport']),
+            foot_url_text='Need something else?',
+            foot_url_link=foot_url_link
+        ),
 
     })
 
@@ -154,9 +157,10 @@ def serve_southbound_settings_form(token, message_settings):
 def update_northbound_settings(token, message_settings, new_settings):
     profile_obj = Profile.query.filter_by(token_id=token).first()
     profile = profile_obj.to_dict()
-    msg_index = profile['data']['northbound_messages'].index(next(message
-                                                                  for message in profile['data']['northbound_messages']
-                                                                  if message['name'] == message_settings['name']))
+    msg_index = profile['data']['northbound_messages'].index(next(
+        message
+        for message in profile['data']['northbound_messages']
+        if message['name'] == message_settings['name']))
     profile_settings = profile['data']['northbound_messages'][msg_index]
     profile_settings['wms_host'] = new_settings['wms_host'][0]
     profile_settings['wms_port'] = new_settings['wms_port'][0]

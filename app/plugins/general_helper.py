@@ -27,10 +27,11 @@ def first_time_check(key, current_user, flash_desc=True, edit_entry=True):
                 if flash_desc:
                     flash(step['description'])
                 if edit_entry:
-                    logger.debug('onboarding: user {0} has completed step {1}'.format(
-                        current_user.email,
-                        key
-                    ))
+                    logger.debug(
+                        'onboarding: user {0} has completed step {1}'.format(
+                            current_user.email,
+                            key
+                        ))
                     current_user.data = json.dumps(data)
                     db.session.commit()
     except:

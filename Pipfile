@@ -27,5 +27,10 @@ gunicorn = "*"
 flask-mail = "*"
 pyjwt = "*"
 vcrpy = "*"
-pyyaml = "==4.2b1"
+pyyaml = "*"
 lxml = "*"
+
+
+[requires]
+
+python_version = "3.6"

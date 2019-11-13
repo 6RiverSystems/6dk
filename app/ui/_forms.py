@@ -1,6 +1,8 @@
 from flask_wtf import FlaskForm
-from wtforms import (StringField, PasswordField, BooleanField, SubmitField,
-                     IntegerField, TextAreaField, SelectMultipleField,
+from wtforms import (StringField, PasswordField,
+                     BooleanField, SubmitField,
+                     IntegerField, TextAreaField,
+                     SelectMultipleField,
                      SelectField)
 from wtforms.validators import (DataRequired, Email, EqualTo, Length)
 
@@ -16,8 +18,10 @@ class LoginForm(FlaskForm):
 
 
 class ResetPasswordRequestForm(FlaskForm):
-    email = StringField('Email', validators=[DataRequired(),
-                                             Email(message="Enter a valid email address.")])
+    email = StringField('Email',
+                        validators=[
+                            DataRequired(),
+                            Email(message="Enter a valid email address.")])
     submit = SubmitField('Request Password Reset')
 
 
@@ -41,8 +45,9 @@ class RequestAccountForm(FlaskForm):
 class EditAccount(FlaskForm):
     first_name = StringField('First Name', validators=[DataRequired()])
     last_name = StringField('Last Name', validators=[DataRequired()])
-    email = StringField('Email', validators=[DataRequired(),
-                                             Email(message="Enter a valid email address.")])
+    email = StringField('Email', validators=[
+        DataRequired(),
+        Email(message="Enter a valid email address.")])
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Save')
 
@@ -50,8 +55,9 @@ class EditAccount(FlaskForm):
 class ChangePassword(FlaskForm):
     password = PasswordField('Current Password', validators=[DataRequired()])
     new_password = PasswordField('New Password', validators=[DataRequired()])
-    confirm_new_password = PasswordField('Confirm New Password', validators=[DataRequired(),
-                                                                             EqualTo('new_password')])
+    confirm_new_password = PasswordField('Confirm New Password',
+                                         validators=[DataRequired(),
+                                                     EqualTo('new_password')])
     submit = SubmitField('Save')
 
 
@@ -61,8 +67,10 @@ class ProfileForm(FlaskForm):
 
 
 class ForwardProfileForm(FlaskForm):
-    recipient = StringField('Recipient Email', validators=[DataRequired(),
-                                                           Email(message="Enter a valid email address.")])
+    recipient = StringField('Recipient Email',
+                            validators=[
+                                DataRequired(),
+                                Email(message="Enter a valid email address.")])
     submit = SubmitField('Submit')
 
 
@@ -81,21 +89,27 @@ class ExplorerMessage(FlaskForm):
 
 
 class NbMessageHttps(FlaskForm):
-    wms_host = StringField('WMS Host', validators=[DataRequired()],
-                           render_kw={"placeholder": "https://wms.warehouse.com"})
+    wms_host = StringField(
+        'WMS Host',
+        validators=[DataRequired()],
+        render_kw={"placeholder": "https://wms.warehouse.com"})
     wms_port = StringField('WMS Port', validators=[DataRequired()],
                            render_kw={"placeholder": "443"})
     wms_path = StringField('WMS Path', validators=[DataRequired()],
                            render_kw={"placeholder": "northbound/messages"})
-    wms_headers = TextAreaField('WMS Headers', validators=[DataRequired()],
-                                render_kw={"placeholder": "Content-Type: application/json\nAccept: application/json"})
+    wms_headers = TextAreaField(
+        'WMS Headers',
+        validators=[DataRequired()],
+        render_kw={"placeholder": "Content-Type: application/json\nAccept: application/json"})
     send_confirmations = BooleanField('Send Confirmations')
     submit = SubmitField('Submit')
 
 
 class NbMessageSftp(FlaskForm):
-    wms_host = StringField('WMS Host', validators=[DataRequired()],
-                           render_kw={"placeholder": "sftp://wms.warehouse.com"})
+    wms_host = StringField(
+        'WMS Host',
+        validators=[DataRequired()],
+        render_kw={"placeholder": "sftp://wms.warehouse.com"})
     wms_port = StringField('WMS Port', validators=[DataRequired()],
                            render_kw={"placeholder": "22"})
     wms_path = StringField('WMS Path', validators=[DataRequired()],
@@ -109,8 +123,9 @@ class NbMessageSftp(FlaskForm):
 
 
 class ChooseMessages(FlaskForm):
-    southbound_messages = SelectMultipleField('Southbound Messages: WMS to 6RS (choose at least 1)',
-                                              validators=[DataRequired()])
+    southbound_messages = SelectMultipleField(
+        'Southbound Messages: WMS to 6RS (choose at least 1)',
+        validators=[DataRequired()])
     northbound_messages = SelectMultipleField(
         'Northbound Messages: 6RS to WMS')
     submit = SubmitField('Submit')

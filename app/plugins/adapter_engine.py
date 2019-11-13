@@ -25,10 +25,11 @@ def adapt_payload(original_payload, message_settings, direction):
                 return {}
         else:
             try:
-                data = requests.post(adaptation_rules['adapter_endpoint'],
-                                     headers=adaptation_rules[
-                                         'adapter_headers'],
-                                     data=original_payload).content.decode('utf-8')
+                data = requests.post(
+                    adaptation_rules['adapter_endpoint'],
+                    headers=adaptation_rules[
+                        'adapter_headers'],
+                    data=original_payload).content.decode('utf-8')
                 return data
             except:
                 logger.debug('unable to adapt {0} {1} payload'.format(

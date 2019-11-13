@@ -24,8 +24,10 @@ def feed_main():
     form = FeedForm()
     form.message_type.choices = [
         (msg, msg) for msg in rule.get_all_messages(current_user.to_dict())]
-    form.profile.choices = [(profile['token_id'], profile['data']['friendly_name'])
-                            for profile in user_profiles]
+    form.profile.choices = [
+        (profile['token_id'],
+         profile['data']['friendly_name'])
+        for profile in user_profiles]
     form_render = render_template('embedded_form.html',
                                   form=form,
                                   action=url_for('feed_main'),
@@ -40,9 +42,12 @@ def feed_main():
                                form_render=form_render,
                                filters=filters)
     else:
-        return jsonify({'html': message_block, 'has_next': filters['has_next'],
-                        'pull_btn': '<a href="javascript:get_more(' + "'{}'".format(filters['next_page']) + ')"><i>more</i></a>',
-                        'end_btn': "<i>That's all folks!</i>"})
+        return jsonify({
+            'html': message_block,
+            'has_next': filters['has_next'],
+            'pull_btn': '<a href="javascript:get_more(' + "'{}'".format(
+                filters['next_page']) + ')"><i>more</i></a>',
+            'end_btn': "<i>That's all folks!</i>"})
 
 
 @app.route('/feed/message/<message_id>/<task>', methods=['POST'])
@@ -63,5 +68,6 @@ def count_transmissions():
     filters = get_filters(request)
     user_profiles = current_user.load_user_profiles()
     data, filters = filter_feed(
-        filters, user_profiles, current_user.to_dict(), return_data=True, order="asc")
+        filters, user_profiles, current_user.to_dict(),
+        return_data=True, order="asc")
     return jsonify({'count': filters['transmissions']})
