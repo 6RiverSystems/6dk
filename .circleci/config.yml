@@ -1,4 +1,6 @@
 version: 2.1
+orbs: 
+  sixrs-gke: "sixriversystems/sixrs-gke@0.1.2"
 jobs:
   build:
     docker:
@@ -8,12 +10,13 @@ jobs:
       - run:
           name: Set Up CI Environment
           command: |
-            git submodule update --init
-            sudo pip install pipenv
+            mkdir ci_scripts
+            curl -H "Authorization: token $GITHUB_TOKEN" -H "Accept:application/vnd.github.v3.raw"  https://api.github.com/repos/6RiverSystems/ci_scripts/contents/ci_tool.sh >> ci_scripts/ci_tool.sh
+            chmod +x ci_scripts/ci_tool.sh
       - run:
-          name: pipenv install
+          name: Install Packages
           command: |
-            sudo apt-get install python3-dev
+            sudo pip install pipenv
             pipenv install
       - run:
           name: tests 
@@ -26,16 +29,22 @@ jobs:
     docker:
       - image: circleci/python:3.6
     steps:
+      - checkout
       - setup_remote_docker
       - attach_workspace:
           at: ./
       - run:
-          name: Publish Docker
+          name: Run Release
           command: |
             ci_scripts/ci_tool.sh --run_release
-            ci_scripts/ci_tool.sh --docker_login
-            docker build -t gcr.io/plasma-column-128721/6dk:$(cat .version) .
-            docker push gcr.io/plasma-column-128721/6dk:$(cat .version)
+      - run:
+          name: Publish Docker
+          command: |
+            ci_scripts/ci_tool.sh --docker_publish
+      - persist_to_workspace:
+          root: ./
+          paths:
+            - .
   
 workflows:
   version: 2
