@@ -69,3 +69,6 @@ from app.ui import (account_routes, application_routes,
                     errors_routes, explorer_routes,
                     feed_routes, profile_routes,
                     faq_routes)
+from app._db import db_api_routes
+
+logger.info('successfully created app')
