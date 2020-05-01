@@ -1,6 +1,6 @@
 version: 2.1
 orbs: 
-  sixrs-gke: "sixriversystems/sixrs-gke@0.1.2"
+  sixrs-gke: "sixriversystems/sixrs-gke@2"
 jobs:
   build:
     docker:
